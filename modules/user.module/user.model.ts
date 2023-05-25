@@ -15,6 +15,7 @@ const userSchema = new Schema<IUser>({
 
 userSchema.pre("validate", async function (next) {
   if (this.provider) {
+    this.isVerified = true;
     next();
   } else if (this.password) {
     const isStrongPassword = /[a-zA-Z][0-9]/.test(this.password);
