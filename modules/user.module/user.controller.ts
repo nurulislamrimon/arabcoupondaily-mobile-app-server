@@ -17,7 +17,10 @@ export const addNewUserController = async (
       (!userData.provider?.name && !userData.password)
     ) {
       throw new Error("Please enter required information!");
-    } else if (existUser?.isVerified) {
+    } else if (
+      existUser?.isVerified ||
+      (!existUser?.isVerified && !userData.provider?.name)
+    ) {
       throw new Error("User already exist!");
     } else {
       let token;

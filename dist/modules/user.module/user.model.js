@@ -15,16 +15,26 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const mongoose_2 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
+const validator_1 = __importDefault(require("validator"));
 const userSchema = new mongoose_2.Schema({
     name: { type: String, required: true },
-    email: { type: String, required: true },
+    email: { type: String, required: true, validate: validator_1.default.isEmail },
     country: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
+    role: {
+        type: String,
+        enum: {
+            values: ["admin", "manager"],
+            message: `{VALUE} is not a valid role!`,
+        },
+    },
     readedPosts: [mongoose_1.Types.ObjectId],
     phoneNumber: String,
     password: String,
     confirmPassword: String,
     provider: { name: String },
+}, {
+    timestamps: true,
 });
 userSchema.pre("validate", function (next) {
     var _a;
@@ -34,7 +44,7 @@ userSchema.pre("validate", function (next) {
             next();
         }
         else if (this.password) {
-            const isStrongPassword = /[a-zA-Z0-9][a-zA-Z0-9]/.test(this.password);
+            const isStrongPassword = /[a-zA-Z]/g.test(this.password);
             if (!isStrongPassword) {
                 throw new Error("Please provide a strong password!");
             }

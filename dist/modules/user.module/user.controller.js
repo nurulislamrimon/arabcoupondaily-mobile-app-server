@@ -37,7 +37,7 @@ const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
 // signup controller
 const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _a, _b;
     try {
         const userData = req.body;
         const existUser = yield userServices.getUserByEmailService(userData.email);
@@ -47,7 +47,8 @@ const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 
             (!((_a = userData.provider) === null || _a === void 0 ? void 0 : _a.name) && !userData.password)) {
             throw new Error("Please enter required information!");
         }
-        else if (existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) {
+        else if ((existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) ||
+            (!(existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) && !((_b = userData.provider) === null || _b === void 0 ? void 0 : _b.name))) {
             throw new Error("User already exist!");
         }
         else {
@@ -70,7 +71,7 @@ const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 
 exports.addNewUserController = addNewUserController;
 // login controller
 const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _c;
     try {
         const { email, password } = req.body;
         const user = yield userServices.getUserByEmailService(email);
@@ -89,7 +90,7 @@ const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0
                     throw new Error("Incorrect email or password!");
                 }
             }
-            else if (!((_b = user.provider) === null || _b === void 0 ? void 0 : _b.name)) {
+            else if (!((_c = user.provider) === null || _c === void 0 ? void 0 : _c.name)) {
                 throw new Error("Please provide a valid credential!");
             }
             res.send({

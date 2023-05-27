@@ -11,13 +11,20 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verify_authorization = void 0;
 const user_services_1 = require("../modules/user.module/user.services");
-const verify_authorization = (roles) => {
+const verify_authorization = (...roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const email = req.body.decoded.email;
             const user = yield (0, user_services_1.getUserByEmailService)(email);
-            console.log(user);
-            next();
+            if (!user) {
+                next("Unauthorized access!");
+            }
+            else if (roles.includes(user.role)) {
+                next();
+            }
+            else {
+                throw new Error("Unauthorized access!");
+            }
         }
         catch (error) {
             next(error);
