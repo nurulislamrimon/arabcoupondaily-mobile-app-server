@@ -12,10 +12,38 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewUserService = void 0;
+exports.verifyAUserService = exports.comparePassword = exports.addNewUserService = exports.getUserByEmailService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
+const bcrypt_1 = __importDefault(require("bcrypt"));
+//== get user by email address without password
+const getUserByEmailService = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.findOne({ email: email }, { password: 0, readedPosts: 0 });
+    return result;
+});
+exports.getUserByEmailService = getUserByEmailService;
+//== create new user
 const addNewUserService = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.create(user);
+    const result = yield user_model_1.default.create(user).then((data) => {
+        data.password = undefined;
+        return data;
+    });
     return result;
 });
 exports.addNewUserService = addNewUserService;
+//== compare password by email and password
+const comparePassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.default.findOne({ email: email }, { password: 1 });
+    const isPasswordMatched = yield bcrypt_1.default.compare(password, (user === null || user === void 0 ? void 0 : user.password) || "");
+    return isPasswordMatched;
+});
+exports.comparePassword = comparePassword;
+//== verify a user
+const verifyAUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.updateOne({ _id: id }, {
+        $set: {
+            isVerified: true,
+        },
+    });
+    return result;
+});
+exports.verifyAUserService = verifyAUserService;

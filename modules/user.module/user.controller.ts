@@ -80,8 +80,7 @@ export const verifyAUserController = async (
   next: NextFunction
 ) => {
   try {
-    const decoded = req.headers.decoded;
-    const email = decoded ? decoded[0] : "";
+    const email = req.body.decoded.email;
     const user = await userServices.getUserByEmailService(email);
     if (!user) {
       throw new Error("User not found!");

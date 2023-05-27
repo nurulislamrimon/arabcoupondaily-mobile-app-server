@@ -7,7 +7,6 @@ import dbconnection from "./utils/dbconnection";
 import * as error_handler from "./middlewares/error_handler";
 import userRouter from "./modules/user.module/user.router";
 import storeRouter from "./modules/store.module/store.router";
-
 // database connection======
 dbconnection();
 

@@ -1,6 +1,7 @@
 import express from "express";
 import * as storeController from "./store.controller";
 import { verify_token } from "../../middlewares/verify_token";
+import { verify_authorization } from "../../middlewares/verify_authorization";
 
 const storeRouter = express.Router();
 
@@ -15,7 +16,12 @@ const storeRouter = express.Router();
  *@apiSuccess {Object} added store.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.post("/add", storeController.addNewStoreController);
+storeRouter.post(
+  "/add",
+  verify_token,
+  verify_authorization("admin"),
+  storeController.addNewStoreController
+);
 
 // /**
 //  *@api{post}/login login an existing Store

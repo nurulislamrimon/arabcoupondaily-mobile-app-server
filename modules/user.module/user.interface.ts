@@ -1,10 +1,10 @@
-// import { ObjectId } from "mongoose/types";
+import { Types } from "mongoose";
 export default interface IUser {
   name: string;
   email: string;
   country: string;
   isVerified: boolean;
-  readedPosts: object[];
+  readedPosts: Types.ObjectId[];
   phoneNumber?: string;
   password?: string;
   confirmPassword?: string;

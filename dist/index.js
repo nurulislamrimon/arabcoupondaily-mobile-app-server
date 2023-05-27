@@ -29,14 +29,16 @@ Object.defineProperty(exports, "__esModule", { value: true });
 // external imports
 const colour_1 = __importDefault(require("colour"));
 // internal imports============
-const app_1 = __importDefault(require("./utils/app"));
+const app_1 = __importDefault(require("./app"));
 const dbconnection_1 = __importDefault(require("./utils/dbconnection"));
-const error_handler = __importStar(require("./utils/error_handler"));
+const error_handler = __importStar(require("./middlewares/error_handler"));
 const user_router_1 = __importDefault(require("./modules/user.module/user.router"));
+const store_router_1 = __importDefault(require("./modules/store.module/store.router"));
 // database connection======
 (0, dbconnection_1.default)();
 // routes=========
 app_1.default.use("/api/v1/user", user_router_1.default);
+app_1.default.use("/api/v1/store", store_router_1.default);
 // error handler======
 app_1.default.use(error_handler.routeNotFound);
 app_1.default.use(error_handler.allErrorHandler);

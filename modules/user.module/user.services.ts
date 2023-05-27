@@ -1,4 +1,4 @@
-// import { ObjectId } from "mongoose/types";
+import { Types } from "mongoose";
 import User from "./user.model";
 import bcrypt from "bcrypt";
 //== get user by email address without password
@@ -28,7 +28,7 @@ export const comparePassword = async (email: string, password: string) => {
   return isPasswordMatched;
 };
 //== verify a user
-export const verifyAUserService = async (id: object) => {
+export const verifyAUserService = async (id: Types.ObjectId) => {
   const result = await User.updateOne(
     { _id: id },
     {

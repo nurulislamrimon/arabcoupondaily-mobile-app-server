@@ -1,4 +1,4 @@
-// import { ObjectId } from "mongoose/types";
+import { Types } from "mongoose";
 import { Schema, model } from "mongoose";
 import IUser from "./user.interface";
 import bcrypt from "bcrypt";
@@ -8,7 +8,7 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   country: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
-  readedPosts: [Object],
+  readedPosts: [Types.ObjectId],
   phoneNumber: String,
   password: String,
   confirmPassword: String,

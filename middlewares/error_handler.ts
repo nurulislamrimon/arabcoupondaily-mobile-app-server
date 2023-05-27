@@ -7,11 +7,15 @@ export const routeNotFound = (
   res: Response,
   next: NextFunction
 ) => {
-  res.send({
-    status: "failed",
-    message: "Route doesn't exist!",
-  });
-  console.log(colour.red("Route doesn't exist!"));
+  try {
+    res.send({
+      status: "failed",
+      message: "Route doesn't exist!",
+    });
+    console.log(colour.red("Route doesn't exist!"));
+  } catch (error) {
+    next(error);
+  }
 };
 export const allErrorHandler = (
   err: { message: string },
