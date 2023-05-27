@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
-import colour from "colour";
 import { error_code_from_message } from "../utils/error_codes_from_message";
+import colors from "@colors/colors";
 
 export const routeNotFound = (
   req: Request,
@@ -12,7 +12,7 @@ export const routeNotFound = (
       status: "failed",
       message: "Route doesn't exist!",
     });
-    console.log(colour.red("Route doesn't exist!"));
+    console.log(colors.magenta("Route doesn't exist!"));
   } catch (error) {
     next(error);
   }
@@ -31,13 +31,13 @@ export const allErrorHandler = (
         status: "failed",
         message: err.message,
       });
-      console.log(colour.red(err.message));
+      console.log(colors.red(err.message));
     } else {
       res.send({
         status: "failed",
         message: "Internal server error!",
       });
-      console.log(colour.red("Internal server error!"));
+      console.log(colors.red("Internal server error!"));
     }
   }
 };

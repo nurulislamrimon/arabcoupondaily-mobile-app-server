@@ -8,6 +8,13 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   country: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
+  role: {
+    type: String,
+    enum: {
+      values: ["admin", "manager"],
+      message: `{VALUE} is not a valid role!`,
+    },
+  },
   readedPosts: [Types.ObjectId],
   phoneNumber: String,
   password: String,

@@ -14,8 +14,8 @@ const user_services_1 = require("../modules/user.module/user.services");
 const verify_authorization = (roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
-            const decoded = req.headers.decoded || [];
-            const user = yield (0, user_services_1.getUserByEmailService)(decoded[0]);
+            const email = req.body.decoded.email;
+            const user = yield (0, user_services_1.getUserByEmailService)(email);
             console.log(user);
             next();
         }

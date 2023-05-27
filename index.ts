@@ -1,5 +1,5 @@
 // external imports
-import colour from "colour";
+import colors from "@colors/colors";
 
 // internal imports============
 import app from "./app";
@@ -23,6 +23,6 @@ app.use(error_handler.allErrorHandler);
 // app listener
 app.listen(process.env.port, () => {
   console.log(
-    colour.magenta(`Example app listening on port ${process.env.port}`)
+    colors.magenta(`Example app listening on port ${process.env.port}`.magenta)
   );
 });

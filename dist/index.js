@@ -27,7 +27,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 // external imports
-const colour_1 = __importDefault(require("colour"));
+const colors_1 = __importDefault(require("@colors/colors"));
 // internal imports============
 const app_1 = __importDefault(require("./app"));
 const dbconnection_1 = __importDefault(require("./utils/dbconnection"));
@@ -44,5 +44,5 @@ app_1.default.use(error_handler.routeNotFound);
 app_1.default.use(error_handler.allErrorHandler);
 // app listener
 app_1.default.listen(process.env.port, () => {
-    console.log(colour_1.default.magenta(`Example app listening on port ${process.env.port}`));
+    console.log(colors_1.default.magenta(`Example app listening on port ${process.env.port}`.magenta));
 });

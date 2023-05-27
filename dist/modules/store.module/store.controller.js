@@ -103,8 +103,7 @@ exports.addNewStoreController = addNewStoreController;
 //   next: NextFunction
 // ) => {
 //   try {
-//     const decoded = req.headers.decoded;
-//     const email = decoded ? decoded[0] : "";
+// const email = req.body.decoded.email;
 //     const Store = await StoreServices.getStoreByEmailService(email);
 //     if (!Store) {
 //       throw new Error("Store not found!");

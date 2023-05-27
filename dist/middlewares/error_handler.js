@@ -4,15 +4,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.allErrorHandler = exports.routeNotFound = void 0;
-const colour_1 = __importDefault(require("colour"));
 const error_codes_from_message_1 = require("../utils/error_codes_from_message");
+const colors_1 = __importDefault(require("@colors/colors"));
 const routeNotFound = (req, res, next) => {
     try {
         res.send({
             status: "failed",
             message: "Route doesn't exist!",
         });
-        console.log(colour_1.default.red("Route doesn't exist!"));
+        console.log(colors_1.default.magenta("Route doesn't exist!"));
     }
     catch (error) {
         next(error);
@@ -29,14 +29,14 @@ const allErrorHandler = (err, req, res, next) => {
                 status: "failed",
                 message: err.message,
             });
-            console.log(colour_1.default.red(err.message));
+            console.log(colors_1.default.red(err.message));
         }
         else {
             res.send({
                 status: "failed",
                 message: "Internal server error!",
             });
-            console.log(colour_1.default.red("Internal server error!"));
+            console.log(colors_1.default.red("Internal server error!"));
         }
     }
 };

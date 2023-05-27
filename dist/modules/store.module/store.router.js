@@ -29,6 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const storeController = __importStar(require("./store.controller"));
 const verify_token_1 = require("../../middlewares/verify_token");
+const verify_authorization_1 = require("../../middlewares/verify_authorization");
 const storeRouter = express_1.default.Router();
 /**
  *@api{post}/add add new store
@@ -41,7 +42,7 @@ const storeRouter = express_1.default.Router();
  *@apiSuccess {Object} added store.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.post("/add", verify_token_1.verify_token, storeController.addNewStoreController);
+storeRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin"), storeController.addNewStoreController);
 // /**
 //  *@api{post}/login login an existing Store
 //  *@apiDescription login with password or provider
