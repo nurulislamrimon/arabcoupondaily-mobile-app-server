@@ -2,16 +2,19 @@
 import colour from "colour";
 
 // internal imports============
-import app from "./utils/app";
+import app from "./app";
 import dbconnection from "./utils/dbconnection";
-import * as error_handler from "./utils/error_handler";
+import * as error_handler from "./middlewares/error_handler";
 import userRouter from "./modules/user.module/user.router";
+import storeRouter from "./modules/store.module/store.router";
 
 // database connection======
 dbconnection();
 
 // routes=========
 app.use("/api/v1/user", userRouter);
+
+app.use("/api/v1/store", storeRouter);
 
 // error handler======
 app.use(error_handler.routeNotFound);

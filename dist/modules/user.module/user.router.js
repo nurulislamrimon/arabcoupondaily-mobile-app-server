@@ -26,21 +26,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-// external imports
-const colour_1 = __importDefault(require("colour"));
-// internal imports============
-const app_1 = __importDefault(require("./utils/app"));
-const dbconnection_1 = __importDefault(require("./utils/dbconnection"));
-const error_handler = __importStar(require("./utils/error_handler"));
-const user_router_1 = __importDefault(require("./modules/user.module/user.router"));
-// database connection======
-(0, dbconnection_1.default)();
-// routes=========
-app_1.default.use("/api/v1/user", user_router_1.default);
-// error handler======
-app_1.default.use(error_handler.routeNotFound);
-app_1.default.use(error_handler.allErrorHandler);
-// app listener
-app_1.default.listen(process.env.port, () => {
-    console.log(colour_1.default.magenta(`Example app listening on port ${process.env.port}`));
-});
+const express_1 = __importDefault(require("express"));
+const userController = __importStar(require("./user.controller"));
+const userRouter = express_1.default.Router();
+userRouter.post("/signup", userController.addNewUserController);
+exports.default = userRouter;

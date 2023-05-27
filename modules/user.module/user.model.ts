@@ -1,3 +1,4 @@
+// import { ObjectId } from "mongoose/types";
 import { Schema, model } from "mongoose";
 import IUser from "./user.interface";
 import bcrypt from "bcrypt";
@@ -7,26 +8,29 @@ const userSchema = new Schema<IUser>({
   email: { type: String, required: true },
   country: { type: String, required: true },
   isVerified: { type: Boolean, default: false },
+  readedPosts: [Object],
   phoneNumber: String,
   password: String,
-  retypePassword: String,
-  provider: Object,
+  confirmPassword: String,
+  provider: { name: String },
 });
 
 userSchema.pre("validate", async function (next) {
-  if (this.provider) {
+  if (this.provider?.name) {
     this.isVerified = true;
     next();
   } else if (this.password) {
-    const isStrongPassword = /[a-zA-Z][0-9]/.test(this.password);
+    const isStrongPassword = /[a-zA-Z0-9][a-zA-Z0-9]/.test(this.password);
     if (!isStrongPassword) {
       throw new Error("Please provide a strong password!");
-    } else if (this.password === this.retypePassword) {
+    } else if (this.password === this.confirmPassword) {
       this.password = await bcrypt.hash(this.password, 10);
-      this.retypePassword = undefined;
+      this.confirmPassword = undefined;
       next();
     } else {
-      throw new Error("Please enter the same password!");
+      throw new Error(
+        "Please make sure password and confirm password are same!"
+      );
     }
   } else {
     throw new Error("Password not found!");

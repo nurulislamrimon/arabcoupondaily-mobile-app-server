@@ -9,7 +9,8 @@ const app = express();
 app.use(express.json());
 // home route
 app.get("/", (req: Request, res: Response) => {
-  res.send("Hello World!");
+  res.send({ status: "success", data: "Welcome to Arabcoupondaily!" });
+  console.log("Welcome to Arabcoupondaily");
 });
 
 export default app;

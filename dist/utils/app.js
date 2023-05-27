@@ -9,9 +9,9 @@ const dotenv_1 = __importDefault(require("dotenv"));
 dotenv_1.default.config();
 // create app
 const app = (0, express_1.default)();
+app.use(express_1.default.json());
 // home route
 app.get("/", (req, res) => {
-    a;
     res.send("Hello World!");
 });
 exports.default = app;
