@@ -19,7 +19,7 @@ export const addNewUserController = async (
       throw new Error("Please enter required information!");
     } else if (
       existUser?.isVerified ||
-      (!existUser?.isVerified && !userData.provider?.name)
+      (existUser && !existUser?.isVerified && !userData.provider?.name)
     ) {
       throw new Error("User already exist!");
     } else {
@@ -27,6 +27,8 @@ export const addNewUserController = async (
       if (userData.password) {
         token = generate_token(userData);
       }
+      await userServices.deleteAUserByEmailService(existUser?.email || "");
+
       const user = await userServices.addNewUserService(userData);
       res.send({
         status: "success",

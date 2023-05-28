@@ -18,6 +18,11 @@ export const addNewUserService = async (user: object) => {
   });
   return result;
 };
+//== delete user
+export const deleteAUserByEmailService = async (email: string) => {
+  const result = await User.deleteOne({ email: email });
+  return result;
+};
 //== compare password by email and password
 export const comparePassword = async (email: string, password: string) => {
   const user = await User.findOne({ email: email }, { password: 1 });

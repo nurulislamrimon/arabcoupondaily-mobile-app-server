@@ -1,7 +1,9 @@
 import { NextFunction, Request, Response } from "express";
 import * as storeServices from "./store.services";
+import { getUserByEmailService } from "../user.module/user.services";
+import { Types } from "mongoose";
 
-// signup controller
+// add new store controller
 export const addNewStoreController = async (
   req: Request,
   res: Response,
@@ -9,19 +11,73 @@ export const addNewStoreController = async (
 ) => {
   try {
     const { photoURL, storeName, country, storeExternalLink } = req.body;
-    const existStore = await storeServices.getStoreByNameService(storeName);
+    const existStore = await storeServices.getStoreByStoreNameService(
+      storeName
+    );
 
     if (!photoURL || !storeName || !country || !storeExternalLink) {
       throw new Error("Please enter required information!");
     } else if (existStore?.storeName === storeName) {
       throw new Error("Store already exist!");
     } else {
-      const result = await storeServices.addNewStoreService(req.body);
+      const postBy = await getUserByEmailService(req.body.decoded.email);
+
+      const result = await storeServices.addNewStoreService({
+        ...req.body,
+        postBy: { ...postBy?.toObject(), moreAboutUser: postBy?._id },
+      });
       res.send({
         status: "success",
         data: result,
       });
-      console.log(`Store ${result.storeName} is added!`);
+      console.log(`Store ${result} is added!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+// get all stores
+export const getAllStoresController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await storeServices.getAllStores(req.query);
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`${result.length} stores are responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+// update a store controller
+export const updateAStoreController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const postId = new Types.ObjectId(req.params.id);
+    const existStore = await storeServices.getStoreByIdService(postId);
+
+    if (!existStore) {
+      throw new Error("Invalid store Id!");
+    } else {
+      const updateBy = await getUserByEmailService(req.body.decoded.email);
+      const result = await storeServices.updateAStoreService(postId, {
+        ...req.body,
+        existStore,
+        updateBy: { ...updateBy?.toObject(), moreAboutUser: updateBy?._id },
+      });
+
+      res.send({
+        status: "success",
+        data: result,
+      });
+      console.log(`Store ${result} is added!`);
     }
   } catch (error) {
     next(error);

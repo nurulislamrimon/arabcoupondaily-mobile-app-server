@@ -23,4 +23,39 @@ storeRouter.post(
   storeController.addNewStoreController
 );
 
+/**
+ *@api{get}/ get all store
+ *@apiDescription get all stores
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery query{name & others Properties},limit,sort,page
+ *@apiSuccess {Array of Object} all stores.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+storeRouter.get(
+  "/",
+  verify_token,
+  verify_authorization("admin", "manager") as any,
+  storeController.getAllStoresController
+);
+/**
+ *@api{put}/:id update a store
+ *@apiDescription update a store by id with validation
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody none
+ *@apiParam ObjectId of store
+ *@apiQuery none
+ *@apiSuccess {Object} update info of the store.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+storeRouter.put(
+  "/:id",
+  verify_token,
+  verify_authorization("admin", "manager") as any,
+  storeController.updateAStoreController
+);
+
 export default storeRouter;
