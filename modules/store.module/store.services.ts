@@ -15,7 +15,7 @@ export const getStoreByIdService = async (id: Types.ObjectId) => {
 
 //== create new Store
 export const addNewStoreService = async (store: object) => {
-  const result = await Store.updateOne(store);
+  const result = await Store.create(store);
   return result;
 };
 //== update a Store
@@ -46,5 +46,11 @@ export const getAllStores = async (query: any) => {
     .sort(sort)
     .skip(page * limit)
     .limit(limit);
+  return result;
+};
+//== delete a Store
+export const deleteAStoreService = async (storeId: Types.ObjectId) => {
+  const result = await Store.deleteOne({ _id: storeId });
+
   return result;
 };

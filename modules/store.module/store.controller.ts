@@ -64,7 +64,7 @@ export const updateAStoreController = async (
     const existStore = await storeServices.getStoreByIdService(postId);
 
     if (!existStore) {
-      throw new Error("Invalid store Id!");
+      throw new Error("Store does not exist!");
     } else {
       const updateBy = await getUserByEmailService(req.body.decoded.email);
       const result = await storeServices.updateAStoreService(postId, {
@@ -72,6 +72,31 @@ export const updateAStoreController = async (
         existStore,
         updateBy: { ...updateBy?.toObject(), moreAboutUser: updateBy?._id },
       });
+
+      res.send({
+        status: "success",
+        data: result,
+      });
+      console.log(`Store ${result} is added!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+// update a store controller
+export const deleteAStoreController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const postId = new Types.ObjectId(req.params.id);
+    const existStore = await storeServices.getStoreByIdService(postId);
+
+    if (!existStore) {
+      throw new Error("Store does not exist!");
+    } else {
+      const result = await storeServices.deleteAStoreService(postId);
 
       res.send({
         status: "success",

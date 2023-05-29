@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyAUserService = exports.comparePassword = exports.addNewUserService = exports.getUserByEmailService = void 0;
+exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addNewUserService = exports.getUserByEmailService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 //== get user by email address without password
@@ -30,6 +30,12 @@ const addNewUserService = (user) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 exports.addNewUserService = addNewUserService;
+//== delete user
+const deleteAUserByEmailService = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.deleteOne({ email: email });
+    return result;
+});
+exports.deleteAUserByEmailService = deleteAUserByEmailService;
 //== compare password by email and password
 const comparePassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.default.findOne({ email: email }, { password: 1 });

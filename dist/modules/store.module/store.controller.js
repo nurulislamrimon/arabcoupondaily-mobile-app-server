@@ -32,13 +32,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewStoreController = void 0;
+exports.deleteAStoreController = exports.updateAStoreController = exports.getAllStoresController = exports.addNewStoreController = void 0;
 const storeServices = __importStar(require("./store.services"));
-// signup controller
+const user_services_1 = require("../user.module/user.services");
+const mongoose_1 = require("mongoose");
+// add new store controller
 const addNewStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { photoURL, storeName, country, storeExternalLink } = req.body;
-        const existStore = yield storeServices.getStoreByNameService(storeName);
+        const existStore = yield storeServices.getStoreByStoreNameService(storeName);
         if (!photoURL || !storeName || !country || !storeExternalLink) {
             throw new Error("Please enter required information!");
         }
@@ -46,12 +48,13 @@ const addNewStoreController = (req, res, next) => __awaiter(void 0, void 0, void
             throw new Error("Store already exist!");
         }
         else {
-            const result = yield storeServices.addNewStoreService(req.body);
+            const postBy = yield (0, user_services_1.getUserByEmailService)(req.body.decoded.email);
+            const result = yield storeServices.addNewStoreService(Object.assign(Object.assign({}, req.body), { postBy: Object.assign(Object.assign({}, postBy === null || postBy === void 0 ? void 0 : postBy.toObject()), { moreAboutUser: postBy === null || postBy === void 0 ? void 0 : postBy._id }) }));
             res.send({
                 status: "success",
                 data: result,
             });
-            console.log(`Store ${result.storeName} is added!`);
+            console.log(`Store ${result} is added!`);
         }
     }
     catch (error) {
@@ -59,3 +62,63 @@ const addNewStoreController = (req, res, next) => __awaiter(void 0, void 0, void
     }
 });
 exports.addNewStoreController = addNewStoreController;
+// get all stores
+const getAllStoresController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield storeServices.getAllStores(req.query);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`${result.length} stores are responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAllStoresController = getAllStoresController;
+// update a store controller
+const updateAStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const postId = new mongoose_1.Types.ObjectId(req.params.id);
+        const existStore = yield storeServices.getStoreByIdService(postId);
+        if (!existStore) {
+            throw new Error("Store does not exist!");
+        }
+        else {
+            const updateBy = yield (0, user_services_1.getUserByEmailService)(req.body.decoded.email);
+            const result = yield storeServices.updateAStoreService(postId, Object.assign(Object.assign({}, req.body), { existStore, updateBy: Object.assign(Object.assign({}, updateBy === null || updateBy === void 0 ? void 0 : updateBy.toObject()), { moreAboutUser: updateBy === null || updateBy === void 0 ? void 0 : updateBy._id }) }));
+            res.send({
+                status: "success",
+                data: result,
+            });
+            console.log(`Store ${result} is added!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updateAStoreController = updateAStoreController;
+// update a store controller
+const deleteAStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const postId = new mongoose_1.Types.ObjectId(req.params.id);
+        const existStore = yield storeServices.getStoreByIdService(postId);
+        if (!existStore) {
+            throw new Error("Store does not exist!");
+        }
+        else {
+            const result = yield storeServices.deleteAStoreService(postId);
+            res.send({
+                status: "success",
+                data: result,
+            });
+            console.log(`Store ${result} is added!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.deleteAStoreController = deleteAStoreController;

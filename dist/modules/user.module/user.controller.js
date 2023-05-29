@@ -48,7 +48,7 @@ const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 
             throw new Error("Please enter required information!");
         }
         else if ((existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) ||
-            (!(existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) && !((_b = userData.provider) === null || _b === void 0 ? void 0 : _b.name))) {
+            (existUser && !(existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) && !((_b = userData.provider) === null || _b === void 0 ? void 0 : _b.name))) {
             throw new Error("User already exist!");
         }
         else {
@@ -56,6 +56,7 @@ const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 
             if (userData.password) {
                 token = (0, generate_token_1.generate_token)(userData);
             }
+            yield userServices.deleteAUserByEmailService((existUser === null || existUser === void 0 ? void 0 : existUser.email) || "");
             const user = yield userServices.addNewUserService(userData);
             res.send({
                 status: "success",

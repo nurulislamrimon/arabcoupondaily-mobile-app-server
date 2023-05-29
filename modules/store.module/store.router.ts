@@ -57,5 +57,22 @@ storeRouter.put(
   verify_authorization("admin", "manager") as any,
   storeController.updateAStoreController
 );
+/**
+ *@api{delete}/:id delete a store
+ *@apiDescription delete a store by id
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody none
+ *@apiParam ObjectId of store
+ *@apiQuery none
+ *@apiSuccess {Object} delete confirmation.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+storeRouter.delete(
+  "/:id",
+  verify_token,
+  verify_authorization("admin", "manager") as any,
+  storeController.deleteAStoreController
+);
 
 export default storeRouter;
