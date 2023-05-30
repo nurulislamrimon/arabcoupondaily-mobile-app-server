@@ -12,7 +12,7 @@ export const routeNotFound = (
       status: "failed",
       message: "Route doesn't exist!",
     });
-    console.log(colors.magenta("Route doesn't exist!"));
+    console.log(colors.red("Route doesn't exist!"));
   } catch (error) {
     next(error);
   }

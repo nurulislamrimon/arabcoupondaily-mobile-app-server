@@ -1,28 +1,23 @@
 import { NextFunction, Request, Response } from "express";
-import * as storeServices from "./store.services";
+import * as PostServices from "./post.services";
 import { getUserByEmailService } from "../user.module/user.services";
 import { Types } from "mongoose";
 
-// add new store controller
-export const addNewStoreController = async (
+// add new Post controller
+export const addNewPostController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const { photoURL, storeName, country, storeExternalLink } = req.body;
-    const existStore = await storeServices.getStoreByStoreNameService(
-      storeName
-    );
+    const { postTitle, storeName, expireDate, country } = req.body;
 
-    if (!photoURL || !storeName || !country || !storeExternalLink) {
+    if (!postTitle || !storeName || !expireDate || !country) {
       throw new Error("Please enter required information!");
-    } else if (existStore?.storeName === storeName) {
-      throw new Error("Store already exist!");
     } else {
       const postBy = await getUserByEmailService(req.body.decoded.email);
 
-      const result = await storeServices.addNewStoreService({
+      const result = await PostServices.addNewPostService({
         ...req.body,
         postBy: { ...postBy?.toObject(), moreAboutUser: postBy?._id },
       });
@@ -30,46 +25,46 @@ export const addNewStoreController = async (
         status: "success",
         data: result,
       });
-      console.log(`Store ${result} is added!`);
+      console.log(`Post ${result} is added!`);
     }
   } catch (error) {
     next(error);
   }
 };
-// get all stores
-export const getAllStoresController = async (
+// get all Posts
+export const getAllPostsController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const result = await storeServices.getAllStores(req.query);
+    const result = await PostServices.getAllPosts(req.query);
     res.send({
       status: "success",
       data: result,
     });
-    console.log(`${result.length} stores are responsed!`);
+    console.log(`${result.length} Posts are responsed!`);
   } catch (error) {
     next(error);
   }
 };
-// update a store controller
-export const updateAStoreController = async (
+// update a Post controller
+export const updateAPostController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const postId = new Types.ObjectId(req.params.id);
-    const existStore = await storeServices.getStoreByIdService(postId);
+    const existPost = await PostServices.getPostByIdService(postId);
 
-    if (!existStore) {
-      throw new Error("Store doesn't exist!");
+    if (!existPost) {
+      throw new Error("Post doesn't exist!");
     } else {
       const updateBy = await getUserByEmailService(req.body.decoded.email);
-      const result = await storeServices.updateAStoreService(postId, {
+      const result = await PostServices.updateAPostService(postId, {
         ...req.body,
-        existStore,
+        existPost,
         updateBy: { ...updateBy?.toObject(), moreAboutUser: updateBy?._id },
       });
 
@@ -77,32 +72,32 @@ export const updateAStoreController = async (
         status: "success",
         data: result,
       });
-      console.log(`Store ${result} is added!`);
+      console.log(`Post ${result} is added!`);
     }
   } catch (error) {
     next(error);
   }
 };
-// update a store controller
-export const deleteAStoreController = async (
+// update a Post controller
+export const deleteAPostController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
     const postId = new Types.ObjectId(req.params.id);
-    const existStore = await storeServices.getStoreByIdService(postId);
+    const existPost = await PostServices.getPostByIdService(postId);
 
-    if (!existStore) {
-      throw new Error("Store doesn't exist!");
+    if (!existPost) {
+      throw new Error("Post doesn't exist!");
     } else {
-      const result = await storeServices.deleteAStoreService(postId);
+      const result = await PostServices.deleteAPostService(postId);
 
       res.send({
         status: "success",
         data: result,
       });
-      console.log(`Store ${result} is added!`);
+      console.log(`Post ${result} is added!`);
     }
   } catch (error) {
     next(error);

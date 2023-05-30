@@ -7,6 +7,7 @@ import dbconnection from "./utils/dbconnection";
 import * as error_handler from "./middlewares/error_handler";
 import userRouter from "./modules/user.module/user.router";
 import storeRouter from "./modules/store.module/store.router";
+import postRouter from "./modules/post.module/post.router";
 // database connection======
 dbconnection();
 
@@ -14,6 +15,8 @@ dbconnection();
 app.use("/api/v1/user", userRouter);
 
 app.use("/api/v1/store", storeRouter);
+
+app.use("/api/v1/post", postRouter);
 
 // error handler======
 app.use(error_handler.routeNotFound);

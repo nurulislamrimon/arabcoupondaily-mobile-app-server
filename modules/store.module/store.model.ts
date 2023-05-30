@@ -5,7 +5,7 @@ import { Types } from "mongoose";
 
 const storeSchema = new Schema<IStore>(
   {
-    photoURL: { type: String, required: true },
+    photoURL: { type: String, validate: validator.isURL, required: true },
     storeName: { type: String, required: true },
     country: [{ type: String, required: true }],
     storeExternalLink: { type: String, required: true },
@@ -29,7 +29,13 @@ const storeSchema = new Schema<IStore>(
       },
     ],
     description: String,
-    howToUse: [{ photoURL: String, title: String, description: String }],
+    howToUse: [
+      {
+        photoURL: { type: String, validate: validator.isURL },
+        title: String,
+        description: String,
+      },
+    ],
   },
   { timestamps: true }
 );
