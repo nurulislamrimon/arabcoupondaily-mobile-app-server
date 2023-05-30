@@ -12,7 +12,7 @@ const routeNotFound = (req, res, next) => {
             status: "failed",
             message: "Route doesn't exist!",
         });
-        console.log(colors_1.default.magenta("Route doesn't exist!"));
+        console.log(colors_1.default.red("Route doesn't exist!"));
     }
     catch (error) {
         next(error);

@@ -11,6 +11,7 @@ const postSchema = new Schema<IPost>(
     expireDate: { type: Date, validate: validator.isDate },
     country: [String],
     isVerified: { type: Boolean, default: false },
+    revealed: { type: Number, default: 0 },
     couponCode: String,
     externalLink: String,
     postDescription: String,

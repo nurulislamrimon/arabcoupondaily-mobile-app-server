@@ -3,6 +3,23 @@ import * as storeServices from "./store.services";
 import { getUserByEmailService } from "../user.module/user.services";
 import { Types } from "mongoose";
 
+// get all active stores
+export const getAllActiveStoresController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await storeServices.getAllActiveStores(req.query);
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`${result.length} stores are responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
 // add new store controller
 export const addNewStoreController = async (
   req: Request,

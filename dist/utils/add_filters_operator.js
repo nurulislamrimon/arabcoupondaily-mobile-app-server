@@ -8,6 +8,9 @@ const addFiltersSymbolToOperators = (filters) => {
     else if (filters.country) {
         filters.country = { $regex: filters.country, $options: "i" };
     }
+    else if (filters.postTitle) {
+        filters.postTitle = { $regex: filters.postTitle, $options: "i" };
+    }
     else if (filters.email) {
         filters.postBy = { email: { $regex: filters.email, $options: "i" } };
     }

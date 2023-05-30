@@ -48,6 +48,32 @@ export const getAllStores = async (query: any) => {
     .limit(limit);
   return result;
 };
+
+// get all active stores
+export const getAllActiveStores = async (query: any) => {
+  const result = await Store.aggregate([
+    {
+      $lookup: {
+        from: "posts",
+        foreignField: "storeName",
+        localField: "storeName",
+        as: "existPosts",
+      },
+    },
+    {
+      $match: {
+        existPosts: { $exists: true, $ne: [] },
+      },
+    },
+    {
+      $project: {
+        existPosts: 0,
+      },
+    },
+  ]);
+  return result;
+};
+
 //== delete a Store
 export const deleteAStoreService = async (storeId: Types.ObjectId) => {
   const result = await Store.deleteOne({ _id: storeId });

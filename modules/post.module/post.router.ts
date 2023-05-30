@@ -6,6 +6,31 @@ import { verify_authorization } from "../../middlewares/verify_authorization";
 const postRouter = express.Router();
 
 /**
+ *@api{get}/ get all Post
+ *@apiDescription get all Posts
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery query{name & others Properties},limit,sort,page
+ *@apiSuccess {Array of Object} all Posts.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+postRouter.get("/", PostController.getAllActivePostsController);
+/**
+ *@api{put}/revealed/:id update a Post
+ *@apiDescription revealed again
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam ObjectId of Post
+ *@apiQuery none
+ *@apiSuccess {Object} update info of the Post.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+postRouter.put("/revealed/:id", PostController.revealedAPostController);
+
+/**
  *@api{post}/add add new Post
  *@apiDescription add a new Post
  *@apiPermission admin and manager
@@ -24,7 +49,7 @@ postRouter.post(
 );
 
 /**
- *@api{get}/ get all Post
+ *@api{get}/all get all Post
  *@apiDescription get all Posts
  *@apiPermission admin and manager
  *@apiHeader token
@@ -35,7 +60,7 @@ postRouter.post(
  *@apiError 401, 403 unauthorized & forbidden
  */
 postRouter.get(
-  "/",
+  "/all",
   verify_token,
   verify_authorization("admin", "manager") as any,
   PostController.getAllPostsController

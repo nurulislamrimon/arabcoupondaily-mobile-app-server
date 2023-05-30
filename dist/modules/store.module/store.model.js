@@ -7,7 +7,7 @@ const mongoose_1 = require("mongoose");
 const validator_1 = __importDefault(require("validator"));
 const mongoose_2 = require("mongoose");
 const storeSchema = new mongoose_1.Schema({
-    photoURL: { type: String, required: true },
+    photoURL: { type: String, validate: validator_1.default.isURL, required: true },
     storeName: { type: String, required: true },
     country: [{ type: String, required: true }],
     storeExternalLink: { type: String, required: true },
@@ -31,7 +31,13 @@ const storeSchema = new mongoose_1.Schema({
         },
     ],
     description: String,
-    howToUse: [{ photoURL: String, title: String, description: String }],
+    howToUse: [
+        {
+            photoURL: { type: String, validate: validator_1.default.isURL },
+            title: String,
+            description: String,
+        },
+    ],
 }, { timestamps: true });
 const Store = (0, mongoose_1.model)("Store", storeSchema);
 exports.default = Store;

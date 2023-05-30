@@ -1,6 +1,7 @@
 import express from "express";
 import * as userController from "./user.controller";
 import { verify_token } from "../../middlewares/verify_token";
+import { verify_authorization } from "../../middlewares/verify_authorization";
 
 const userRouter = express.Router();
 
@@ -57,5 +58,22 @@ userRouter.put("/verify", verify_token, userController.verifyAUserController);
  *@apiError user not found!
  */
 userRouter.get("/me", verify_token, userController.getAboutMeUserController);
+/**
+ *@api{get}/ get all user
+ *@apiDescription get all users
+ *@apiPermission admin and manager
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery {filters}, limit, skip, sort
+ *@apiSuccess {Array of Object} about users
+ *@apiError 401 & 403
+ */
+userRouter.get(
+  "/",
+  verify_token,
+  verify_authorization("admin", "manager") as any,
+  userController.getAllUserController
+);
 
 export default userRouter;

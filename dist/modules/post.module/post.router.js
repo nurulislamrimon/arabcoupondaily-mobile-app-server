@@ -27,68 +27,80 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
-const storeController = __importStar(require("./store.controller"));
+const PostController = __importStar(require("./post.controller"));
 const verify_token_1 = require("../../middlewares/verify_token");
 const verify_authorization_1 = require("../../middlewares/verify_authorization");
-const storeRouter = express_1.default.Router();
+const postRouter = express_1.default.Router();
 /**
- *@api{get}/ get all store
- *@apiDescription get all stores
+ *@api{get}/ get all Post
+ *@apiDescription get all Posts
  *@apiPermission none
  *@apiHeader none
  *@apiBody none
  *@apiParam none
  *@apiQuery query{name & others Properties},limit,sort,page
- *@apiSuccess {Array of Object} all stores.
+ *@apiSuccess {Array of Object} all Posts.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.get("/", storeController.getAllActiveStoresController);
+postRouter.get("/", PostController.getAllActivePostsController);
 /**
- *@api{get}/all get all store
- *@apiDescription get all stores
+ *@api{put}/revealed/:id update a Post
+ *@apiDescription revealed again
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam ObjectId of Post
+ *@apiQuery none
+ *@apiSuccess {Object} update info of the Post.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+postRouter.put("/revealed/:id", PostController.revealedAPostController);
+/**
+ *@api{post}/add add new Post
+ *@apiDescription add a new Post
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody postTitle, storeName, postType, expireDate, country, isVerified, couponCode, externalLink, postDescription,
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} added Post.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+postRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.addNewPostController);
+/**
+ *@api{get}/all get all Post
+ *@apiDescription get all Posts
  *@apiPermission admin and manager
  *@apiHeader token
  *@apiBody none
  *@apiParam none
  *@apiQuery query{name & others Properties},limit,sort,page
- *@apiSuccess {Array of Object} all stores.
+ *@apiSuccess {Array of Object} all Posts.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.getAllStoresController);
+postRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.getAllPostsController);
 /**
- *@api{post}/add add new store
- *@apiDescription add a new store
- *@apiPermission admin and manager
- *@apiHeader token
- *@apiBody photoURL, storeName, country,storeExternalLink, description, howToUse
- *@apiParam none
- *@apiQuery none
- *@apiSuccess {Object} added store.
- *@apiError 401, 403 unauthorized & forbidden
- */
-storeRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.addNewStoreController);
-/**
- *@api{put}/:id update a store
- *@apiDescription update a store by id with validation
+ *@api{put}/:id update a Post
+ *@apiDescription update a Post by id with validation
  *@apiPermission admin and manager
  *@apiHeader token
  *@apiBody none
- *@apiParam ObjectId of store
+ *@apiParam ObjectId of Post
  *@apiQuery none
- *@apiSuccess {Object} update info of the store.
+ *@apiSuccess {Object} update info of the Post.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.updateAStoreController);
+postRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.updateAPostController);
 /**
- *@api{delete}/:id delete a store
- *@apiDescription delete a store by id
+ *@api{delete}/:id delete a Post
+ *@apiDescription delete a Post by id
  *@apiPermission admin and manager
  *@apiHeader token
  *@apiBody none
- *@apiParam ObjectId of store
+ *@apiParam ObjectId of Post
  *@apiQuery none
  *@apiSuccess {Object} delete confirmation.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.delete("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.deleteAStoreController);
-exports.default = storeRouter;
+postRouter.delete("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.deleteAPostController);
+exports.default = postRouter;

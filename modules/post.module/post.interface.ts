@@ -7,6 +7,7 @@ export default interface IPost {
   expireDate: Date;
   country: string[];
   isVerified: boolean;
+  revealed: number;
   couponCode?: string;
   externalLink?: string;
   postDescription?: string;

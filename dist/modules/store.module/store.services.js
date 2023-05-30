@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAStoreService = exports.getAllStores = exports.updateAStoreService = exports.addNewStoreService = exports.getStoreByIdService = exports.getStoreByStoreNameService = void 0;
+exports.deleteAStoreService = exports.getAllActiveStores = exports.getAllStores = exports.updateAStoreService = exports.addNewStoreService = exports.getStoreByIdService = exports.getStoreByStoreNameService = void 0;
 const add_filters_operator_1 = require("../../utils/add_filters_operator");
 const store_model_1 = __importDefault(require("./store.model"));
 //== get Store by name
@@ -64,6 +64,31 @@ const getAllStores = (query) => __awaiter(void 0, void 0, void 0, function* () {
     return result;
 });
 exports.getAllStores = getAllStores;
+// get all active stores
+const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield store_model_1.default.aggregate([
+        {
+            $lookup: {
+                from: "posts",
+                foreignField: "storeName",
+                localField: "storeName",
+                as: "existPosts",
+            },
+        },
+        {
+            $match: {
+                existPosts: { $exists: true, $ne: [] },
+            },
+        },
+        {
+            $project: {
+                existPosts: 0,
+            },
+        },
+    ]);
+    return result;
+});
+exports.getAllActiveStores = getAllActiveStores;
 //== delete a Store
 const deleteAStoreService = (storeId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield store_model_1.default.deleteOne({ _id: storeId });

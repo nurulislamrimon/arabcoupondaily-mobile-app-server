@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
+exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
 const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
 // signup controller
@@ -134,8 +134,7 @@ exports.verifyAUserController = verifyAUserController;
 // about me by token
 const getAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const decoded = req.headers.decoded;
-        const email = decoded ? decoded[0] : "";
+        const email = req.body.decoded.email;
         const result = yield userServices.getUserByEmailService(email);
         if (!result) {
             throw new Error("User not found!");
@@ -153,3 +152,18 @@ const getAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, v
     }
 });
 exports.getAboutMeUserController = getAboutMeUserController;
+// get all user
+const getAllUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield userServices.getAllUserService(req.query);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`${result.length} user responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAllUserController = getAllUserController;

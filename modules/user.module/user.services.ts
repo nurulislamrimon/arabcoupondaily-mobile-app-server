@@ -1,13 +1,17 @@
 import { Types } from "mongoose";
 import User from "./user.model";
 import bcrypt from "bcrypt";
+//== get all users
+export const getAllUserService = async (query: any) => {
+  const result = await User.find({});
+  return result;
+};
 //== get user by email address without password
 export const getUserByEmailService = async (email: string) => {
   const result = await User.findOne(
     { email: email },
     { password: 0, readedPosts: 0 }
   );
-
   return result;
 };
 //== create new user

@@ -12,9 +12,15 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addNewUserService = exports.getUserByEmailService = void 0;
+exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addNewUserService = exports.getUserByEmailService = exports.getAllUserService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
+//== get all users
+const getAllUserService = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.find({});
+    return result;
+});
+exports.getAllUserService = getAllUserService;
 //== get user by email address without password
 const getUserByEmailService = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.default.findOne({ email: email }, { password: 0, readedPosts: 0 });

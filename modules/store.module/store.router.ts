@@ -6,6 +6,37 @@ import { verify_authorization } from "../../middlewares/verify_authorization";
 const storeRouter = express.Router();
 
 /**
+ *@api{get}/ get all store
+ *@apiDescription get all stores
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery query{name & others Properties},limit,sort,page
+ *@apiSuccess {Array of Object} all stores.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+storeRouter.get("/", storeController.getAllActiveStoresController);
+
+/**
+ *@api{get}/all get all store
+ *@apiDescription get all stores
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery query{name & others Properties},limit,sort,page
+ *@apiSuccess {Array of Object} all stores.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+storeRouter.get(
+  "/all",
+  verify_token,
+  verify_authorization("admin", "manager") as any,
+  storeController.getAllStoresController
+);
+
+/**
  *@api{post}/add add new store
  *@apiDescription add a new store
  *@apiPermission admin and manager
@@ -23,23 +54,6 @@ storeRouter.post(
   storeController.addNewStoreController
 );
 
-/**
- *@api{get}/ get all store
- *@apiDescription get all stores
- *@apiPermission admin and manager
- *@apiHeader token
- *@apiBody none
- *@apiParam none
- *@apiQuery query{name & others Properties},limit,sort,page
- *@apiSuccess {Array of Object} all stores.
- *@apiError 401, 403 unauthorized & forbidden
- */
-storeRouter.get(
-  "/",
-  verify_token,
-  verify_authorization("admin", "manager") as any,
-  storeController.getAllStoresController
-);
 /**
  *@api{put}/:id update a store
  *@apiDescription update a store by id with validation

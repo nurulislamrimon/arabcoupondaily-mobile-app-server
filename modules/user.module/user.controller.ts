@@ -111,8 +111,7 @@ export const getAboutMeUserController = async (
   next: NextFunction
 ) => {
   try {
-    const decoded = req.headers.decoded;
-    const email = decoded ? decoded[0] : "";
+    const email = req.body.decoded.email;
     const result = await userServices.getUserByEmailService(email);
     if (!result) {
       throw new Error("User not found!");
@@ -123,6 +122,23 @@ export const getAboutMeUserController = async (
       });
       console.log(result);
     }
+  } catch (error) {
+    next(error);
+  }
+};
+// get all user
+export const getAllUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await userServices.getAllUserService(req.query);
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`${result.length} user responsed!`);
   } catch (error) {
     next(error);
   }

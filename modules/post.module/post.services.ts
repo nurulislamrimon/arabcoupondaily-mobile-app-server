@@ -38,6 +38,33 @@ export const updateAPostService = async (
   return result;
 };
 
+//== update a Post
+export const revealedAPostService = async (PostId: Types.ObjectId) => {
+  const result = await Post.updateOne(
+    { _id: PostId },
+    { $inc: { revealed: 1 } }
+  );
+
+  return result;
+};
+
+// get all active Posts
+export const getAllActivePosts = async (query: any) => {
+  const { limit, page, sort, ...filters } = query;
+  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+
+  const filtersWithExpireDate = {
+    expireDate: { $lt: new Date() },
+    ...filtersWithOperator,
+  };
+
+  const result = await Post.find(filtersWithExpireDate)
+    .sort(sort)
+    .skip(page * limit)
+    .limit(limit);
+  return result;
+};
+
 // get all Posts
 export const getAllPosts = async (query: any) => {
   const { limit, page, sort, ...filters } = query;
@@ -49,6 +76,7 @@ export const getAllPosts = async (query: any) => {
     .limit(limit);
   return result;
 };
+
 //== delete a Post
 export const deleteAPostService = async (PostId: Types.ObjectId) => {
   const result = await Post.deleteOne({ _id: PostId });

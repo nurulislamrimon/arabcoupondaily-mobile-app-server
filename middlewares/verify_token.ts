@@ -8,13 +8,13 @@ export const verify_token = async (
   next: NextFunction
 ) => {
   try {
+    interface IPayload {
+      email: string;
+    }
     const authorization = req.headers.authorization;
     if (!authorization) {
       throw new Error("Access Forbidden!");
     } else {
-      interface IPayload {
-        email: string;
-      }
       const token = authorization.split(" ")[1];
       const secret = process.env.secret_key || "";
       const payload = jwt.verify(token, secret) as IPayload;

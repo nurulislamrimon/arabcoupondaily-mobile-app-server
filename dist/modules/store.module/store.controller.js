@@ -32,10 +32,25 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAStoreController = exports.updateAStoreController = exports.getAllStoresController = exports.addNewStoreController = void 0;
+exports.deleteAStoreController = exports.updateAStoreController = exports.getAllStoresController = exports.addNewStoreController = exports.getAllActiveStoresController = void 0;
 const storeServices = __importStar(require("./store.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
+// get all active stores
+const getAllActiveStoresController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield storeServices.getAllActiveStores(req.query);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`${result.length} stores are responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAllActiveStoresController = getAllActiveStoresController;
 // add new store controller
 const addNewStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -83,7 +98,7 @@ const updateAStoreController = (req, res, next) => __awaiter(void 0, void 0, voi
         const postId = new mongoose_1.Types.ObjectId(req.params.id);
         const existStore = yield storeServices.getStoreByIdService(postId);
         if (!existStore) {
-            throw new Error("Store does not exist!");
+            throw new Error("Store doesn't exist!");
         }
         else {
             const updateBy = yield (0, user_services_1.getUserByEmailService)(req.body.decoded.email);
@@ -106,7 +121,7 @@ const deleteAStoreController = (req, res, next) => __awaiter(void 0, void 0, voi
         const postId = new mongoose_1.Types.ObjectId(req.params.id);
         const existStore = yield storeServices.getStoreByIdService(postId);
         if (!existStore) {
-            throw new Error("Store does not exist!");
+            throw new Error("Store doesn't exist!");
         }
         else {
             const result = yield storeServices.deleteAStoreService(postId);

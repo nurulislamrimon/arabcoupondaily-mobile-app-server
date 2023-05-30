@@ -31,6 +31,7 @@ export const addNewPostController = async (
     next(error);
   }
 };
+
 // get all Posts
 export const getAllPostsController = async (
   req: Request,
@@ -48,6 +49,25 @@ export const getAllPostsController = async (
     next(error);
   }
 };
+
+// get all active Posts
+export const getAllActivePostsController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await PostServices.getAllActivePosts(req.query);
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`${result.length} Posts are responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // update a Post controller
 export const updateAPostController = async (
   req: Request,
@@ -78,6 +98,33 @@ export const updateAPostController = async (
     next(error);
   }
 };
+
+// revealed a Post controller
+export const revealedAPostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const postId = new Types.ObjectId(req.params.id);
+    const existPost = await PostServices.getPostByIdService(postId);
+
+    if (!existPost) {
+      throw new Error("Post doesn't exist!");
+    } else {
+      const result = await PostServices.revealedAPostService(postId);
+
+      res.send({
+        status: "success",
+        data: result,
+      });
+      console.log(`Post ${result} is added!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 // update a Post controller
 export const deleteAPostController = async (
   req: Request,

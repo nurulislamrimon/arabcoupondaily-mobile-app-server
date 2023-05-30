@@ -29,6 +29,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const userController = __importStar(require("./user.controller"));
 const verify_token_1 = require("../../middlewares/verify_token");
+const verify_authorization_1 = require("../../middlewares/verify_authorization");
 const userRouter = express_1.default.Router();
 /**
  *@api{post}/signup signup a new user
@@ -81,4 +82,16 @@ userRouter.put("/verify", verify_token_1.verify_token, userController.verifyAUse
  *@apiError user not found!
  */
 userRouter.get("/me", verify_token_1.verify_token, userController.getAboutMeUserController);
+/**
+ *@api{get}/ get all user
+ *@apiDescription get all users
+ *@apiPermission admin and manager
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery {filters}, limit, skip, sort
+ *@apiSuccess {Array of Object} about users
+ *@apiError 401 & 403
+ */
+userRouter.get("/", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), userController.getAllUserController);
 exports.default = userRouter;
