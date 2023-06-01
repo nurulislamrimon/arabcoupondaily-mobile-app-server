@@ -32,10 +32,26 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsController = exports.addNewPostController = void 0;
+exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsController = exports.addNewPostController = exports.searchGloballyOnPostController = void 0;
 const PostServices = __importStar(require("./post.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
+// add new Post controller
+const searchGloballyOnPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const key = req.params.key;
+        const result = yield PostServices.searchGloballyOnPostService(key);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`Post ${result.length} is responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.searchGloballyOnPostController = searchGloballyOnPostController;
 // add new Post controller
 const addNewPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {

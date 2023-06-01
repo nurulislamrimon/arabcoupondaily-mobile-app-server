@@ -23,10 +23,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostService = exports.getAllPosts = exports.getAllActivePosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByPostTitleService = void 0;
+exports.deleteAPostService = exports.getAllPosts = exports.getAllActivePosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
 const add_filters_operator_1 = require("../../utils/add_filters_operator");
 const post_model_1 = __importDefault(require("./post.model"));
 const user_model_1 = __importDefault(require("../user.module/user.model"));
+//== get Post by name
+const searchGloballyOnPostService = (key) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield post_model_1.default.find({
+        $or: [
+            { postTitle: { $regex: key, $options: "i" } },
+            { storeName: { $regex: key, $options: "i" } },
+            { postType: { $regex: key, $options: "i" } },
+            { country: { $regex: key, $options: "i" } },
+        ],
+    }, {
+        postBy: 0,
+        updateBy: 0,
+    });
+    return result;
+});
+exports.searchGloballyOnPostService = searchGloballyOnPostService;
 //== get Post by name
 const getPostByPostTitleService = (postTitle) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield post_model_1.default.findOne({ postTitle: postTitle });

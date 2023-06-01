@@ -4,6 +4,25 @@ import { getUserByEmailService } from "../user.module/user.services";
 import { Types } from "mongoose";
 
 // add new Post controller
+export const searchGloballyOnPostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const key = req.params.key;
+
+    const result = await PostServices.searchGloballyOnPostService(key);
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`Post ${result.length} is responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+// add new Post controller
 export const addNewPostController = async (
   req: Request,
   res: Response,

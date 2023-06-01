@@ -4,6 +4,24 @@ import Post from "./post.model";
 import User from "../user.module/user.model";
 
 //== get Post by name
+export const searchGloballyOnPostService = async (key: string) => {
+  const result = await Post.find(
+    {
+      $or: [
+        { postTitle: { $regex: key, $options: "i" } },
+        { storeName: { $regex: key, $options: "i" } },
+        { postType: { $regex: key, $options: "i" } },
+        { country: { $regex: key, $options: "i" } },
+      ],
+    },
+    {
+      postBy: 0,
+      updateBy: 0,
+    }
+  );
+  return result;
+};
+//== get Post by name
 export const getPostByPostTitleService = async (postTitle: string) => {
   const result = await Post.findOne({ postTitle: postTitle });
   return result;
