@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "ACD Mobile",
-    "dateExported": "2023-06-01T16:44:18.950Z",
+    "dateExported": "2023-06-01T17:08:03.406Z",
     "version": "1.1",
     "folders": [
         {
@@ -56,6 +56,25 @@
             "body": {
                 "type": "json",
                 "raw": "{\n  \"name\":\"Nurul Islam Rimon\",\n  \"email\":\"ni@gmail.com\",\n  \"country\":\"Bangladesh\",\n  \"password\":\"a1\",\n  \"retypePassword\":\"a1\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c27924f4-f0a1-4b2a-8222-13eb03b08ee3",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "search globally",
+            "url": "{{acd}}/api/v1/post/search/emi",
+            "method": "GET",
+            "sortNum": 5000,
+            "created": "2023-06-01T16:55:27.583Z",
+            "modified": "2023-06-01T17:03:11.935Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"Noon Food\",\n  \"country\":[\"Saudi Arabia\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
                 "form": []
             },
             "tests": []
