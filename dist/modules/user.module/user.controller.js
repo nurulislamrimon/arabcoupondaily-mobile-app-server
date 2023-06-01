@@ -32,9 +32,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
+exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
 const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
+const mongoose_1 = require("mongoose");
 // signup controller
 const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -167,3 +168,124 @@ const getAllUserController = (req, res, next) => __awaiter(void 0, void 0, void 
     }
 });
 exports.getAllUserController = getAllUserController;
+// get all user
+const getNotificationController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield userServices.getNotificationService(req.body.decoded.email);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`${result} user responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getNotificationController = getNotificationController;
+// set post status to readed
+const setNotificationReadedController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const postId = new mongoose_1.Types.ObjectId(req.params.id);
+        const result = yield userServices.setNotificationReadedService(req.body.decoded.email, postId);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`notification ${postId} is readed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.setNotificationReadedController = setNotificationReadedController;
+// get all admin and managers
+const getAllAdminAndManagerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield userServices.getAllAdminAndManagerService(req.query);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`notification ${result.length} is readed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAllAdminAndManagerController = getAllAdminAndManagerController;
+// add an admin
+const addNewAdminController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = new mongoose_1.Types.ObjectId(req.params.id);
+        const user = (yield userServices.getUserByIdService(id));
+        if (!user) {
+            throw new Error("User not found!");
+        }
+        else if (user.role === "admin") {
+            throw new Error("User already admin!");
+        }
+        else {
+            const result = yield userServices.addNewAdminService(id);
+            res.send({
+                status: "success",
+                data: result,
+            });
+            console.log(`notification ${result} is readed!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.addNewAdminController = addNewAdminController;
+// remove an admin
+const removeAnAdminController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = new mongoose_1.Types.ObjectId(req.params.id);
+        const user = (yield userServices.getUserByIdService(id));
+        if (!user) {
+            throw new Error("User not found!");
+        }
+        else if (user.role !== "admin" && user.role !== "manager") {
+            throw new Error("User is not a manager or admin!");
+        }
+        else {
+            const result = yield userServices.removeAnAdminService(id);
+            res.send({
+                status: "success",
+                data: result,
+            });
+            console.log(`notification ${result} is readed!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.removeAnAdminController = removeAnAdminController;
+// add a manager
+const addNewManagerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = new mongoose_1.Types.ObjectId(req.params.id);
+        const user = (yield userServices.getUserByIdService(id));
+        if (!user) {
+            throw new Error("User not found!");
+        }
+        else if (user.role === "manager") {
+            throw new Error("User already manager!");
+        }
+        else {
+            const result = yield userServices.addNewManagerService(id);
+            res.send({
+                status: "success",
+                data: result,
+            });
+            console.log(`notification ${result} is readed!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.addNewManagerController = addNewManagerController;

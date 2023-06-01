@@ -1,0 +1,641 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "ACD Mobile",
+    "dateExported": "2023-06-01T16:44:18.950Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "User",
+            "containerId": "",
+            "created": "2023-05-27T10:37:47.925Z",
+            "sortNum": 10000
+        },
+        {
+            "_id": "45422026-d5da-4bba-b2a6-3b3c0905b95a",
+            "name": "Store",
+            "containerId": "",
+            "created": "2023-05-27T10:39:01.409Z",
+            "sortNum": 20000
+        },
+        {
+            "_id": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "Post",
+            "containerId": "",
+            "created": "2023-05-29T15:29:55.813Z",
+            "sortNum": 30000
+        },
+        {
+            "_id": "646d3ba9-6f4a-4842-918e-bfcc685a30da",
+            "name": "Notification",
+            "containerId": "",
+            "created": "2023-05-30T11:35:10.581Z",
+            "sortNum": 40000
+        },
+        {
+            "_id": "2234a0f0-017c-4127-a9e0-c8cd84bc095c",
+            "name": "Carousel",
+            "containerId": "",
+            "created": "2023-06-01T14:35:31.608Z",
+            "sortNum": 50000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "9cac8f1a-14bf-446b-bd6d-190846f68d87",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "home",
+            "url": "{{acd}}/",
+            "method": "GET",
+            "sortNum": 5000,
+            "created": "2023-05-26T03:34:09.024Z",
+            "modified": "2023-05-27T10:38:42.693Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"Nurul Islam Rimon\",\n  \"email\":\"ni@gmail.com\",\n  \"country\":\"Bangladesh\",\n  \"password\":\"a1\",\n  \"retypePassword\":\"a1\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "2e4e0eeb-79e2-419f-b8cc-27ab4136016a",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "signup",
+            "url": "{{acd}}/api/v1/user/signup",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-05-25T18:54:46.653Z",
+            "modified": "2023-05-31T17:55:18.208Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"Nurul Islam Rimon\",\n  \"email\":\"ak@gmail.com\",\n  \"country\":\"Bangladesh\",\n  \"provider\":{\n    \"name\":\"google\"\n  }\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "747fb126-bc36-4acb-9fc2-3f0560084c69",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "45422026-d5da-4bba-b2a6-3b3c0905b95a",
+            "name": "add new store",
+            "url": "{{acd}}/api/v1/store/add",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-05-27T10:49:53.346Z",
+            "modified": "2023-05-29T11:40:55.435Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"test 1\",\n  \"country\":[\"Saudi Arabia\",\"United Arab Emirates\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1MzYwMTEwLCJleHAiOjE2ODU0NDY1MTB9.pwIcl2VV93o81zMSqKxditwd3Gx3b7uIzagMbdMgGzQ"
+            },
+            "tests": []
+        },
+        {
+            "_id": "0416acd6-cb8b-438b-be89-b791c233ea15",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "add new post",
+            "url": "{{acd}}/api/v1/post/add",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-05-29T15:29:55.813Z",
+            "modified": "2023-06-01T10:25:55.413Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"postTitle\":\"Another new KSA $ UAE\",\n  \"storeName\":\"Lulu\",\n  \"country\":[\"Saudi Arabia\",\"United Arab Emirates\"],\n  \"expireDate\":\"05/07/2023\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NTU1MDg0LCJleHAiOjE2ODU2NDE0ODR9.1GV0llu4TD2NXr-1l95QdPip4gzCoE2jumf_Lucb6XY"
+            },
+            "tests": []
+        },
+        {
+            "_id": "07501ab3-ec9d-4f18-89bd-cd0b881210ea",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "2234a0f0-017c-4127-a9e0-c8cd84bc095c",
+            "name": "add carousel",
+            "url": "{{acd}}/api/v1/carousel/add",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-06-01T14:35:15.043Z",
+            "modified": "2023-06-01T16:43:27.840Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \"carousel\":[\n   {\n   \"photoURL\":\"https:myphoto1.com\"\n },\n   {\n   \"photoURL\":\"https:myphoto2.com\",\n   \"couponCode\":\"AD36\"\n },\n   {\n   \"photoURL\":\"https:myphoto3.com\",\n   \"couponCode\":\"AD40\"\n }\n ]\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        },
+        {
+            "_id": "7179ccd9-6753-4b3e-8d9e-e1942d9fccd4",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "45422026-d5da-4bba-b2a6-3b3c0905b95a",
+            "name": "get all stores admin",
+            "url": "{{acd}}/api/v1/store/all",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-05-27T13:23:25.504Z",
+            "modified": "2023-05-30T10:45:25.578Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"Noon Food\",\n  \"country\":[\"Saudi Arabia\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1Mzc5MDUzLCJleHAiOjE2ODU0NjU0NTN9.3gIDJHTXDL1fT0Z7UfFLHS4DTx6D46J8vwrU67fpGPw"
+            },
+            "tests": []
+        },
+        {
+            "_id": "65910f4c-584b-42f3-9bb7-ee2bc9a58f7c",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "get all posts admin",
+            "url": "{{acd}}/api/v1/post/?sort=-revealed",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-05-29T15:29:55.814Z",
+            "modified": "2023-05-30T10:03:10.046Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "sort",
+                    "value": "-revealed",
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"Noon Food\",\n  \"country\":[\"Saudi Arabia\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "c1920886-b635-4a68-af12-df97dd2d8d42",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "646d3ba9-6f4a-4842-918e-bfcc685a30da",
+            "name": "notification",
+            "url": "{{acd}}/api/v1/user/notification",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-05-30T11:35:10.582Z",
+            "modified": "2023-06-01T10:10:11.950Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"Noon Food\",\n  \"country\":[\"Saudi Arabia\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        },
+        {
+            "_id": "3ab55b62-82df-49de-b5c2-721c6387e002",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "2234a0f0-017c-4127-a9e0-c8cd84bc095c",
+            "name": "get carousel ",
+            "url": "{{acd}}/api/v1/carousel",
+            "method": "GET",
+            "sortNum": 20000,
+            "created": "2023-06-01T16:32:03.215Z",
+            "modified": "2023-06-01T16:33:38.113Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n \"carousel\":[\n   {\n   \"photoURL\":\"https:myphoto1.com\"\n },\n   {\n   \"photoURL\":\"https:myphoto2.com\",\n   \"couponCode\":\"AD36\"\n }\n ]\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        },
+        {
+            "_id": "9d5a8c79-6221-4e7f-a89a-d9f88ba3957e",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "45422026-d5da-4bba-b2a6-3b3c0905b95a",
+            "name": "get all post client",
+            "url": "{{acd}}/api/v1/store/",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2023-05-30T06:38:34.544Z",
+            "modified": "2023-05-30T09:06:15.822Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"Noon Food\",\n  \"country\":[\"Saudi Arabia\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "433bc09d-919e-4cb6-a406-15aca6bbc0a9",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "get all posts client",
+            "url": "{{acd}}/api/v1/post/all?sort=-revealed",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2023-05-30T10:02:05.965Z",
+            "modified": "2023-05-30T10:02:48.740Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "sort",
+                    "value": "-revealed",
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"Noon Food\",\n  \"country\":[\"Saudi Arabia\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1Mzc5MDUzLCJleHAiOjE2ODU0NjU0NTN9.3gIDJHTXDL1fT0Z7UfFLHS4DTx6D46J8vwrU67fpGPw"
+            },
+            "tests": []
+        },
+        {
+            "_id": "b799f30b-7cd7-43a3-bb86-e45349b2dc94",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "login",
+            "url": "{{acd}}/api/v1/user/login",
+            "method": "POST",
+            "sortNum": 30000,
+            "created": "2023-05-26T04:30:11.919Z",
+            "modified": "2023-06-01T10:09:59.464Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"name\":\"Nurul Islam Rimon\",\n  \"email\":\"nirimon@gmail.com\",\n  \"country\":\"Bangladesh\",\n  \"password\":\"Nurul@123\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "d180fbee-b8c3-4a2f-bca5-59c92337e712",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "45422026-d5da-4bba-b2a6-3b3c0905b95a",
+            "name": "update a store",
+            "url": "{{acd}}/api/v1/store/6472fcd8ca9efa5571c3a5fb",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2023-05-28T09:25:03.165Z",
+            "modified": "2023-05-28T12:51:51.965Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"storeName\":\"Noooon Food\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1MjU1MzIxLCJleHAiOjE2ODUzNDE3MjF9.KFL--dnCEwexQp7ioVxfYBi_akB4jnnIpKI9A6MtVRs"
+            },
+            "tests": []
+        },
+        {
+            "_id": "36bddc39-3a81-4743-b710-a6397f1be713",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "update a post",
+            "url": "{{acd}}/api/v1/post/6474d29ad48d9031937af9dc",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2023-05-29T15:29:55.815Z",
+            "modified": "2023-05-30T06:29:51.539Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"postTitle\":\"Noooon Food coupon code\",\n  \"isVerified\":true\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1NDI3MzUyLCJleHAiOjE2ODU1MTM3NTJ9.xRfThvw-HXZJN2A54X-0td5CnLBG7kPVY3-AgUkKOSE"
+            },
+            "tests": []
+        },
+        {
+            "_id": "f8d7e8e5-19c7-49b2-98a8-229127991123",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "646d3ba9-6f4a-4842-918e-bfcc685a30da",
+            "name": "update a post",
+            "url": "{{acd}}/api/v1/user/notification/readed/64787233c6db631a4268b74b",
+            "method": "PUT",
+            "sortNum": 30000,
+            "created": "2023-05-30T11:35:10.584Z",
+            "modified": "2023-06-01T12:37:56.827Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"postTitle\":\"Noooon Food coupon code\",\n  \"isVerified\":true\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        },
+        {
+            "_id": "0546d73d-5695-46a4-b2e7-cbdb484c9c6e",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "45422026-d5da-4bba-b2a6-3b3c0905b95a",
+            "name": "update a store Copy",
+            "url": "{{acd}}/api/v1/store/6472fcd8ca9efa5571c3a5fb",
+            "method": "PUT",
+            "sortNum": 35000,
+            "created": "2023-05-30T09:30:35.246Z",
+            "modified": "2023-05-30T09:30:35.246Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"storeName\":\"Noooon Food\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1MjU1MzIxLCJleHAiOjE2ODUzNDE3MjF9.KFL--dnCEwexQp7ioVxfYBi_akB4jnnIpKI9A6MtVRs"
+            },
+            "tests": []
+        },
+        {
+            "_id": "1456d428-bb1d-4157-b310-a8e30ae50e6e",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "revealed post",
+            "url": "{{acd}}/api/v1/post/revealed/6474d8402f4a47a40d4932b4",
+            "method": "PUT",
+            "sortNum": 35000,
+            "created": "2023-05-30T09:31:22.950Z",
+            "modified": "2023-05-30T09:36:38.422Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"postTitle\":\"Noooon Food coupon code\",\n  \"isVerified\":true\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1NDI3MzUyLCJleHAiOjE2ODU1MTM3NTJ9.xRfThvw-HXZJN2A54X-0td5CnLBG7kPVY3-AgUkKOSE"
+            },
+            "tests": []
+        },
+        {
+            "_id": "24d8043a-d337-4cf4-b779-828dd30a86e5",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "verify user",
+            "url": "{{acd}}/api/v1/user/verify",
+            "method": "PUT",
+            "sortNum": 40000,
+            "created": "2023-05-26T05:35:55.150Z",
+            "modified": "2023-05-27T10:38:46.221Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pemFtQGdtYWlsLmNvbSIsImlhdCI6MTY4NTE4MTEyMywiZXhwIjoxNjg1MjY3NTIzfQ.cZxlEkIA3UHywPhwbAFdt8CwGUq1fsz0NHNZUf6I2RE"
+            },
+            "tests": []
+        },
+        {
+            "_id": "d961ec1b-0997-4f39-865b-261f00d03b84",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "45422026-d5da-4bba-b2a6-3b3c0905b95a",
+            "name": "delete a store",
+            "url": "{{acd}}/api/v1/store/64748f47d967c7329fd2b312",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2023-05-29T07:40:04.711Z",
+            "modified": "2023-05-29T11:44:43.438Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"storeName\":\"Noooon Food\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1MzYwMTEwLCJleHAiOjE2ODU0NDY1MTB9.pwIcl2VV93o81zMSqKxditwd3Gx3b7uIzagMbdMgGzQ"
+            },
+            "tests": []
+        },
+        {
+            "_id": "0021abc3-87a7-42f2-bcb9-a3be80b9f701",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "1a7e9a6b-6055-4bdf-b596-8297223b38b3",
+            "name": "delete a post",
+            "url": "{{acd}}/api/v1/post/6474d8392f4a47a40d4932af",
+            "method": "DELETE",
+            "sortNum": 40000,
+            "created": "2023-05-29T15:29:55.816Z",
+            "modified": "2023-05-30T06:35:35.081Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"storeName\":\"Noooon Food\"\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1NDI3MzUyLCJleHAiOjE2ODU1MTM3NTJ9.xRfThvw-HXZJN2A54X-0td5CnLBG7kPVY3-AgUkKOSE"
+            },
+            "tests": []
+        },
+        {
+            "_id": "0a175ea8-3fc7-4077-863e-d884d6d2fa3a",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "about me",
+            "url": "{{acd}}/api/v1/user/me",
+            "method": "GET",
+            "sortNum": 50000,
+            "created": "2023-05-27T10:41:13.386Z",
+            "modified": "2023-05-27T10:44:58.460Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pemFtQGdtYWlsLmNvbSIsImlhdCI6MTY4NTE4MTEyMywiZXhwIjoxNjg1MjY3NTIzfQ.cZxlEkIA3UHywPhwbAFdt8CwGUq1fsz0NHNZUf6I2RE"
+            },
+            "tests": []
+        },
+        {
+            "_id": "20f33aa0-4729-41ee-bbd4-33de1a17cc30",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "get all users",
+            "url": "{{acd}}/api/v1/user",
+            "method": "GET",
+            "sortNum": 60000,
+            "created": "2023-05-30T10:42:56.468Z",
+            "modified": "2023-05-30T10:43:28.155Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmlAZ21haWwuY29tIiwiaWF0IjoxNjg1Mzc5MDUzLCJleHAiOjE2ODU0NjU0NTN9.3gIDJHTXDL1fT0Z7UfFLHS4DTx6D46J8vwrU67fpGPw"
+            },
+            "tests": []
+        },
+        {
+            "_id": "143cf391-6054-4ca3-9c9b-c426e227d2a9",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "get all admin and managers",
+            "url": "{{acd}}/api/v1/user/admin?email=ak",
+            "method": "GET",
+            "sortNum": 70000,
+            "created": "2023-06-01T12:16:15.480Z",
+            "modified": "2023-06-01T12:46:23.309Z",
+            "headers": [],
+            "params": [
+                {
+                    "name": "email",
+                    "value": "ak",
+                    "isPath": false
+                }
+            ],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        },
+        {
+            "_id": "2523350f-5960-4772-bd1e-63b1b21ead56",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "add new admin",
+            "url": "{{acd}}/api/v1/user/admin/add/64778a0639272f472a39f9e3",
+            "method": "PUT",
+            "sortNum": 80000,
+            "created": "2023-06-01T13:16:27.740Z",
+            "modified": "2023-06-01T13:17:37.037Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        },
+        {
+            "_id": "85af0285-a534-4d80-a9ff-4bec67ca00d5",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "remove an admin",
+            "url": "{{acd}}/api/v1/user/admin/remove/64778a0639272f472a39f9e3",
+            "method": "PUT",
+            "sortNum": 90000,
+            "created": "2023-06-01T13:23:22.397Z",
+            "modified": "2023-06-01T13:46:47.135Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        },
+        {
+            "_id": "f1d822cf-5f1c-4650-83ec-c34c5050dccf",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "6b30903c-d7e3-46f5-a80e-8fd8cd5d82be",
+            "name": "add new manager",
+            "url": "{{acd}}/api/v1/user/manager/add/64778a0639272f472a39f9e3",
+            "method": "PUT",
+            "sortNum": 100000,
+            "created": "2023-06-01T13:56:28.744Z",
+            "modified": "2023-06-01T13:56:55.096Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+            },
+            "tests": []
+        }
+    ]
+}

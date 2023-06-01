@@ -1,17 +1,29 @@
 import { Types } from "mongoose";
 import User from "./user.model";
 import bcrypt from "bcrypt";
+import { addFiltersSymbolToOperators } from "../../utils/add_filters_operator";
 //== get all users
 export const getAllUserService = async (query: any) => {
-  const result = await User.find({});
+  const { limit, page, sort, ...filters } = query;
+  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+
+  const result = await User.find(filtersWithOperator, {
+    password: 0,
+    newPosts: 0,
+  })
+    .sort(sort)
+    .limit(limit)
+    .skip(limit * page);
   return result;
 };
 //== get user by email address without password
 export const getUserByEmailService = async (email: string) => {
-  const result = await User.findOne(
-    { email: email },
-    { password: 0, readedPosts: 0 }
-  );
+  const result = await User.findOne({ email: email }, { password: 0 });
+  return result;
+};
+//== get user by id
+export const getUserByIdService = async (id: Types.ObjectId) => {
+  const result = await User.findOne({ _id: id }, { password: 0 });
   return result;
 };
 //== create new user
@@ -43,6 +55,91 @@ export const verifyAUserService = async (id: Types.ObjectId) => {
     {
       $set: {
         isVerified: true,
+      },
+    }
+  );
+  return result;
+};
+//== get notification based on user
+export const getNotificationService = async (email: string) => {
+  const result = await User.findOne({ email: email }, { password: 0 }).populate(
+    "newPosts.moreAboutPost"
+  );
+  return result;
+};
+//== get notification based on user
+export const setNotificationReadedService = async (
+  email: string,
+  postId: Types.ObjectId
+) => {
+  const result = await User.updateOne(
+    {
+      email: email,
+      "newPosts.moreAboutPost": postId,
+    },
+    {
+      $set: {
+        "newPosts.$.status": "readed",
+      },
+    }
+  ).populate("newPosts.moreAboutPost");
+  return result;
+};
+//== get notification based on user
+export const getAllAdminAndManagerService = async (query: any) => {
+  const { limit, page, sort, ...filters } = query;
+  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+
+  const result = await User.find(
+    {
+      $or: [{ role: "admin" }, { role: "manager" }],
+      ...filtersWithOperator,
+    },
+    {
+      password: 0,
+      newPosts: 0,
+    }
+  )
+    .sort(sort)
+    .limit(limit)
+    .skip(limit * page);
+  return result;
+};
+//== add new admin
+export const addNewAdminService = async (id: Types.ObjectId) => {
+  const result = await User.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        role: "admin",
+      },
+    }
+  );
+  return result;
+};
+//== remove an admin
+export const removeAnAdminService = async (id: Types.ObjectId) => {
+  const result = await User.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $unset: { role: 1 },
+    }
+  );
+  return result;
+};
+//== add new manager
+export const addNewManagerService = async (id: Types.ObjectId) => {
+  const result = await User.updateOne(
+    {
+      _id: id,
+    },
+    {
+      $set: {
+        role: "manager",
       },
     }
   );

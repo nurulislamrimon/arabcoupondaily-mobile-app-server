@@ -12,7 +12,10 @@ const addFiltersSymbolToOperators = (filters) => {
         filters.postTitle = { $regex: filters.postTitle, $options: "i" };
     }
     else if (filters.email) {
-        filters.postBy = { email: { $regex: filters.email, $options: "i" } };
+        filters.email = { $regex: filters.email, $options: "i" };
+    }
+    else if (filters.name) {
+        filters.name = { $regex: filters.name, $options: "i" };
     }
     let filtersString = JSON.stringify(filters);
     filtersString = filtersString.replace(/gt|gte|lt|lte/g, (match) => `$${match}`);

@@ -17,7 +17,16 @@ const userSchema = new Schema<IUser>(
         message: `{VALUE} is not a valid role!`,
       },
     },
-    readedPosts: [Types.ObjectId],
+    newPosts: [
+      {
+        moreAboutPost: { type: Types.ObjectId, ref: "Post" },
+        status: {
+          type: String,
+          enum: ["readed", "unreaded"],
+          default: "unreaded",
+        },
+      },
+    ],
     phoneNumber: String,
     password: String,
     confirmPassword: String,

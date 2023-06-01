@@ -15,11 +15,11 @@ const verify_authorization = (...roles) => {
     return (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
         try {
             const email = req.body.decoded.email;
-            const user = yield (0, user_services_1.getUserByEmailService)(email);
+            const user = (yield (0, user_services_1.getUserByEmailService)(email));
             if (!user) {
                 next("Unauthorized access!");
             }
-            else if (roles.includes(user.role)) {
+            else if (roles.includes(user === null || user === void 0 ? void 0 : user.role)) {
                 next();
             }
             else {

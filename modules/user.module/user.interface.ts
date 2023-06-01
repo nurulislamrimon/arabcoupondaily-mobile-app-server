@@ -4,8 +4,13 @@ export default interface IUser {
   email: string;
   country: string;
   isVerified: boolean;
-  role: string;
-  readedPosts: Types.ObjectId[];
+  role?: string;
+  newPosts: [
+    {
+      moreAboutPost: Types.ObjectId;
+      status: string;
+    }
+  ];
   phoneNumber?: string;
   password?: string;
   confirmPassword?: string;

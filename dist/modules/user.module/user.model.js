@@ -28,7 +28,16 @@ const userSchema = new mongoose_2.Schema({
             message: `{VALUE} is not a valid role!`,
         },
     },
-    readedPosts: [mongoose_1.Types.ObjectId],
+    newPosts: [
+        {
+            moreAboutPost: { type: mongoose_1.Types.ObjectId, ref: "Post" },
+            status: {
+                type: String,
+                enum: ["readed", "unreaded"],
+                default: "unreaded",
+            },
+        },
+    ],
     phoneNumber: String,
     password: String,
     confirmPassword: String,

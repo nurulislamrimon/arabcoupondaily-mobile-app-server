@@ -23,9 +23,10 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostService = exports.getAllPosts = exports.getAllActivePosts = exports.revealedAPostService = exports.updateAPostService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByPostTitleService = void 0;
+exports.deleteAPostService = exports.getAllPosts = exports.getAllActivePosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByPostTitleService = void 0;
 const add_filters_operator_1 = require("../../utils/add_filters_operator");
 const post_model_1 = __importDefault(require("./post.model"));
+const user_model_1 = __importDefault(require("../user.module/user.model"));
 //== get Post by name
 const getPostByPostTitleService = (postTitle) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield post_model_1.default.findOne({ postTitle: postTitle });
@@ -41,9 +42,16 @@ exports.getPostByIdService = getPostByIdService;
 //== create new Post
 const addNewPostService = (post) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield post_model_1.default.create(post);
+    yield (0, exports.setPostAsUnreadToUserService)(result._id);
     return result;
 });
 exports.addNewPostService = addNewPostService;
+//== add post as unread to all verified users
+const setPostAsUnreadToUserService = (postId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.updateMany({ isVerified: true }, { $push: { newPosts: { moreAboutPost: postId } } });
+    return result;
+});
+exports.setPostAsUnreadToUserService = setPostAsUnreadToUserService;
 //== update a Post
 const updateAPostService = (PostId, newData) => __awaiter(void 0, void 0, void 0, function* () {
     // add updator info

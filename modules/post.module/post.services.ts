@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
 import { addFiltersSymbolToOperators } from "../../utils/add_filters_operator";
 import Post from "./post.model";
+import User from "../user.module/user.model";
 
 //== get Post by name
 export const getPostByPostTitleService = async (postTitle: string) => {
@@ -16,6 +17,16 @@ export const getPostByIdService = async (id: Types.ObjectId) => {
 //== create new Post
 export const addNewPostService = async (post: object) => {
   const result = await Post.create(post);
+  await setPostAsUnreadToUserService(result._id);
+  return result;
+};
+
+//== add post as unread to all verified users
+export const setPostAsUnreadToUserService = async (postId: Types.ObjectId) => {
+  const result = await User.updateMany(
+    { isVerified: true },
+    { $push: { newPosts: { moreAboutPost: postId } } }
+  );
   return result;
 };
 
