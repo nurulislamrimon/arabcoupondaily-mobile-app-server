@@ -83,7 +83,7 @@ export const getAllActivePosts = async (query: any) => {
   const filtersWithOperator = addFiltersSymbolToOperators(filters);
 
   const filtersWithExpireDate = {
-    expireDate: { $lt: new Date() },
+    expireDate: { $gt: new Date() },
     ...filtersWithOperator,
   };
 

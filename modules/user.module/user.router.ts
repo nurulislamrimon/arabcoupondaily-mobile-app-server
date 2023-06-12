@@ -45,7 +45,7 @@ userRouter.post("/login", userController.loginUserController);
  *@apiError user not found!
  *@apiError user already verified!
  */
-userRouter.put("/verify", verify_token, userController.verifyAUserController);
+userRouter.put("/verify/:email", userController.verifyAUserController);
 /**
  *@api{get}/me about a user
  *@apiDescription get information about a user by itself

@@ -2,11 +2,22 @@ import { Schema, model } from "mongoose";
 import IPost from "./post.interface";
 import { Types } from "mongoose";
 import validator from "validator";
+import Store from "../store.module/store.model";
 
 const postSchema = new Schema<IPost>(
   {
     postTitle: { type: String, required: true },
-    storeName: { type: String, required: true },
+    storeName: {
+      type: String,
+      required: true,
+      validate: {
+        validator: async function (value: string) {
+          const count = await Store.countDocuments({ storeName: value });
+          return count > 0;
+        },
+        message: "Invalid store name",
+      },
+    },
     postType: { type: String, enum: ["coupon", "deal"], default: "coupon" },
     expireDate: { type: Date, validate: validator.isDate },
     country: [String],
