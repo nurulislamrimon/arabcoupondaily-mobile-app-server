@@ -144,7 +144,26 @@ export const getAllUserController = async (
     next(error);
   }
 };
-// get all user
+// get all notification counted
+export const getUnreadedNotificationCountController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await userServices.getUnreadedNotificationCountService(
+      req.body.decoded.email
+    );
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`${result} user responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+// get all notifications
 export const getNotificationController = async (
   req: Request,
   res: Response,
@@ -158,7 +177,7 @@ export const getNotificationController = async (
       status: "success",
       data: result,
     });
-    console.log(`${result} user responsed!`);
+    console.log(`${result?._id} user responsed!`);
   } catch (error) {
     next(error);
   }

@@ -18,7 +18,10 @@ export const getAllUserService = async (query: any) => {
 };
 //== get user by email address without password
 export const getUserByEmailService = async (email: string) => {
-  const result = await User.findOne({ email: email }, { password: 0 });
+  const result = await User.findOne(
+    { email: email },
+    { password: 0, newPosts: 0 }
+  );
   return result;
 };
 //== get user by id
@@ -60,14 +63,37 @@ export const verifyAUserService = async (id: Types.ObjectId) => {
   );
   return result;
 };
+
+// =====notification also====
+// calculate unreaded post
+export const getUnreadedNotificationCountService = async (email: string) => {
+  const result = await User.aggregate([
+    {
+      $match: { email: email },
+    },
+    {
+      $unwind: "$newPosts",
+    },
+    {
+      $match: { "newPosts.status": "unreaded" },
+    },
+    {
+      $count: "newPosts",
+    },
+  ]);
+
+  return result ? result[0] : result;
+};
 //== get notification based on user
 export const getNotificationService = async (email: string) => {
   const result = await User.findOne({ email: email }, { password: 0 }).populate(
-    "newPosts.moreAboutPost"
+    "newPosts.moreAboutPost",
+    { postBy: 0, updateBy: 0 }
   );
+  // .select("postBy");
   return result;
 };
-//== get notification based on user
+//== set notification based on user
 export const setNotificationReadedService = async (
   email: string,
   postId: Types.ObjectId
@@ -85,7 +111,9 @@ export const setNotificationReadedService = async (
   ).populate("newPosts.moreAboutPost");
   return result;
 };
-//== get notification based on user
+
+// =========admin================
+// get all admin and manager
 export const getAllAdminAndManagerService = async (query: any) => {
   const { limit, page, sort, ...filters } = query;
   const filtersWithOperator = addFiltersSymbolToOperators(filters);

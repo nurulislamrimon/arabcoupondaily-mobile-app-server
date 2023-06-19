@@ -7,7 +7,7 @@ const carouselSchema = new Schema<ICarousel>(
   {
     carousel: [
       {
-        photoURL: { type: String, required: true },
+        photoURL: { type: String, required: true, validate: validator.isURL },
         couponCode: String,
         externalLink: { type: String, validate: validator.isURL },
       },

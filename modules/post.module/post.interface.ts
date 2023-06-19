@@ -2,7 +2,10 @@ import { Types } from "mongoose";
 
 export default interface IPost {
   postTitle: string;
-  storeName: string;
+  store: {
+    storeName: string;
+    photoURL: string;
+  };
   postType: string;
   expireDate: Date;
   country: string[];
