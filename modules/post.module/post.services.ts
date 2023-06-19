@@ -87,7 +87,10 @@ export const getAllActivePosts = async (query: any) => {
     ...filtersWithOperator,
   };
 
-  const result = await Post.find(filtersWithExpireDate)
+  const result = await Post.find(filtersWithExpireDate, {
+    postBy: 0,
+    updateBy: 0,
+  })
     .sort(sort)
     .skip(page * limit)
     .limit(limit);
