@@ -88,7 +88,10 @@ const getAllActivePosts = (query) => __awaiter(void 0, void 0, void 0, function*
     const { limit, page, sort } = query, filters = __rest(query, ["limit", "page", "sort"]);
     const filtersWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(filters);
     const filtersWithExpireDate = Object.assign({ expireDate: { $gt: new Date() } }, filtersWithOperator);
-    const result = yield post_model_1.default.find(filtersWithExpireDate)
+    const result = yield post_model_1.default.find(filtersWithExpireDate, {
+        postBy: 0,
+        updateBy: 0,
+    })
         .sort(sort)
         .skip(page * limit)
         .limit(limit);

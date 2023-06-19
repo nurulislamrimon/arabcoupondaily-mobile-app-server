@@ -1,7 +1,7 @@
 {
     "client": "Thunder Client",
     "collectionName": "ACD Mobile",
-    "dateExported": "2023-06-12T11:11:22.931Z",
+    "dateExported": "2023-06-19T18:23:38.343Z",
     "version": "1.1",
     "folders": [
         {
@@ -130,7 +130,7 @@
             "method": "POST",
             "sortNum": 10000,
             "created": "2023-05-29T15:29:55.813Z",
-            "modified": "2023-06-12T11:10:09.562Z",
+            "modified": "2023-06-19T16:25:56.013Z",
             "headers": [],
             "params": [],
             "body": {
@@ -140,7 +140,7 @@
             },
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg2NTY1OTY2LCJleHAiOjE2ODY2NTIzNjZ9.AZqHhm11w6dGlIYkhdfG7Z-fKWj0zwR8MI5hYzBFWDE"
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg3MTkxMjU0LCJleHAiOjE2ODcyNzc2NTR9.6itiW8o2gUbtkRVOWnEZ4RsK7mq7chJ8VPDKtw1xW_U"
             },
             "tests": []
         },
@@ -218,7 +218,7 @@
             "method": "GET",
             "sortNum": 20000,
             "created": "2023-05-30T11:35:10.582Z",
-            "modified": "2023-06-01T10:10:11.950Z",
+            "modified": "2023-06-19T17:23:06.173Z",
             "headers": [],
             "params": [],
             "body": {
@@ -228,7 +228,7 @@
             },
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg1NjE0MTk5LCJleHAiOjE2ODU3MDA1OTl9.KPQ-fIkmi-e6Ve9Orvg8oPQr07WOKpSNbiznFJkSiq0"
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg3MTkxMjU0LCJleHAiOjE2ODcyNzc2NTR9.6itiW8o2gUbtkRVOWnEZ4RsK7mq7chJ8VPDKtw1xW_U"
             },
             "tests": []
         },
@@ -283,7 +283,7 @@
             "method": "GET",
             "sortNum": 25000,
             "created": "2023-05-30T10:02:05.965Z",
-            "modified": "2023-06-12T10:33:01.127Z",
+            "modified": "2023-06-19T18:08:02.750Z",
             "headers": [],
             "params": [],
             "body": {
@@ -293,7 +293,30 @@
             },
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg2NTY1OTY2LCJleHAiOjE2ODY2NTIzNjZ9.AZqHhm11w6dGlIYkhdfG7Z-fKWj0zwR8MI5hYzBFWDE"
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg3MTk2NDcwLCJleHAiOjE2ODcyODI4NzB9.huXb3Ww3dIzCd5dMe_50D7r54xMhgRzjsTr7NZrDnTU"
+            },
+            "tests": []
+        },
+        {
+            "_id": "adc8a732-8d31-4d7a-968b-af9d38396ad2",
+            "colId": "5c3e43d0-fbdf-428b-bc80-1e19522682f9",
+            "containerId": "646d3ba9-6f4a-4842-918e-bfcc685a30da",
+            "name": "notification all",
+            "url": "{{acd}}/api/v1/user/notification/all",
+            "method": "GET",
+            "sortNum": 25000,
+            "created": "2023-06-19T17:22:27.563Z",
+            "modified": "2023-06-19T17:45:32.874Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"photoURL\":\"https://test.com\",\n  \"storeName\":\"Noon Food\",\n  \"country\":[\"Saudi Arabia\"],\n  \"storeExternalLink\":\"https://test.com\",\n  \"howToUse\":[\n    {\"title\":\"Main Title\",\n      \"photoURL\":\"https://test.com\",\n      \"description\":\"just testing man!\"\n    },\n    {\"title\":\"Sub Title\",\n      \"photoURL\":\"https://test.com\"\n    }\n    ]\n}",
+                "form": []
+            },
+            "auth": {
+                "type": "bearer",
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg3MTk2NDcwLCJleHAiOjE2ODcyODI4NzB9.huXb3Ww3dIzCd5dMe_50D7r54xMhgRzjsTr7NZrDnTU"
             },
             "tests": []
         },
@@ -509,7 +532,7 @@
             "method": "GET",
             "sortNum": 50000,
             "created": "2023-05-27T10:41:13.386Z",
-            "modified": "2023-05-27T10:44:58.460Z",
+            "modified": "2023-06-19T17:45:16.224Z",
             "headers": [],
             "params": [],
             "body": {
@@ -519,7 +542,7 @@
             },
             "auth": {
                 "type": "bearer",
-                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pemFtQGdtYWlsLmNvbSIsImlhdCI6MTY4NTE4MTEyMywiZXhwIjoxNjg1MjY3NTIzfQ.cZxlEkIA3UHywPhwbAFdt8CwGUq1fsz0NHNZUf6I2RE"
+                "bearer": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Im5pcmltb25AZ21haWwuY29tIiwiaWF0IjoxNjg3MTk2NDcwLCJleHAiOjE2ODcyODI4NzB9.huXb3Ww3dIzCd5dMe_50D7r54xMhgRzjsTr7NZrDnTU"
             },
             "tests": []
         },

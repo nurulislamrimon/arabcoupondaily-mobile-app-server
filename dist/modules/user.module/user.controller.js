@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
+exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
 const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
 const mongoose_1 = require("mongoose");
@@ -168,7 +168,22 @@ const getAllUserController = (req, res, next) => __awaiter(void 0, void 0, void 
     }
 });
 exports.getAllUserController = getAllUserController;
-// get all user
+// get all notification counted
+const getUnreadedNotificationCountController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield userServices.getUnreadedNotificationCountService(req.body.decoded.email);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`${result} user responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getUnreadedNotificationCountController = getUnreadedNotificationCountController;
+// get all notifications
 const getNotificationController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const result = yield userServices.getNotificationService(req.body.decoded.email);
@@ -176,7 +191,7 @@ const getNotificationController = (req, res, next) => __awaiter(void 0, void 0, 
             status: "success",
             data: result,
         });
-        console.log(`${result} user responsed!`);
+        console.log(`${result === null || result === void 0 ? void 0 : result._id} user responsed!`);
     }
     catch (error) {
         next(error);

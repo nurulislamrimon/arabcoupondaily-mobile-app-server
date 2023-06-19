@@ -96,6 +96,18 @@ userRouter.get("/me", verify_token_1.verify_token, userController.getAboutMeUser
 userRouter.get("/", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), userController.getAllUserController);
 /**
  *@api{get}/notification get notification
+ *@apiDescription get all new posts counted
+ *@apiPermission user
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery {filters}
+ *@apiSuccess {Array of Object} about all posts
+ *@apiError 401 & 403
+ */
+userRouter.get("/notification", verify_token_1.verify_token, userController.getUnreadedNotificationCountController);
+/**
+ *@api{get}/notification get notification
  *@apiDescription get all new posts with all information
  *@apiPermission user
  *@apiHeader access token with bearer
@@ -105,7 +117,7 @@ userRouter.get("/", verify_token_1.verify_token, (0, verify_authorization_1.veri
  *@apiSuccess {Array of Object} about all posts
  *@apiError 401 & 403
  */
-userRouter.get("/notification", verify_token_1.verify_token, userController.getNotificationController);
+userRouter.get("/notification/all", verify_token_1.verify_token, userController.getNotificationController);
 /**
  *@api{put}/notification/readed/:id update a post notification status
  *@apiDescription set notification post status to readed

@@ -9,7 +9,7 @@ const validator_1 = __importDefault(require("validator"));
 const carouselSchema = new mongoose_1.Schema({
     carousel: [
         {
-            photoURL: { type: String, required: true },
+            photoURL: { type: String, required: true, validate: validator_1.default.isURL },
             couponCode: String,
             externalLink: { type: String, validate: validator_1.default.isURL },
         },

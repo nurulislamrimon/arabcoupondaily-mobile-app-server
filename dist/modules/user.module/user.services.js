@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addNewUserService = exports.getUserByIdService = exports.getUserByEmailService = exports.getAllUserService = void 0;
+exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addNewUserService = exports.getUserByIdService = exports.getUserByEmailService = exports.getAllUserService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const add_filters_operator_1 = require("../../utils/add_filters_operator");
@@ -43,7 +43,7 @@ const getAllUserService = (query) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllUserService = getAllUserService;
 //== get user by email address without password
 const getUserByEmailService = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.findOne({ email: email }, { password: 0 });
+    const result = yield user_model_1.default.findOne({ email: email }, { password: 0, newPosts: 0 });
     return result;
 });
 exports.getUserByEmailService = getUserByEmailService;
@@ -85,13 +85,34 @@ const verifyAUserService = (id) => __awaiter(void 0, void 0, void 0, function* (
     return result;
 });
 exports.verifyAUserService = verifyAUserService;
+// =====notification also====
+// calculate unreaded post
+const getUnreadedNotificationCountService = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.aggregate([
+        {
+            $match: { email: email },
+        },
+        {
+            $unwind: "$newPosts",
+        },
+        {
+            $match: { "newPosts.status": "unreaded" },
+        },
+        {
+            $count: "newPosts",
+        },
+    ]);
+    return result ? result[0] : result;
+});
+exports.getUnreadedNotificationCountService = getUnreadedNotificationCountService;
 //== get notification based on user
 const getNotificationService = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.findOne({ email: email }, { password: 0 }).populate("newPosts.moreAboutPost");
+    const result = yield user_model_1.default.findOne({ email: email }, { password: 0 }).populate("newPosts.moreAboutPost", { postBy: 0, updateBy: 0 });
+    // .select("postBy");
     return result;
 });
 exports.getNotificationService = getNotificationService;
-//== get notification based on user
+//== set notification based on user
 const setNotificationReadedService = (email, postId) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.default.updateOne({
         email: email,
@@ -104,7 +125,8 @@ const setNotificationReadedService = (email, postId) => __awaiter(void 0, void 0
     return result;
 });
 exports.setNotificationReadedService = setNotificationReadedService;
-//== get notification based on user
+// =========admin================
+// get all admin and manager
 const getAllAdminAndManagerService = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, sort } = query, filters = __rest(query, ["limit", "page", "sort"]);
     const filtersWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(filters);
