@@ -38,13 +38,14 @@ export const addNewPostController = async (
 
       const result = await PostServices.addNewPostService({
         ...req.body,
+        store: { storeName: req.body.storeName },
         postBy: { ...postBy?.toObject(), moreAboutUser: postBy?._id },
       });
       res.send({
         status: "success",
         data: result,
       });
-      console.log(`Post ${result} is added!`);
+      console.log(`Post ${result._id} is added!`);
     }
   } catch (error) {
     next(error);

@@ -110,7 +110,7 @@ exports.loginUserController = loginUserController;
 // verify a user by user token
 const verifyAUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const email = req.body.decoded.email;
+        const email = req.params.email;
         const user = yield userServices.getUserByEmailService(email);
         if (!user) {
             throw new Error("User not found!");

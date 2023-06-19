@@ -7,16 +7,19 @@ import Store from "../store.module/store.model";
 const postSchema = new Schema<IPost>(
   {
     postTitle: { type: String, required: true },
-    storeName: {
-      type: String,
-      required: true,
-      validate: {
-        validator: async function (value: string) {
-          const count = await Store.countDocuments({ storeName: value });
-          return count > 0;
+    store: {
+      storeName: {
+        type: String,
+        required: true,
+        validate: {
+          validator: async function (value: string) {
+            const count = await Store.countDocuments({ storeName: value });
+            return count > 0;
+          },
+          message: "Invalid store name",
         },
-        message: "Invalid store name",
       },
+      photoURL: { type: String, validate: validator.isURL },
     },
     postType: { type: String, enum: ["coupon", "deal"], default: "coupon" },
     expireDate: { type: Date, validate: validator.isDate },
@@ -41,6 +44,11 @@ const postSchema = new Schema<IPost>(
   },
   { timestamps: true }
 );
+
+postSchema.pre("save", async function (next) {
+  const store = await Store.findOne({ storeName: this.store.storeName });
+  this.store.photoURL = store?.photoURL || "";
+});
 
 const Post = model<IPost>("Post", postSchema);
 export default Post;

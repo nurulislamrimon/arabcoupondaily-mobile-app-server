@@ -87,7 +87,7 @@ exports.revealedAPostService = revealedAPostService;
 const getAllActivePosts = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { limit, page, sort } = query, filters = __rest(query, ["limit", "page", "sort"]);
     const filtersWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(filters);
-    const filtersWithExpireDate = Object.assign({ expireDate: { $lt: new Date() } }, filtersWithOperator);
+    const filtersWithExpireDate = Object.assign({ expireDate: { $gt: new Date() } }, filtersWithOperator);
     const result = yield post_model_1.default.find(filtersWithExpireDate)
         .sort(sort)
         .skip(page * limit)

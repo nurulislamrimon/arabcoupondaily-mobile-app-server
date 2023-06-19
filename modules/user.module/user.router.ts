@@ -34,8 +34,8 @@ userRouter.post("/signup", userController.addNewUserController);
 userRouter.post("/login", userController.loginUserController);
 
 /**
- *@api{put}/verify verify a user
- *@apiDescription verify a user by user token
+ *@api{put}/verify/:email verify a user
+ *@apiDescription verify a user email
  *@apiPermission none
  *@apiHeader access token with bearer
  *@apiBody none
@@ -77,7 +77,7 @@ userRouter.get(
 );
 /**
  *@api{get}/notification get notification
- *@apiDescription get all new posts with all information
+ *@apiDescription get all new posts counted
  *@apiPermission user
  *@apiHeader access token with bearer
  *@apiBody none
@@ -88,6 +88,22 @@ userRouter.get(
  */
 userRouter.get(
   "/notification",
+  verify_token,
+  userController.getUnreadedNotificationCountController
+);
+/**
+ *@api{get}/notification get notification
+ *@apiDescription get all new posts with all information
+ *@apiPermission user
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery {filters}
+ *@apiSuccess {Array of Object} about all posts
+ *@apiError 401 & 403
+ */
+userRouter.get(
+  "/notification/all",
   verify_token,
   userController.getNotificationController
 );
