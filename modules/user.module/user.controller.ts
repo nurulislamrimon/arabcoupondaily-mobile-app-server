@@ -137,9 +137,9 @@ export const getAllUserController = async (
     const result = await userServices.getAllUserService(req.query);
     res.send({
       status: "success",
-      data: result,
+      ...result,
     });
-    console.log(`${result.length} user responsed!`);
+    console.log(`${result?.data?.length} user responsed!`);
   } catch (error) {
     next(error);
   }
@@ -213,9 +213,9 @@ export const getAllAdminAndManagerController = async (
     const result = await userServices.getAllAdminAndManagerService(req.query);
     res.send({
       status: "success",
-      data: result,
+      ...result,
     });
-    console.log(`notification ${result.length} is readed!`);
+    console.log(`notification ${result?.data?.length} is readed!`);
   } catch (error) {
     next(error);
   }

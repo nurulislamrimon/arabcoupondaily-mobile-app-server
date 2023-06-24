@@ -18,7 +18,7 @@ export const routeNotFound = (
   }
 };
 export const allErrorHandler = (
-  err: { message: string },
+  err: Error,
   req: Request,
   res: Response,
   next: NextFunction
@@ -30,7 +30,9 @@ export const allErrorHandler = (
       res.status(error_code_from_message(err.message)).send({
         status: "failed",
         message: err.message,
+        stack: process.env.NODE_ENV !== "development" ? "" : err?.stack,
       });
+
       console.log(colors.red(err.message));
     } else {
       res.send({

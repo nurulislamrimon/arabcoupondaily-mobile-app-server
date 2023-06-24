@@ -44,18 +44,29 @@ export const getAllStores = async (query: any) => {
 
   const result = await Store.find(filtersWithOperator)
     .sort(sort)
-    .skip(page * limit)
+    .skip((page - 1) * limit)
     .limit(limit);
-  return result;
+  const totalDocuments = await Store.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      totalDocuments,
+    },
+    data: result,
+  };
 };
 
 // get all active stores
 export const getAllActiveStores = async (query: any) => {
+  const { limit, page, sort, ...filters } = query;
+  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+
   const result = await Store.aggregate([
     {
       $lookup: {
         from: "posts",
-        foreignField: "storeName",
+        foreignField: "store.storeName",
         localField: "storeName",
         as: "existPosts",
       },
@@ -71,7 +82,15 @@ export const getAllActiveStores = async (query: any) => {
       },
     },
   ]);
-  return result;
+  const totalDocuments = await Store.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      totalDocuments,
+    },
+    data: result,
+  };
 };
 
 //== delete a Store

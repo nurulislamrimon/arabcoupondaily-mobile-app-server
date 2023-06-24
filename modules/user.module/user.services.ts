@@ -12,9 +12,17 @@ export const getAllUserService = async (query: any) => {
     newPosts: 0,
   })
     .sort(sort)
-    .limit(limit)
-    .skip(limit * page);
-  return result;
+    .skip((page - 1) * limit)
+    .limit(limit);
+  const totalDocuments = await User.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      totalDocuments,
+    },
+    data: result,
+  };
 };
 //== get user by email address without password
 export const getUserByEmailService = async (email: string) => {
@@ -129,9 +137,17 @@ export const getAllAdminAndManagerService = async (query: any) => {
     }
   )
     .sort(sort)
-    .limit(limit)
-    .skip(limit * page);
-  return result;
+    .skip((page - 1) * limit)
+    .limit(limit);
+  const totalDocuments = await User.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      totalDocuments,
+    },
+    data: result,
+  };
 };
 //== add new admin
 export const addNewAdminService = async (id: Types.ObjectId) => {

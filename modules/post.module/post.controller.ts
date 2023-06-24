@@ -62,9 +62,9 @@ export const getAllPostsController = async (
     const result = await PostServices.getAllPosts(req.query);
     res.send({
       status: "success",
-      data: result,
+      ...result,
     });
-    console.log(`${result.length} Posts are responsed!`);
+    console.log(`${result?.data?.length} Posts are responsed!`);
   } catch (error) {
     next(error);
   }
@@ -80,9 +80,9 @@ export const getAllActivePostsController = async (
     const result = await PostServices.getAllActivePosts(req.query);
     res.send({
       status: "success",
-      data: result,
+      ...result,
     });
-    console.log(`${result.length} Posts are responsed!`);
+    console.log(`${result?.data?.length} Posts are responsed!`);
   } catch (error) {
     next(error);
   }

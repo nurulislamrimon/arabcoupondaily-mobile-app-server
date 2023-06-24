@@ -2,6 +2,7 @@ import { Types } from "mongoose";
 import { addFiltersSymbolToOperators } from "../../utils/add_filters_operator";
 import Post from "./post.model";
 import User from "../user.module/user.model";
+import { search_filter_and_queries } from "../../utils/search_filter_and_queries";
 
 //== get Post by name
 export const searchGloballyOnPostService = async (key: string) => {
@@ -80,21 +81,37 @@ export const revealedAPostService = async (PostId: Types.ObjectId) => {
 // get all active Posts
 export const getAllActivePosts = async (query: any) => {
   const { limit, page, sort, ...filters } = query;
-  const filtersWithOperator = addFiltersSymbolToOperators(filters);
 
-  const filtersWithExpireDate = {
+  const filter = search_filter_and_queries(
+    "post",
+    query,
+    "postTitle",
+    "storeName",
+    "createdAt"
+  ) as any;
+  // set expiredate to show only active post
+  const validityCheck = {
     expireDate: { $gt: new Date() },
-    ...filtersWithOperator,
   };
+  filter.$and.push(validityCheck);
 
-  const result = await Post.find(filtersWithExpireDate, {
+  const result = await Post.find(filter, {
     postBy: 0,
     updateBy: 0,
   })
     .sort(sort)
-    .skip(page * limit)
+    .skip((page - 1) * limit)
     .limit(limit);
-  return result;
+
+  const totalDocuments = await Post.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      totalDocuments,
+    },
+    data: result,
+  };
 };
 
 // get all Posts
@@ -104,9 +121,17 @@ export const getAllPosts = async (query: any) => {
 
   const result = await Post.find(filtersWithOperator)
     .sort(sort)
-    .skip(page * limit)
+    .skip((page - 1) * limit)
     .limit(limit);
-  return result;
+  const totalDocuments = await Post.countDocuments();
+  return {
+    meta: {
+      page,
+      limit,
+      totalDocuments,
+    },
+    data: result,
+  };
 };
 
 //== delete a Post

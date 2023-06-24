@@ -13,9 +13,9 @@ export const getAllActiveStoresController = async (
     const result = await storeServices.getAllActiveStores(req.query);
     res.send({
       status: "success",
-      data: result,
+      ...result,
     });
-    console.log(`${result.length} stores are responsed!`);
+    console.log(`${result?.data?.length} stores are responsed!`);
   } catch (error) {
     next(error);
   }
@@ -63,9 +63,9 @@ export const getAllStoresController = async (
     const result = await storeServices.getAllStores(req.query);
     res.send({
       status: "success",
-      data: result,
+      ...result,
     });
-    console.log(`${result.length} stores are responsed!`);
+    console.log(`${result?.data?.length} stores are responsed!`);
   } catch (error) {
     next(error);
   }
