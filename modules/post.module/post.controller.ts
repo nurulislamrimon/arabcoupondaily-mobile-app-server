@@ -15,7 +15,7 @@ export const searchGloballyOnPostController = async (
       status: "success",
       data: result,
     });
-    console.log(`Post ${result.length} is responsed!`);
+    console.log(`global search is responsed!`);
   } catch (error) {
     next(error);
   }

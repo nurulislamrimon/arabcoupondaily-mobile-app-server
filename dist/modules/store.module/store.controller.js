@@ -38,13 +38,11 @@ const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
 // get all active stores
 const getAllActiveStoresController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const result = yield storeServices.getAllActiveStores(req.query);
-        res.send({
-            status: "success",
-            data: result,
-        });
-        console.log(`${result.length} stores are responsed!`);
+        res.send(Object.assign({ status: "success" }, result));
+        console.log(`${(_a = result === null || result === void 0 ? void 0 : result.data) === null || _a === void 0 ? void 0 : _a.length} stores are responsed!`);
     }
     catch (error) {
         next(error);
@@ -79,13 +77,11 @@ const addNewStoreController = (req, res, next) => __awaiter(void 0, void 0, void
 exports.addNewStoreController = addNewStoreController;
 // get all stores
 const getAllStoresController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
     try {
         const result = yield storeServices.getAllStores(req.query);
-        res.send({
-            status: "success",
-            data: result,
-        });
-        console.log(`${result.length} stores are responsed!`);
+        res.send(Object.assign({ status: "success" }, result));
+        console.log(`${(_b = result === null || result === void 0 ? void 0 : result.data) === null || _b === void 0 ? void 0 : _b.length} stores are responsed!`);
     }
     catch (error) {
         next(error);

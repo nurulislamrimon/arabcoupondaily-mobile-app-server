@@ -28,6 +28,7 @@ const allErrorHandler = (err, req, res, next) => {
             res.status((0, error_codes_from_message_1.error_code_from_message)(err.message)).send({
                 status: "failed",
                 message: err.message,
+                stack: process.env.NODE_ENV !== "development" ? "" : err === null || err === void 0 ? void 0 : err.stack,
             });
             console.log(colors_1.default.red(err.message));
         }

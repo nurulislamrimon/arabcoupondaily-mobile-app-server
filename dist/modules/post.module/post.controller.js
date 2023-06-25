@@ -39,13 +39,12 @@ const mongoose_1 = require("mongoose");
 // add new Post controller
 const searchGloballyOnPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const key = req.params.key;
-        const result = yield PostServices.searchGloballyOnPostService(key);
+        const result = yield PostServices.searchGloballyOnPostService(req.query);
         res.send({
             status: "success",
             data: result,
         });
-        console.log(`Post ${result.length} is responsed!`);
+        console.log(`global search is responsed!`);
     }
     catch (error) {
         next(error);
@@ -76,13 +75,11 @@ const addNewPostController = (req, res, next) => __awaiter(void 0, void 0, void 
 exports.addNewPostController = addNewPostController;
 // get all Posts
 const getAllPostsController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     try {
         const result = yield PostServices.getAllPosts(req.query);
-        res.send({
-            status: "success",
-            data: result,
-        });
-        console.log(`${result.length} Posts are responsed!`);
+        res.send(Object.assign({ status: "success" }, result));
+        console.log(`${(_a = result === null || result === void 0 ? void 0 : result.data) === null || _a === void 0 ? void 0 : _a.length} Posts are responsed!`);
     }
     catch (error) {
         next(error);
@@ -91,13 +88,11 @@ const getAllPostsController = (req, res, next) => __awaiter(void 0, void 0, void
 exports.getAllPostsController = getAllPostsController;
 // get all active Posts
 const getAllActivePostsController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
     try {
         const result = yield PostServices.getAllActivePosts(req.query);
-        res.send({
-            status: "success",
-            data: result,
-        });
-        console.log(`${result.length} Posts are responsed!`);
+        res.send(Object.assign({ status: "success" }, result));
+        console.log(`${(_b = result === null || result === void 0 ? void 0 : result.data) === null || _b === void 0 ? void 0 : _b.length} Posts are responsed!`);
     }
     catch (error) {
         next(error);

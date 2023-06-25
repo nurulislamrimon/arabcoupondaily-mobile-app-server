@@ -8,17 +8,6 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __rest = (this && this.__rest) || function (s, e) {
-    var t = {};
-    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
-        t[p] = s[p];
-    if (s != null && typeof Object.getOwnPropertySymbols === "function")
-        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
-            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
-                t[p[i]] = s[p[i]];
-        }
-    return t;
-};
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
@@ -26,19 +15,27 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addNewUserService = exports.getUserByIdService = exports.getUserByEmailService = exports.getAllUserService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
-const add_filters_operator_1 = require("../../utils/add_filters_operator");
+const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
+const constants_1 = require("../../utils/constants");
 //== get all users
 const getAllUserService = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { limit, page, sort } = query, filters = __rest(query, ["limit", "page", "sort"]);
-    const filtersWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(filters);
-    const result = yield user_model_1.default.find(filtersWithOperator, {
+    const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("user", query, ...constants_1.user_query_fields);
+    const result = yield user_model_1.default.find(filters, {
         password: 0,
         newPosts: 0,
     })
-        .sort(sort)
-        .limit(limit)
-        .skip(limit * page);
-    return result;
+        .sort({ [sortBy]: sortOrder })
+        .skip(skip)
+        .limit(limit);
+    const totalDocuments = yield user_model_1.default.countDocuments(filters);
+    return {
+        meta: {
+            page,
+            limit,
+            totalDocuments,
+        },
+        data: result,
+    };
 });
 exports.getAllUserService = getAllUserService;
 //== get user by email address without password
@@ -128,16 +125,24 @@ exports.setNotificationReadedService = setNotificationReadedService;
 // =========admin================
 // get all admin and manager
 const getAllAdminAndManagerService = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { limit, page, sort } = query, filters = __rest(query, ["limit", "page", "sort"]);
-    const filtersWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(filters);
-    const result = yield user_model_1.default.find(Object.assign({ $or: [{ role: "admin" }, { role: "manager" }] }, filtersWithOperator), {
+    const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("user", query, ...constants_1.user_query_fields);
+    filters.$and.push({ $or: [{ role: "admin" }, { role: "manager" }] });
+    const result = yield user_model_1.default.find(filters, {
         password: 0,
         newPosts: 0,
     })
-        .sort(sort)
-        .limit(limit)
-        .skip(limit * page);
-    return result;
+        .sort({ [sortBy]: sortOrder })
+        .skip(skip)
+        .limit(limit);
+    const totalDocuments = yield user_model_1.default.countDocuments(filters);
+    return {
+        meta: {
+            page,
+            limit,
+            totalDocuments,
+        },
+        data: result,
+    };
 });
 exports.getAllAdminAndManagerService = getAllAdminAndManagerService;
 //== add new admin

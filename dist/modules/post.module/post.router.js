@@ -42,7 +42,7 @@ const postRouter = express_1.default.Router();
  *@apiSuccess {Array of Object} all Posts and others.
  *@apiError not found
  */
-postRouter.get("/search/:key", PostController.searchGloballyOnPostController);
+postRouter.get("/search", PostController.searchGloballyOnPostController);
 /**
  *@api{get}/ get all Post
  *@apiDescription get all Posts

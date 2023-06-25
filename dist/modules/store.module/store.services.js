@@ -24,8 +24,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteAStoreService = exports.getAllActiveStores = exports.getAllStores = exports.updateAStoreService = exports.addNewStoreService = exports.getStoreByIdService = exports.getStoreByStoreNameService = void 0;
-const add_filters_operator_1 = require("../../utils/add_filters_operator");
 const store_model_1 = __importDefault(require("./store.model"));
+const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
+const constants_1 = require("../../utils/constants");
 //== get Store by name
 const getStoreByStoreNameService = (storeName) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield store_model_1.default.findOne({ storeName: storeName });
@@ -55,22 +56,31 @@ const updateAStoreService = (storeId, newData) => __awaiter(void 0, void 0, void
 exports.updateAStoreService = updateAStoreService;
 // get all stores
 const getAllStores = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { limit, page, sort } = query, filters = __rest(query, ["limit", "page", "sort"]);
-    const filtersWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(filters);
-    const result = yield store_model_1.default.find(filtersWithOperator)
-        .sort(sort)
-        .skip(page * limit)
+    const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, ...constants_1.store_query_fields);
+    const result = yield store_model_1.default.find(filters)
+        .sort({ [sortBy]: sortOrder })
+        .skip(skip)
         .limit(limit);
-    return result;
+    const totalDocuments = yield store_model_1.default.countDocuments(filters);
+    return {
+        meta: {
+            page,
+            limit,
+            totalDocuments,
+        },
+        data: result,
+    };
 });
 exports.getAllStores = getAllStores;
 // get all active stores
 const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
+    const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, ...constants_1.store_query_fields);
     const result = yield store_model_1.default.aggregate([
         {
             $lookup: {
                 from: "posts",
-                foreignField: "storeName",
+                foreignField: "store.storeName",
                 localField: "storeName",
                 as: "existPosts",
             },
@@ -83,10 +93,47 @@ const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function
         {
             $project: {
                 existPosts: 0,
+                postBy: 0,
+                updateBy: 0,
             },
         },
+        {
+            $match: filters,
+        },
+        {
+            $sort: { [sortBy]: sortOrder },
+        },
+        {
+            $skip: skip,
+        },
+        { $limit: limit },
     ]);
-    return result;
+    const totalDocuments = yield store_model_1.default.aggregate([
+        {
+            $lookup: {
+                from: "posts",
+                foreignField: "store.storeName",
+                localField: "storeName",
+                as: "existPosts",
+            },
+        },
+        {
+            $match: {
+                existPosts: { $exists: true, $ne: [] },
+            },
+        },
+        { $count: "totalDocs" },
+    ]);
+    return {
+        meta: {
+            page,
+            limit,
+            totalDocuments: Object.keys(totalDocuments).length
+                ? (_a = totalDocuments[0]) === null || _a === void 0 ? void 0 : _a.totalDocs
+                : 0,
+        },
+        data: result,
+    };
 });
 exports.getAllActiveStores = getAllActiveStores;
 //== delete a Store

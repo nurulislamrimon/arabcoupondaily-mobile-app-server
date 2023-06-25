@@ -155,13 +155,11 @@ const getAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, v
 exports.getAboutMeUserController = getAboutMeUserController;
 // get all user
 const getAllUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _d;
     try {
         const result = yield userServices.getAllUserService(req.query);
-        res.send({
-            status: "success",
-            data: result,
-        });
-        console.log(`${result.length} user responsed!`);
+        res.send(Object.assign({ status: "success" }, result));
+        console.log(`${(_d = result === null || result === void 0 ? void 0 : result.data) === null || _d === void 0 ? void 0 : _d.length} user responsed!`);
     }
     catch (error) {
         next(error);
@@ -216,13 +214,11 @@ const setNotificationReadedController = (req, res, next) => __awaiter(void 0, vo
 exports.setNotificationReadedController = setNotificationReadedController;
 // get all admin and managers
 const getAllAdminAndManagerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var _e;
     try {
         const result = yield userServices.getAllAdminAndManagerService(req.query);
-        res.send({
-            status: "success",
-            data: result,
-        });
-        console.log(`notification ${result.length} is readed!`);
+        res.send(Object.assign({ status: "success" }, result));
+        console.log(`notification ${(_e = result === null || result === void 0 ? void 0 : result.data) === null || _e === void 0 ? void 0 : _e.length} is readed!`);
     }
     catch (error) {
         next(error);

@@ -40,7 +40,7 @@ const postSchema = new mongoose_1.Schema({
     isVerified: { type: Boolean, default: false },
     revealed: { type: Number, default: 0 },
     couponCode: String,
-    externalLink: String,
+    externalLink: { type: String, validate: validator_1.default.isURL },
     postDescription: String,
     postBy: {
         name: String,
@@ -55,6 +55,16 @@ const postSchema = new mongoose_1.Schema({
         },
     ],
 }, { timestamps: true });
+postSchema.pre("validate", function (next) {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (this.postType === "coupon" && !this.couponCode) {
+            throw new Error("Please provide a coupon code!");
+        }
+        else if (this.postType === "deal" && !this.externalLink) {
+            throw new Error("Please provide deal link!");
+        }
+    });
+});
 postSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         const store = yield store_model_1.default.findOne({ storeName: this.store.storeName });
