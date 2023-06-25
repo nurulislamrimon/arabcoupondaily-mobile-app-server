@@ -1,18 +1,19 @@
 import { Types } from "mongoose";
 import User from "./user.model";
 import bcrypt from "bcrypt";
-import { addFiltersSymbolToOperators } from "../../utils/add_filters_operator";
+import { search_filter_and_queries } from "../../utils/search_filter_and_queries";
+import { user_query_fields } from "../../utils/constants";
 //== get all users
 export const getAllUserService = async (query: any) => {
-  const { limit, page, sort, ...filters } = query;
-  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+  const { filters, skip, page, limit, sortBy, sortOrder } =
+    search_filter_and_queries("user", query, ...user_query_fields) as any;
 
-  const result = await User.find(filtersWithOperator, {
+  const result = await User.find(filters, {
     password: 0,
     newPosts: 0,
   })
-    .sort(sort)
-    .skip((page - 1) * limit)
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
     .limit(limit);
   const totalDocuments = await User.countDocuments();
   return {
@@ -123,23 +124,26 @@ export const setNotificationReadedService = async (
 // =========admin================
 // get all admin and manager
 export const getAllAdminAndManagerService = async (query: any) => {
-  const { limit, page, sort, ...filters } = query;
-  const filtersWithOperator = addFiltersSymbolToOperators(filters);
-
-  const result = await User.find(
-    {
-      $or: [{ role: "admin" }, { role: "manager" }],
-      ...filtersWithOperator,
-    },
-    {
-      password: 0,
-      newPosts: 0,
-    }
-  )
-    .sort(sort)
-    .skip((page - 1) * limit)
+  const { filters, skip, page, limit, sortBy, sortOrder } =
+    search_filter_and_queries(
+      "user",
+      query,
+      "postTitle",
+      "storeName",
+      "createdAt"
+    ) as any;
+  filters.$and.push({ $or: [{ role: "admin" }, { role: "manager" }] });
+  console.log(filters);
+  const result = await User.find(filters, {
+    password: 0,
+    newPosts: 0,
+  })
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
     .limit(limit);
-  const totalDocuments = await User.countDocuments();
+  const totalDocuments = await User.countDocuments({
+    $or: [{ role: "admin" }, { role: "manager" }],
+  });
   return {
     meta: {
       page,

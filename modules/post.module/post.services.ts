@@ -1,8 +1,8 @@
 import { Types } from "mongoose";
-import { addFiltersSymbolToOperators } from "../../utils/add_filters_operator";
 import Post from "./post.model";
 import User from "../user.module/user.model";
 import { search_filter_and_queries } from "../../utils/search_filter_and_queries";
+import { post_query_fields } from "../../utils/constants";
 
 //== get Post by name
 export const searchGloballyOnPostService = async (key: string) => {
@@ -81,18 +81,14 @@ export const revealedAPostService = async (PostId: Types.ObjectId) => {
 // get all active Posts
 export const getAllActivePosts = async (query: any) => {
   const { filters, skip, page, limit, sortBy, sortOrder } =
-    search_filter_and_queries(
-      "post",
-      query,
-      "postTitle",
-      "storeName",
-      "createdAt"
-    ) as any;
+    search_filter_and_queries("post", query, ...post_query_fields) as any;
+
   // set expiredate to show only active post
   const validityCheck = {
     expireDate: { $gt: new Date() },
   };
   filters.$and.push(validityCheck);
+  console.log(filters);
 
   const result = await Post.find(filters, {
     postBy: 0,
@@ -102,27 +98,28 @@ export const getAllActivePosts = async (query: any) => {
     .skip(skip)
     .limit(limit);
 
-  const totalDocuments = await Post.countDocuments();
+  const totalDocuments = await Post.countDocuments(filters);
   return {
     meta: {
       page,
       limit,
       totalDocuments,
     },
+    // data: filters,
     data: result,
   };
 };
 
 // get all Posts
 export const getAllPosts = async (query: any) => {
-  const { limit, page, sort, ...filters } = query;
-  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+  const { filters, skip, page, limit, sortBy, sortOrder } =
+    search_filter_and_queries("post", query, ...post_query_fields) as any;
 
-  const result = await Post.find(filtersWithOperator)
-    .sort(sort)
-    .skip((page - 1) * limit)
+  const result = await Post.find(filters)
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
     .limit(limit);
-  const totalDocuments = await Post.countDocuments();
+  const totalDocuments = await Post.countDocuments(filters);
   return {
     meta: {
       page,

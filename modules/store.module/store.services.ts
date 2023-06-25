@@ -1,6 +1,7 @@
 import { Types } from "mongoose";
-import { addFiltersSymbolToOperators } from "../../utils/add_filters_operator";
 import Store from "./store.model";
+import { search_filter_and_queries } from "../../utils/search_filter_and_queries";
+import { store_query_fields } from "../../utils/constants";
 
 //== get Store by name
 export const getStoreByStoreNameService = async (storeName: string) => {
@@ -39,12 +40,12 @@ export const updateAStoreService = async (
 
 // get all stores
 export const getAllStores = async (query: any) => {
-  const { limit, page, sort, ...filters } = query;
-  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+  const { filters, skip, page, limit, sortBy, sortOrder } =
+    search_filter_and_queries("store", query, ...store_query_fields) as any;
 
-  const result = await Store.find(filtersWithOperator)
-    .sort(sort)
-    .skip((page - 1) * limit)
+  const result = await Store.find(filters)
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
     .limit(limit);
   const totalDocuments = await Store.countDocuments();
   return {
@@ -59,8 +60,8 @@ export const getAllStores = async (query: any) => {
 
 // get all active stores
 export const getAllActiveStores = async (query: any) => {
-  const { limit, page, sort, ...filters } = query;
-  const filtersWithOperator = addFiltersSymbolToOperators(filters);
+  const { filters, skip, page, limit, sortBy, sortOrder } =
+    search_filter_and_queries("store", query, ...store_query_fields) as any;
 
   const result = await Store.aggregate([
     {
@@ -79,15 +80,45 @@ export const getAllActiveStores = async (query: any) => {
     {
       $project: {
         existPosts: 0,
+        postBy: 0,
+        updateBy: 0,
       },
     },
+    {
+      $match: filters,
+    },
+    {
+      $sort: { [sortBy]: sortOrder },
+    },
+    {
+      $skip: skip,
+    },
+    { $limit: limit },
   ]);
-  const totalDocuments = await Store.countDocuments();
+
+  const totalDocuments = await Store.aggregate([
+    {
+      $lookup: {
+        from: "posts",
+        foreignField: "store.storeName",
+        localField: "storeName",
+        as: "existPosts",
+      },
+    },
+    {
+      $match: {
+        existPosts: { $exists: true, $ne: [] },
+      },
+    },
+    { $count: "totalDocs" },
+  ]);
   return {
     meta: {
       page,
       limit,
-      totalDocuments,
+      totalDocuments: Object.keys(totalDocuments).length
+        ? totalDocuments[0]?.totalDocs
+        : 0,
     },
     data: result,
   };
