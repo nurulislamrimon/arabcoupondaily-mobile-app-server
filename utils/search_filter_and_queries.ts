@@ -48,5 +48,30 @@ export const search_filter_and_queries = (
       }),
     });
   }
-  return { $and: search_filter_and_queries };
+  // queries
+  const queryFields = ["sortBy", "sortOrder", "page", "limit"];
+
+  let { sortBy, sortOrder, page, limit } = pick(query, queryFields);
+  if (!sortBy) {
+    sortBy = "createdAt";
+  }
+  if (!sortOrder) {
+    sortOrder = 1;
+  }
+  if (!page) {
+    page = 1;
+  }
+  if (!limit) {
+    limit = 10;
+  }
+  const skip = (page - 1) * limit;
+
+  return {
+    filters: { $and: search_filter_and_queries },
+    limit,
+    page,
+    skip,
+    sortBy,
+    sortOrder,
+  };
 };

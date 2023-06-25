@@ -80,27 +80,26 @@ export const revealedAPostService = async (PostId: Types.ObjectId) => {
 
 // get all active Posts
 export const getAllActivePosts = async (query: any) => {
-  const { limit, page, sort, ...filters } = query;
-
-  const filter = search_filter_and_queries(
-    "post",
-    query,
-    "postTitle",
-    "storeName",
-    "createdAt"
-  ) as any;
+  const { filters, skip, page, limit, sortBy, sortOrder } =
+    search_filter_and_queries(
+      "post",
+      query,
+      "postTitle",
+      "storeName",
+      "createdAt"
+    ) as any;
   // set expiredate to show only active post
   const validityCheck = {
     expireDate: { $gt: new Date() },
   };
-  filter.$and.push(validityCheck);
+  filters.$and.push(validityCheck);
 
-  const result = await Post.find(filter, {
+  const result = await Post.find(filters, {
     postBy: 0,
     updateBy: 0,
   })
-    .sort(sort)
-    .skip((page - 1) * limit)
+    .sort({ [sortBy]: sortOrder })
+    .skip(skip)
     .limit(limit);
 
   const totalDocuments = await Post.countDocuments();
