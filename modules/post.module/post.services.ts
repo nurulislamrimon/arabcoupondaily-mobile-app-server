@@ -10,7 +10,7 @@ export const searchGloballyOnPostService = async (query: object) => {
   const { filters: storeFilters } = search_filter_and_queries(
     "store",
     query,
-    ...store_query_fields
+    "storeName"
   ) as any;
   const { filters: postFilters } = search_filter_and_queries(
     "post",
