@@ -18,6 +18,7 @@ export const user_query_fields = [
   "name",
   "email",
   "country",
+  "isVerified",
   "role",
   "createdAt",
 ];

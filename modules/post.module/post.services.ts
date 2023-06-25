@@ -2,25 +2,31 @@ import { Types } from "mongoose";
 import Post from "./post.model";
 import User from "../user.module/user.model";
 import { search_filter_and_queries } from "../../utils/search_filter_and_queries";
-import { post_query_fields } from "../../utils/constants";
+import { post_query_fields, store_query_fields } from "../../utils/constants";
+import Store from "../store.module/store.model";
 
 //== get Post by name
-export const searchGloballyOnPostService = async (key: string) => {
-  const result = await Post.find(
-    {
-      $or: [
-        { postTitle: { $regex: key, $options: "i" } },
-        { storeName: { $regex: key, $options: "i" } },
-        { postType: { $regex: key, $options: "i" } },
-        { country: { $regex: key, $options: "i" } },
-      ],
-    },
-    {
-      postBy: 0,
-      updateBy: 0,
-    }
-  );
-  return result;
+export const searchGloballyOnPostService = async (query: object) => {
+  const { filters: storeFilters } = search_filter_and_queries(
+    "store",
+    query,
+    ...store_query_fields
+  ) as any;
+  const { filters: postFilters } = search_filter_and_queries(
+    "post",
+    query,
+    ...post_query_fields
+  ) as any;
+
+  const stores = await Store.find(storeFilters, {
+    postBy: 0,
+    updateBy: 0,
+  });
+  const posts = await Post.find(postFilters, {
+    postBy: 0,
+    updateBy: 0,
+  });
+  return { stores, posts };
 };
 //== get Post by name
 export const getPostByPostTitleService = async (postTitle: string) => {

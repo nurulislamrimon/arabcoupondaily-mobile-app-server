@@ -47,7 +47,7 @@ export const getAllStores = async (query: any) => {
     .sort({ [sortBy]: sortOrder })
     .skip(skip)
     .limit(limit);
-  const totalDocuments = await Store.countDocuments();
+  const totalDocuments = await Store.countDocuments(filters);
   return {
     meta: {
       page,

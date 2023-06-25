@@ -15,7 +15,7 @@ export const getAllUserService = async (query: any) => {
     .sort({ [sortBy]: sortOrder })
     .skip(skip)
     .limit(limit);
-  const totalDocuments = await User.countDocuments();
+  const totalDocuments = await User.countDocuments(filters);
   return {
     meta: {
       page,
@@ -125,15 +125,8 @@ export const setNotificationReadedService = async (
 // get all admin and manager
 export const getAllAdminAndManagerService = async (query: any) => {
   const { filters, skip, page, limit, sortBy, sortOrder } =
-    search_filter_and_queries(
-      "user",
-      query,
-      "postTitle",
-      "storeName",
-      "createdAt"
-    ) as any;
+    search_filter_and_queries("user", query, ...user_query_fields) as any;
   filters.$and.push({ $or: [{ role: "admin" }, { role: "manager" }] });
-  console.log(filters);
   const result = await User.find(filters, {
     password: 0,
     newPosts: 0,
@@ -141,9 +134,7 @@ export const getAllAdminAndManagerService = async (query: any) => {
     .sort({ [sortBy]: sortOrder })
     .skip(skip)
     .limit(limit);
-  const totalDocuments = await User.countDocuments({
-    $or: [{ role: "admin" }, { role: "manager" }],
-  });
+  const totalDocuments = await User.countDocuments(filters);
   return {
     meta: {
       page,

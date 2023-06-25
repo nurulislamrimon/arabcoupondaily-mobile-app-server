@@ -10,9 +10,7 @@ export const searchGloballyOnPostController = async (
   next: NextFunction
 ) => {
   try {
-    const key = req.params.key;
-
-    const result = await PostServices.searchGloballyOnPostService(key);
+    const result = await PostServices.searchGloballyOnPostService(req.query);
     res.send({
       status: "success",
       data: result,

@@ -7,7 +7,7 @@ export const search_filter_and_queries = (
   query: object,
   ...fields: string[]
 ) => {
-  const search_filter_and_queries = [];
+  const filters = [];
 
   const { searchTerm, ...filterFields } = pick(query, [
     "searchTerm",
@@ -21,7 +21,7 @@ export const search_filter_and_queries = (
         return field;
       }
     });
-    search_filter_and_queries.push({
+    filters.push({
       $or: searchableFields.map((field) => {
         if (modelName === "post" && field === "storeName") {
           return { "store.storeName": { $regex: searchTerm, $options: "i" } };
@@ -35,7 +35,7 @@ export const search_filter_and_queries = (
   }
   // filtering==========
   if (Object.keys(filterFields).length) {
-    search_filter_and_queries.push({
+    filters.push({
       $and: Object.entries(filterFields).map(([field, value]) => {
         if (!exclude_fields.includes(field)) {
           if (modelName === "post" && field === "storeName") {
@@ -74,11 +74,11 @@ export const search_filter_and_queries = (
   }
   const skip = (page - 1) * limit;
   // push empty object to avoid error in aggregation
-  if (!search_filter_and_queries.length) {
-    search_filter_and_queries.push({});
+  if (!filters.length) {
+    filters.push({});
   }
   return {
-    filters: { $and: search_filter_and_queries },
+    filters: { $and: filters },
     limit,
     page,
     skip,
