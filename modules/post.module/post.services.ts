@@ -94,7 +94,6 @@ export const getAllActivePosts = async (query: any) => {
     expireDate: { $gt: new Date() },
   };
   filters.$and.push(validityCheck);
-  console.log(filters);
 
   const result = await Post.find(filters, {
     postBy: 0,

@@ -31,6 +31,10 @@ const userSchema = new Schema<IUser>(
     password: String,
     confirmPassword: String,
     provider: { name: String },
+    favourite: {
+      stores: [{ type: Types.ObjectId, ref: "Store" }],
+      posts: [{ type: Types.ObjectId, ref: "Post" }],
+    },
   },
   {
     timestamps: true,

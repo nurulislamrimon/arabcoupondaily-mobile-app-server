@@ -46,6 +46,87 @@ export const addNewUserService = async (user: object) => {
   });
   return result;
 };
+
+//== add store to the favourite list
+export const getFavouriteStoreService = async (email: string) => {
+  const result = await User.findOne(
+    { email: email },
+    { "favourite.stores": 1, email: 1, name: 1 }
+  ).populate({
+    path: "favourite.stores",
+    options: {
+      projection: {
+        postBy: 0,
+        updateBy: 0,
+        howToUse: 0,
+      },
+    },
+  });
+
+  return result;
+};
+//== add post to the favourite list
+export const getFavouritePostService = async (email: string) => {
+  const result = await User.findOne(
+    { email: email },
+    { "favourite.posts": 1, email: 1, name: 1 }
+  ).populate({
+    path: "favourite.posts",
+    options: {
+      projection: {
+        postBy: 0,
+        updateBy: 0,
+      },
+    },
+  });
+
+  return result;
+};
+//== add store to the favourite list
+export const addAndRemoveStoreFromFavouriteService = async (
+  email: string,
+  id: Types.ObjectId
+) => {
+  const user = await User.findOne({ email: email });
+
+  if (!user) {
+    return null;
+  }
+
+  let updateQuery = {};
+
+  if (user.favourite.stores.includes(id)) {
+    updateQuery = { $pull: { "favourite.stores": id } };
+  } else {
+    updateQuery = { $addToSet: { "favourite.stores": id } };
+  }
+
+  const result = await User.updateOne({ email: email }, updateQuery);
+  return result;
+};
+//== add post to the favourite list
+export const addAndRemovePostFromFavouriteService = async (
+  email: string,
+  id: Types.ObjectId
+) => {
+  const user = await User.findOne({ email: email });
+
+  if (!user) {
+    return null;
+  }
+
+  let updateQuery = {};
+
+  if (user.favourite.posts.includes(id)) {
+    updateQuery = { $pull: { "favourite.posts": id } };
+  } else {
+    updateQuery = { $addToSet: { "favourite.posts": id } };
+  }
+
+  const result = await User.updateOne({ email: email }, updateQuery);
+  return result;
+};
+
 //== delete user
 export const deleteAUserByEmailService = async (email: string) => {
   const result = await User.deleteOne({ email: email });

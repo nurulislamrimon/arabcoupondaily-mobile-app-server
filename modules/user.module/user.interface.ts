@@ -15,4 +15,8 @@ export default interface IUser {
   password?: string;
   confirmPassword?: string;
   provider?: { name: string; userId: string };
+  favourite: {
+    stores: Types.ObjectId[];
+    posts: Types.ObjectId[];
+  };
 }

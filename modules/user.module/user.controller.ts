@@ -2,6 +2,8 @@ import { NextFunction, Request, Response } from "express";
 import * as userServices from "./user.services";
 import { generate_token } from "../../utils/generate_token";
 import { Types } from "mongoose";
+import { getStoreByIdService } from "../store.module/store.services";
+import { getPostByIdService } from "../post.module/post.services";
 // signup controller
 export const addNewUserController = async (
   req: Request,
@@ -29,8 +31,8 @@ export const addNewUserController = async (
         token = generate_token(userData);
       }
       await userServices.deleteAUserByEmailService(existUser?.email || "");
-
       const user = await userServices.addNewUserService(userData);
+
       res.send({
         status: "success",
         data: { user, token },
@@ -41,6 +43,7 @@ export const addNewUserController = async (
     next(error);
   }
 };
+
 // login controller
 export const loginUserController = async (
   req: Request,
@@ -140,6 +143,96 @@ export const getAllUserController = async (
       ...result,
     });
     console.log(`${result?.data?.length} user responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+// get all favourite stores
+export const getAllFavouriteStoreController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await userServices.getFavouriteStoreService(
+      req.body.decoded.email
+    );
+    res.send({
+      status: "success",
+      result,
+    });
+    console.log(`${result?._id} favourite stores responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+// get all favourite posts
+export const getAllFavouritePostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await userServices.getFavouritePostService(
+      req.body.decoded.email
+    );
+    res.send({
+      status: "success",
+      result,
+    });
+    console.log(`${result?._id} favourite posts responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+// get add favourite stores
+export const addAndRemoveStoreFromFavouriteController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const storeId = new Types.ObjectId(req.params.id);
+    const isStoreExist = await getStoreByIdService(storeId);
+    if (!isStoreExist) {
+      throw new Error("Sorry, Store doesn't exist!");
+    } else {
+      const result = await userServices.addAndRemoveStoreFromFavouriteService(
+        req.body.decoded.email,
+        storeId
+      );
+      res.send({
+        status: "success",
+        result,
+      });
+      console.log(`Store favourite list modified!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+// get add favourite stores
+export const addAndRemovePostFromFavouriteController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const PostId = new Types.ObjectId(req.params.id);
+    const isPostExist = await getPostByIdService(PostId);
+    if (!isPostExist) {
+      throw new Error("Sorry, Post doesn't exist!");
+    } else {
+      const result = await userServices.addAndRemovePostFromFavouriteService(
+        req.body.decoded.email,
+        PostId
+      );
+      res.send({
+        status: "success",
+        result,
+      });
+      console.log(`Post favourite list modified!`);
+    }
   } catch (error) {
     next(error);
   }

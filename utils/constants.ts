@@ -5,6 +5,7 @@ export const post_query_fields = [
   "postType",
   "country",
   "createdAt",
+  "expireDate",
 ];
 export const store_query_fields = [
   "_id",
