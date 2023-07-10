@@ -42,6 +42,10 @@ const userSchema = new mongoose_2.Schema({
     password: String,
     confirmPassword: String,
     provider: { name: String },
+    favourite: {
+        stores: [{ type: mongoose_1.Types.ObjectId, ref: "Store" }],
+        posts: [{ type: mongoose_1.Types.ObjectId, ref: "Post" }],
+    },
 }, {
     timestamps: true,
 });

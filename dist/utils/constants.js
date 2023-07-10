@@ -8,6 +8,7 @@ exports.post_query_fields = [
     "postType",
     "country",
     "createdAt",
+    "expireDate",
 ];
 exports.store_query_fields = [
     "_id",

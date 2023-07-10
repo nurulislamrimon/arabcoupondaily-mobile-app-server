@@ -92,7 +92,6 @@ const getAllActivePosts = (query) => __awaiter(void 0, void 0, void 0, function*
         expireDate: { $gt: new Date() },
     };
     filters.$and.push(validityCheck);
-    console.log(filters);
     const result = yield post_model_1.default.find(filters, {
         postBy: 0,
         updateBy: 0,

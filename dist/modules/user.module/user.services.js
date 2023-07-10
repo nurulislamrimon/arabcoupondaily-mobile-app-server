@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addNewUserService = exports.getUserByIdService = exports.getUserByEmailService = exports.getAllUserService = void 0;
+exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addAndRemovePostFromFavouriteService = exports.addAndRemoveStoreFromFavouriteService = exports.getFavouritePostService = exports.getFavouriteStoreService = exports.addNewUserService = exports.getUserByIdService = exports.getUserByEmailService = exports.getAllUserService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
@@ -59,6 +59,69 @@ const addNewUserService = (user) => __awaiter(void 0, void 0, void 0, function* 
     return result;
 });
 exports.addNewUserService = addNewUserService;
+//== add store to the favourite list
+const getFavouriteStoreService = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.findOne({ email: email }, { "favourite.stores": 1, email: 1, name: 1 }).populate({
+        path: "favourite.stores",
+        options: {
+            projection: {
+                postBy: 0,
+                updateBy: 0,
+                howToUse: 0,
+            },
+        },
+    });
+    return result;
+});
+exports.getFavouriteStoreService = getFavouriteStoreService;
+//== add post to the favourite list
+const getFavouritePostService = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.findOne({ email: email }, { "favourite.posts": 1, email: 1, name: 1 }).populate({
+        path: "favourite.posts",
+        options: {
+            projection: {
+                postBy: 0,
+                updateBy: 0,
+            },
+        },
+    });
+    return result;
+});
+exports.getFavouritePostService = getFavouritePostService;
+//== add store to the favourite list
+const addAndRemoveStoreFromFavouriteService = (email, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.default.findOne({ email: email });
+    if (!user) {
+        return null;
+    }
+    let updateQuery = {};
+    if (user.favourite.stores.includes(id)) {
+        updateQuery = { $pull: { "favourite.stores": id } };
+    }
+    else {
+        updateQuery = { $addToSet: { "favourite.stores": id } };
+    }
+    const result = yield user_model_1.default.updateOne({ email: email }, updateQuery);
+    return result;
+});
+exports.addAndRemoveStoreFromFavouriteService = addAndRemoveStoreFromFavouriteService;
+//== add post to the favourite list
+const addAndRemovePostFromFavouriteService = (email, id) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield user_model_1.default.findOne({ email: email });
+    if (!user) {
+        return null;
+    }
+    let updateQuery = {};
+    if (user.favourite.posts.includes(id)) {
+        updateQuery = { $pull: { "favourite.posts": id } };
+    }
+    else {
+        updateQuery = { $addToSet: { "favourite.posts": id } };
+    }
+    const result = yield user_model_1.default.updateOne({ email: email }, updateQuery);
+    return result;
+});
+exports.addAndRemovePostFromFavouriteService = addAndRemovePostFromFavouriteService;
 //== delete user
 const deleteAUserByEmailService = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.default.deleteOne({ email: email });

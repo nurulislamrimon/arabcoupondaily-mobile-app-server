@@ -32,10 +32,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
+exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.addAndRemovePostFromFavouriteController = exports.addAndRemoveStoreFromFavouriteController = exports.getAllFavouritePostController = exports.getAllFavouriteStoreController = exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
 const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
 const mongoose_1 = require("mongoose");
+const store_services_1 = require("../store.module/store.services");
+const post_services_1 = require("../post.module/post.services");
 // signup controller
 const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a, _b;
@@ -166,6 +168,80 @@ const getAllUserController = (req, res, next) => __awaiter(void 0, void 0, void 
     }
 });
 exports.getAllUserController = getAllUserController;
+// get all favourite stores
+const getAllFavouriteStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield userServices.getFavouriteStoreService(req.body.decoded.email);
+        res.send({
+            status: "success",
+            result,
+        });
+        console.log(`${result === null || result === void 0 ? void 0 : result._id} favourite stores responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAllFavouriteStoreController = getAllFavouriteStoreController;
+// get all favourite posts
+const getAllFavouritePostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield userServices.getFavouritePostService(req.body.decoded.email);
+        res.send({
+            status: "success",
+            result,
+        });
+        console.log(`${result === null || result === void 0 ? void 0 : result._id} favourite posts responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAllFavouritePostController = getAllFavouritePostController;
+// get add favourite stores
+const addAndRemoveStoreFromFavouriteController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const storeId = new mongoose_1.Types.ObjectId(req.params.id);
+        const isStoreExist = yield (0, store_services_1.getStoreByIdService)(storeId);
+        if (!isStoreExist) {
+            throw new Error("Sorry, Store doesn't exist!");
+        }
+        else {
+            const result = yield userServices.addAndRemoveStoreFromFavouriteService(req.body.decoded.email, storeId);
+            res.send({
+                status: "success",
+                result,
+            });
+            console.log(`Store favourite list modified!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.addAndRemoveStoreFromFavouriteController = addAndRemoveStoreFromFavouriteController;
+// get add favourite stores
+const addAndRemovePostFromFavouriteController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const PostId = new mongoose_1.Types.ObjectId(req.params.id);
+        const isPostExist = yield (0, post_services_1.getPostByIdService)(PostId);
+        if (!isPostExist) {
+            throw new Error("Sorry, Post doesn't exist!");
+        }
+        else {
+            const result = yield userServices.addAndRemovePostFromFavouriteService(req.body.decoded.email, PostId);
+            res.send({
+                status: "success",
+                result,
+            });
+            console.log(`Post favourite list modified!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.addAndRemovePostFromFavouriteController = addAndRemovePostFromFavouriteController;
 // get all notification counted
 const getUnreadedNotificationCountController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {

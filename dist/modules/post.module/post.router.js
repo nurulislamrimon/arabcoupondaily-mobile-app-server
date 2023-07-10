@@ -32,18 +32,6 @@ const verify_token_1 = require("../../middlewares/verify_token");
 const verify_authorization_1 = require("../../middlewares/verify_authorization");
 const postRouter = express_1.default.Router();
 /**
- *@api{get}/search/:key make a global search on post
- *@apiDescription get all Posts and others
- *@apiPermission none
- *@apiHeader none
- *@apiBody none
- *@apiParam string
- *@apiQuery none
- *@apiSuccess {Array of Object} all Posts and others.
- *@apiError not found
- */
-postRouter.get("/search", PostController.searchGloballyOnPostController);
-/**
  *@api{get}/ get all Post
  *@apiDescription get all Posts
  *@apiPermission none
@@ -55,6 +43,18 @@ postRouter.get("/search", PostController.searchGloballyOnPostController);
  *@apiError 401, 403 unauthorized & forbidden
  */
 postRouter.get("/", PostController.getAllActivePostsController);
+/**
+ *@api{get}/search/:key make a global search on post
+ *@apiDescription get all Posts and others
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam string
+ *@apiQuery none
+ *@apiSuccess {Array of Object} all Posts and others.
+ *@apiError not found
+ */
+postRouter.get("/search", PostController.searchGloballyOnPostController);
 /**
  *@api{put}/revealed/:id update a Post
  *@apiDescription revealed again

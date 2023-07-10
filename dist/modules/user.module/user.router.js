@@ -94,6 +94,60 @@ userRouter.get("/me", verify_token_1.verify_token, userController.getAboutMeUser
  *@apiError 401 & 403
  */
 userRouter.get("/", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), userController.getAllUserController);
+// ===================================================
+// === =============Favourite============= ===
+// ===================================================
+/**
+ *@api{get}/favourite/store get favourite stores
+ *@apiDescription get all favourite stores with counted
+ *@apiPermission user
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery {filters}
+ *@apiSuccess {Array of Object} all favourite stores
+ *@apiError 401 & 403
+ */
+userRouter.get("/favourite/store", verify_token_1.verify_token, userController.getAllFavouriteStoreController);
+/**
+ *@api{get}/favourite/post get favourite posts
+ *@apiDescription get all favourite posts with counted
+ *@apiPermission user
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery {filters}
+ *@apiSuccess {Array of Object} all favourite posts
+ *@apiError 401 & 403
+ */
+userRouter.get("/favourite/post", verify_token_1.verify_token, userController.getAllFavouritePostController);
+/**
+ *@api{put}/favourite/store/:id add and remove store from the favourite list.
+ *@apiDescription add and remove store from the favourite list.
+ *@apiPermission user
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} favourite stores
+ *@apiError 401 & 403
+ */
+userRouter.put("/favourite/store/:id", verify_token_1.verify_token, userController.addAndRemoveStoreFromFavouriteController);
+/**
+ *@api{put}/favourite/post/:id add and remove Post from the favourite list.
+ *@apiDescription add and remove Post from the favourite list.
+ *@apiPermission user
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} favourite Posts
+ *@apiError 401 & 403
+ */
+userRouter.put("/favourite/post/:id", verify_token_1.verify_token, userController.addAndRemovePostFromFavouriteController);
+// ===================================================
+// === =============notification============= ===
+// ===================================================
 /**
  *@api{get}/notification get notification
  *@apiDescription get all new posts counted
