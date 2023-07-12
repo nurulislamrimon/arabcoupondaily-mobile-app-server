@@ -5,6 +5,7 @@ Read the [documentation](https://docs.google.com/document/d/1yLlbhDgCazG740dTKCf
 
 Live Preview: [link](https://arabcoupon-mobile-app-server.vercel.app/)
 
+[Click here](https://github.com/nurulislamrimon/arabcoupondaily-mobile-app-server/blob/main/thunder-collection_ACD%20Mobile.json) to download the Thunder Client collection file. This file will help you to take a deep drive into the server. 
 Technology:
 
 _ Nodejs
