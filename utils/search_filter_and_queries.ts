@@ -62,7 +62,7 @@ export const search_filter_and_queries = (
     sortBy = "createdAt";
   }
   if (!sortOrder) {
-    sortOrder = 1;
+    sortOrder = -1;
   } else if (sortOrder === "1" || sortOrder === "-1") {
     sortOrder = Number(sortOrder);
   }
