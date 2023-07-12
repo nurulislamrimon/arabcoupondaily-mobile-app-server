@@ -176,10 +176,10 @@ export const getUnreadedNotificationCountService = async (email: string) => {
 };
 //== get notification based on user
 export const getNotificationService = async (email: string) => {
-  const result = await User.findOne({ email: email }, { password: 0 }).populate(
-    "newPosts.moreAboutPost",
-    { postBy: 0, updateBy: 0 }
-  );
+  const result = await User.findOne(
+    { email: email },
+    { newPosts: 1, email: 1, name: 1 }
+  ).populate("newPosts.moreAboutPost", { postBy: 0, updateBy: 0 });
   // .select("postBy");
   return result;
 };
