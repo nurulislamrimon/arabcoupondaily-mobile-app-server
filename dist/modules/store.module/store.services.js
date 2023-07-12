@@ -80,8 +80,8 @@ const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function
         {
             $lookup: {
                 from: "posts",
-                foreignField: "store.storeName",
-                localField: "storeName",
+                foreignField: "store._id",
+                localField: "store",
                 as: "existPosts",
             },
         },
@@ -112,8 +112,8 @@ const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function
         {
             $lookup: {
                 from: "posts",
-                foreignField: "store.storeName",
-                localField: "storeName",
+                foreignField: "store._id",
+                localField: "store",
                 as: "existPosts",
             },
         },

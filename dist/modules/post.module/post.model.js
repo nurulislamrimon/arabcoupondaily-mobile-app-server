@@ -15,7 +15,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const mongoose_2 = require("mongoose");
 const validator_1 = __importDefault(require("validator"));
-const store_model_1 = __importDefault(require("../store.module/store.model"));
 const postSchema = new mongoose_1.Schema({
     postTitle: { type: String, required: true },
     store: {
@@ -54,11 +53,9 @@ postSchema.pre("validate", function (next) {
         }
     });
 });
-postSchema.pre("save", function (next) {
-    return __awaiter(this, void 0, void 0, function* () {
-        const store = yield store_model_1.default.findOne({ storeName: this.store.storeName });
-        this.store.photoURL = (store === null || store === void 0 ? void 0 : store.photoURL) || "";
-    });
-});
+// postSchema.pre("save", async function (next) {
+//   const store = await Store.findOne({ storeName: this.store.storeName });
+//   this.store.photoURL = store?.photoURL || "";
+// });
 const Post = (0, mongoose_1.model)("Post", postSchema);
 exports.default = Post;

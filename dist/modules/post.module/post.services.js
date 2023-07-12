@@ -68,8 +68,12 @@ const getPostByIdService = (id) => __awaiter(void 0, void 0, void 0, function* (
 exports.getPostByIdService = getPostByIdService;
 //== create new Post
 const addNewPostService = (post) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield post_model_1.default.create(post);
-    yield (0, exports.setPostAsUnreadToUserService)(result._id);
+    const createdPost = yield post_model_1.default.create(post);
+    const result = yield createdPost.populate("store", {
+        storeName: 1,
+        photoURL: 1,
+    });
+    yield (0, exports.setPostAsUnreadToUserService)(createdPost._id);
     return result;
 });
 exports.addNewPostService = addNewPostService;

@@ -67,8 +67,8 @@ export const getAllActiveStores = async (query: any) => {
     {
       $lookup: {
         from: "posts",
-        foreignField: "store.storeName",
-        localField: "storeName",
+        foreignField: "store._id",
+        localField: "store",
         as: "existPosts",
       },
     },
@@ -100,8 +100,8 @@ export const getAllActiveStores = async (query: any) => {
     {
       $lookup: {
         from: "posts",
-        foreignField: "store.storeName",
-        localField: "storeName",
+        foreignField: "store._id",
+        localField: "store",
         as: "existPosts",
       },
     },

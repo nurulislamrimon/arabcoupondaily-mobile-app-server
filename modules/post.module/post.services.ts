@@ -54,8 +54,12 @@ export const getPostByIdService = async (id: Types.ObjectId) => {
 
 //== create new Post
 export const addNewPostService = async (post: object) => {
-  const result = await Post.create(post);
-  await setPostAsUnreadToUserService(result._id);
+  const createdPost = await Post.create(post);
+  const result = await createdPost.populate("store", {
+    storeName: 1,
+    photoURL: 1,
+  });
+  await setPostAsUnreadToUserService(createdPost._id);
   return result;
 };
 

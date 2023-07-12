@@ -1,8 +1,8 @@
-import { Types } from "mongoose";
+import { ObjectId, Types } from "mongoose";
 
 export default interface IPost {
   postTitle: string;
-  store: Types.ObjectId;
+  store: ObjectId;
   postType: string;
   expireDate: Date;
   country: string[];

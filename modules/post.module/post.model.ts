@@ -2,7 +2,6 @@ import { Schema, model } from "mongoose";
 import IPost from "./post.interface";
 import { Types } from "mongoose";
 import validator from "validator";
-import Store from "../store.module/store.model";
 
 const postSchema = new Schema<IPost>(
   {
@@ -43,10 +42,10 @@ postSchema.pre("validate", async function (next) {
     throw new Error("Please provide deal link!");
   }
 });
-postSchema.pre("save", async function (next) {
-  const store = await Store.findOne({ storeName: this.store.storeName });
-  this.store.photoURL = store?.photoURL || "";
-});
+// postSchema.pre("save", async function (next) {
+//   const store = await Store.findOne({ storeName: this.store.storeName });
+//   this.store.photoURL = store?.photoURL || "";
+// });
 
 const Post = model<IPost>("Post", postSchema);
 export default Post;
