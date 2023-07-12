@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as PostServices from "./post.services";
 import { getUserByEmailService } from "../user.module/user.services";
 import { Types } from "mongoose";
+import { getStoreByStoreNameService } from "../store.module/store.services";
 
 // add new Post controller
 export const searchGloballyOnPostController = async (
@@ -33,17 +34,21 @@ export const addNewPostController = async (
       throw new Error("Please enter required information!");
     } else {
       const postBy = await getUserByEmailService(req.body.decoded.email);
-
-      const result = await PostServices.addNewPostService({
-        ...req.body,
-        store: { storeName: req.body.storeName },
-        postBy: { ...postBy?.toObject(), moreAboutUser: postBy?._id },
-      });
-      res.send({
-        status: "success",
-        data: result,
-      });
-      console.log(`Post ${result._id} is added!`);
+      const isStoreExist = await getStoreByStoreNameService(req.body.storeName);
+      if (!isStoreExist) {
+        throw new Error("Invalid store name!");
+      } else {
+        const result = await PostServices.addNewPostService({
+          ...req.body,
+          store: isStoreExist._id,
+          postBy: { ...postBy?.toObject(), moreAboutUser: postBy?._id },
+        });
+        res.send({
+          status: "success",
+          data: result,
+        });
+        console.log(`Post ${result._id} is added!`);
+      }
     }
   } catch (error) {
     next(error);

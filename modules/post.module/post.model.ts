@@ -8,18 +8,9 @@ const postSchema = new Schema<IPost>(
   {
     postTitle: { type: String, required: true },
     store: {
-      storeName: {
-        type: String,
-        required: true,
-        validate: {
-          validator: async function (value: string) {
-            const count = await Store.countDocuments({ storeName: value });
-            return count > 0;
-          },
-          message: "Invalid store name",
-        },
-      },
-      photoURL: { type: String, validate: validator.isURL },
+      type: Types.ObjectId,
+      required: true,
+      ref: "Store",
     },
     postType: { type: String, enum: ["coupon", "deal"], default: "coupon" },
     expireDate: { type: Date, validate: validator.isDate },

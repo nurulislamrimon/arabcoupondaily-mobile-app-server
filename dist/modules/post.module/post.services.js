@@ -36,23 +36,33 @@ const searchGloballyOnPostService = (query) => __awaiter(void 0, void 0, void 0,
     const stores = yield store_model_1.default.find(storeFilters, {
         postBy: 0,
         updateBy: 0,
+        howToUse: 0,
     });
     const posts = yield post_model_1.default.find(postFilters, {
         postBy: 0,
         updateBy: 0,
+    }).populate("store", {
+        storeName: 1,
+        photoURL: 1,
     });
     return { stores, posts };
 });
 exports.searchGloballyOnPostService = searchGloballyOnPostService;
 //== get Post by name
 const getPostByPostTitleService = (postTitle) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield post_model_1.default.findOne({ postTitle: postTitle });
+    const result = yield post_model_1.default.findOne({ postTitle: postTitle }).populate("store", {
+        storeName: 1,
+        photoURL: 1,
+    });
     return result;
 });
 exports.getPostByPostTitleService = getPostByPostTitleService;
 //== get Post by objectId
 const getPostByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield post_model_1.default.findOne({ _id: id });
+    const result = yield post_model_1.default.findOne({ _id: id }).populate("store", {
+        storeName: 1,
+        photoURL: 1,
+    });
     return result;
 });
 exports.getPostByIdService = getPostByIdService;
@@ -96,6 +106,10 @@ const getAllActivePosts = (query) => __awaiter(void 0, void 0, void 0, function*
         postBy: 0,
         updateBy: 0,
     })
+        .populate("store", {
+        storeName: 1,
+        photoURL: 1,
+    })
         .sort({ [sortBy]: sortOrder })
         .skip(skip)
         .limit(limit);
@@ -115,6 +129,10 @@ exports.getAllActivePosts = getAllActivePosts;
 const getAllPosts = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("post", query, ...constants_1.post_query_fields);
     const result = yield post_model_1.default.find(filters)
+        .populate("store", {
+        storeName: 1,
+        photoURL: 1,
+    })
         .sort({ [sortBy]: sortOrder })
         .skip(skip)
         .limit(limit);

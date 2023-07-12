@@ -19,20 +19,9 @@ const store_model_1 = __importDefault(require("../store.module/store.model"));
 const postSchema = new mongoose_1.Schema({
     postTitle: { type: String, required: true },
     store: {
-        storeName: {
-            type: String,
-            required: true,
-            validate: {
-                validator: function (value) {
-                    return __awaiter(this, void 0, void 0, function* () {
-                        const count = yield store_model_1.default.countDocuments({ storeName: value });
-                        return count > 0;
-                    });
-                },
-                message: "Invalid store name",
-            },
-        },
-        photoURL: { type: String, validate: validator_1.default.isURL },
+        type: mongoose_2.Types.ObjectId,
+        required: true,
+        ref: "Store",
     },
     postType: { type: String, enum: ["coupon", "deal"], default: "coupon" },
     expireDate: { type: Date, validate: validator_1.default.isDate },

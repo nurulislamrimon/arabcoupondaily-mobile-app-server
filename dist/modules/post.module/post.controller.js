@@ -36,6 +36,7 @@ exports.deleteAPostController = exports.revealedAPostController = exports.update
 const PostServices = __importStar(require("./post.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
+const store_services_1 = require("../store.module/store.services");
 // add new Post controller
 const searchGloballyOnPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -60,12 +61,18 @@ const addNewPostController = (req, res, next) => __awaiter(void 0, void 0, void 
         }
         else {
             const postBy = yield (0, user_services_1.getUserByEmailService)(req.body.decoded.email);
-            const result = yield PostServices.addNewPostService(Object.assign(Object.assign({}, req.body), { store: { storeName: req.body.storeName }, postBy: Object.assign(Object.assign({}, postBy === null || postBy === void 0 ? void 0 : postBy.toObject()), { moreAboutUser: postBy === null || postBy === void 0 ? void 0 : postBy._id }) }));
-            res.send({
-                status: "success",
-                data: result,
-            });
-            console.log(`Post ${result._id} is added!`);
+            const isStoreExist = yield (0, store_services_1.getStoreByStoreNameService)(req.body.storeName);
+            if (!isStoreExist) {
+                throw new Error("Invalid store name!");
+            }
+            else {
+                const result = yield PostServices.addNewPostService(Object.assign(Object.assign({}, req.body), { store: isStoreExist._id, postBy: Object.assign(Object.assign({}, postBy === null || postBy === void 0 ? void 0 : postBy.toObject()), { moreAboutUser: postBy === null || postBy === void 0 ? void 0 : postBy._id }) }));
+                res.send({
+                    status: "success",
+                    data: result,
+                });
+                console.log(`Post ${result._id} is added!`);
+            }
         }
     }
     catch (error) {

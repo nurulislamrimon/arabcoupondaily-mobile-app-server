@@ -21,21 +21,34 @@ export const searchGloballyOnPostService = async (query: object) => {
   const stores = await Store.find(storeFilters, {
     postBy: 0,
     updateBy: 0,
+    howToUse: 0,
   });
   const posts = await Post.find(postFilters, {
     postBy: 0,
     updateBy: 0,
+  }).populate("store", {
+    storeName: 1,
+    photoURL: 1,
   });
   return { stores, posts };
 };
 //== get Post by name
 export const getPostByPostTitleService = async (postTitle: string) => {
-  const result = await Post.findOne({ postTitle: postTitle });
+  const result = await Post.findOne({ postTitle: postTitle }).populate(
+    "store",
+    {
+      storeName: 1,
+      photoURL: 1,
+    }
+  );
   return result;
 };
 //== get Post by objectId
 export const getPostByIdService = async (id: Types.ObjectId) => {
-  const result = await Post.findOne({ _id: id });
+  const result = await Post.findOne({ _id: id }).populate("store", {
+    storeName: 1,
+    photoURL: 1,
+  });
   return result;
 };
 
@@ -99,6 +112,10 @@ export const getAllActivePosts = async (query: any) => {
     postBy: 0,
     updateBy: 0,
   })
+    .populate("store", {
+      storeName: 1,
+      photoURL: 1,
+    })
     .sort({ [sortBy]: sortOrder })
     .skip(skip)
     .limit(limit);
@@ -121,6 +138,10 @@ export const getAllPosts = async (query: any) => {
     search_filter_and_queries("post", query, ...post_query_fields) as any;
 
   const result = await Post.find(filters)
+    .populate("store", {
+      storeName: 1,
+      photoURL: 1,
+    })
     .sort({ [sortBy]: sortOrder })
     .skip(skip)
     .limit(limit);
