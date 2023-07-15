@@ -167,7 +167,11 @@ const getUnreadedNotificationCountService = (email) => __awaiter(void 0, void 0,
 exports.getUnreadedNotificationCountService = getUnreadedNotificationCountService;
 //== get notification based on user
 const getNotificationService = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.findOne({ email: email }, { newPosts: 1, email: 1, name: 1 }).populate("newPosts.moreAboutPost", { postBy: 0, updateBy: 0 });
+    const result = yield user_model_1.default.findOne({ email: email }, { newPosts: 1, email: 1, name: 1 }).populate({
+        path: "newPosts.moreAboutPost",
+        select: "-postBy -updateBy",
+        populate: { path: "store", select: "storeName photoURL" },
+    });
     // .select("postBy");
     return result;
 });

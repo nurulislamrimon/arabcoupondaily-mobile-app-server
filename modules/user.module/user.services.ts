@@ -179,7 +179,11 @@ export const getNotificationService = async (email: string) => {
   const result = await User.findOne(
     { email: email },
     { newPosts: 1, email: 1, name: 1 }
-  ).populate("newPosts.moreAboutPost", { postBy: 0, updateBy: 0 });
+  ).populate({
+    path: "newPosts.moreAboutPost",
+    select: "-postBy -updateBy",
+    populate: { path: "store", select: "storeName photoURL" },
+  });
   // .select("postBy");
   return result;
 };
