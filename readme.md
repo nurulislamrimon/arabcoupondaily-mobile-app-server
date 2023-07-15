@@ -5,12 +5,23 @@ Read the [documentation](https://docs.google.com/document/d/1yLlbhDgCazG740dTKCf
 
 Live Preview: [link](https://arabcoupon-mobile-app-server.vercel.app/)
 
-Technology:
+[Click here](https://github.com/nurulislamrimon/arabcoupondaily-mobile-app-server/blob/main/thunder-collection_ACD%20Mobile.json) to download the Thunder Client collection file. This file will help you to take a deep drive into the server. 
 
-_ Nodejs
-_ Expressjs
-_ Mongoose
-_ Typescript
+<br>
+Technology:
+<ul>
+<li>  
+Nodejs
+</li>
+<li>  
+Expressjs
+</li>
+<li>  
+Mongoose
+</li>
+<li>  Typescript
+</li>
+</ul>
 Operations: \* Aggregation
 
 Developed by Nurul Islam Rimon
