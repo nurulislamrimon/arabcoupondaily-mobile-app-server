@@ -101,6 +101,40 @@ export const revealedAPostService = async (PostId: Types.ObjectId) => {
   return result;
 };
 
+/* // // get all active Posts
+// export const getAllActivePosts = async (query: any) => {
+//   const { filters, skip, page, limit, sortBy, sortOrder } =
+//     search_filter_and_queries("post", query, ...post_query_fields) as any;
+
+//   // set expiredate to show only active post
+//   const validityCheck = {
+//     expireDate: { $gt: new Date() },
+//   };
+//   filters.$and.push(validityCheck);
+
+//   const result = await Post.find(filters, {
+//     postBy: 0,
+//     updateBy: 0,
+//   })
+//     .populate("store", {
+//       storeName: 1,
+//       photoURL: 1,
+//     })
+//     .sort({ [sortBy]: sortOrder })
+//     .skip(skip)
+//     .limit(limit);
+
+//   const totalDocuments = await Post.countDocuments(filters);
+//   return {
+//     meta: {
+//       page,
+//       limit,
+//       totalDocuments,
+//     },
+//     // data: filters,
+//     data: result,
+//   };
+// }; */
 // get all active Posts
 export const getAllActivePosts = async (query: any) => {
   const { filters, skip, page, limit, sortBy, sortOrder } =
@@ -112,26 +146,93 @@ export const getAllActivePosts = async (query: any) => {
   };
   filters.$and.push(validityCheck);
 
-  const result = await Post.find(filters, {
-    postBy: 0,
-    updateBy: 0,
-  })
-    .populate("store", {
-      storeName: 1,
-      photoURL: 1,
-    })
-    .sort({ [sortBy]: sortOrder })
-    .skip(skip)
-    .limit(limit);
+  const result = await Post.aggregate([
+    {
+      $lookup: {
+        from: "stores",
+        localField: "store",
+        foreignField: "_id",
+        as: "storePopulated",
+      },
+    },
+    {
+      $addFields: {
+        store: { $arrayElemAt: ["$storePopulated", 0] },
+      },
+    },
+    {
+      $project: {
+        "store._id": 1,
+        "store.storeName": 1,
+        "store.photoURL": 1,
+        postTitle: 1,
+        postType: 1,
+        expireDate: 1,
+        country: 1,
+        isVerified: 1,
+        revealed: 1,
+        couponCode: 1,
+        createdAt: 1,
+      },
+    },
+    {
+      $match: filters,
+    },
+    {
+      $sort: { [sortBy]: sortOrder },
+    },
+    {
+      $skip: skip,
+    },
+    {
+      $limit: limit,
+    },
+  ]);
 
-  const totalDocuments = await Post.countDocuments(filters);
+  const totalDocuments = await Post.aggregate([
+    {
+      $lookup: {
+        from: "stores",
+        localField: "store",
+        foreignField: "_id",
+        as: "storePopulated",
+      },
+    },
+    {
+      $addFields: {
+        store: { $arrayElemAt: ["$storePopulated", 0] },
+      },
+    },
+    {
+      $project: {
+        "store._id": 1,
+        "store.storeName": 1,
+        "store.photoURL": 1,
+        postTitle: 1,
+        postType: 1,
+        expireDate: 1,
+        country: 1,
+        isVerified: 1,
+        revealed: 1,
+        couponCode: 1,
+        createdAt: 1,
+      },
+    },
+    {
+      $match: filters,
+    },
+    {
+      $count: "totalDocuments",
+    },
+  ]);
   return {
     meta: {
       page,
       limit,
-      totalDocuments,
+      totalDocuments: totalDocuments.length
+        ? totalDocuments[0].totalDocuments
+        : 0,
     },
-    // data: filters,
     data: result,
   };
 };

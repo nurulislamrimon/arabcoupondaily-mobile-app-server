@@ -1,7 +1,8 @@
 export const post_query_fields = [
   "_id",
   "postTitle",
-  "storeName",
+  "store.storeName",
+  "store._id",
   "postType",
   "country",
   "createdAt",
@@ -24,4 +25,10 @@ export const user_query_fields = [
   "createdAt",
 ];
 
-export const exclude_fields = ["createdAt", "expireDate", "_id", "isVerified"];
+export const exclude_fields = [
+  "createdAt",
+  "expireDate",
+  "_id",
+  "isVerified",
+  "store._id",
+];

@@ -4,7 +4,8 @@ exports.exclude_fields = exports.user_query_fields = exports.store_query_fields 
 exports.post_query_fields = [
     "_id",
     "postTitle",
-    "storeName",
+    "store.storeName",
+    "store._id",
     "postType",
     "country",
     "createdAt",
@@ -26,4 +27,10 @@ exports.user_query_fields = [
     "role",
     "createdAt",
 ];
-exports.exclude_fields = ["createdAt", "expireDate", "_id", "isVerified"];
+exports.exclude_fields = [
+    "createdAt",
+    "expireDate",
+    "_id",
+    "isVerified",
+    "store._id",
+];

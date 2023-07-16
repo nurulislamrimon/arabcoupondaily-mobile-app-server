@@ -89,8 +89,8 @@ const search_filter_and_queries = (modelName, query, ...fields) => {
     }
     return {
         filters: { $and: filters },
-        limit,
-        page,
+        limit: Number(limit),
+        page: Number(page),
         skip,
         sortBy,
         sortOrder,
