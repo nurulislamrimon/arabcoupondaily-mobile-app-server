@@ -62,7 +62,7 @@ export const getAllPostsController = async (
   next: NextFunction
 ) => {
   try {
-    const result = await PostServices.getAllPosts(req.query);
+    const result = await PostServices.getAllPosts(req.query, false);
     res.send({
       status: "success",
       ...result,
@@ -80,7 +80,7 @@ export const getAllActivePostsController = async (
   next: NextFunction
 ) => {
   try {
-    const result = await PostServices.getAllActivePosts(req.query);
+    const result = await PostServices.getAllPosts(req.query, true);
     res.send({
       status: "success",
       ...result,

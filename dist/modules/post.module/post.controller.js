@@ -84,7 +84,7 @@ exports.addNewPostController = addNewPostController;
 const getAllPostsController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
-        const result = yield PostServices.getAllPosts(req.query);
+        const result = yield PostServices.getAllPosts(req.query, false);
         res.send(Object.assign({ status: "success" }, result));
         console.log(`${(_a = result === null || result === void 0 ? void 0 : result.data) === null || _a === void 0 ? void 0 : _a.length} Posts are responsed!`);
     }
@@ -97,7 +97,7 @@ exports.getAllPostsController = getAllPostsController;
 const getAllActivePostsController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;
     try {
-        const result = yield PostServices.getAllActivePosts(req.query);
+        const result = yield PostServices.getAllPosts(req.query, true);
         res.send(Object.assign({ status: "success" }, result));
         console.log(`${(_b = result === null || result === void 0 ? void 0 : result.data) === null || _b === void 0 ? void 0 : _b.length} Posts are responsed!`);
     }

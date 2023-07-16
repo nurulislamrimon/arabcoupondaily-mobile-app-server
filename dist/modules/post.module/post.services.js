@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostService = exports.getAllPosts = exports.getAllActivePosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
+exports.deleteAPostService = exports.getAllPosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
 const post_model_1 = __importDefault(require("./post.model"));
 const user_model_1 = __importDefault(require("../user.module/user.model"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
@@ -38,14 +38,8 @@ const searchGloballyOnPostService = (query) => __awaiter(void 0, void 0, void 0,
         updateBy: 0,
         howToUse: 0,
     });
-    const posts = yield post_model_1.default.find(postFilters, {
-        postBy: 0,
-        updateBy: 0,
-    }).populate("store", {
-        storeName: 1,
-        photoURL: 1,
-    });
-    return { stores, posts };
+    const posts = yield (0, exports.getAllPosts)(query, false);
+    return { stores, posts: posts };
 });
 exports.searchGloballyOnPostService = searchGloballyOnPostService;
 //== get Post by name
@@ -98,48 +92,13 @@ const revealedAPostService = (PostId) => __awaiter(void 0, void 0, void 0, funct
     return result;
 });
 exports.revealedAPostService = revealedAPostService;
-/* // // get all active Posts
-// export const getAllActivePosts = async (query: any) => {
-//   const { filters, skip, page, limit, sortBy, sortOrder } =
-//     search_filter_and_queries("post", query, ...post_query_fields) as any;
-
-//   // set expiredate to show only active post
-//   const validityCheck = {
-//     expireDate: { $gt: new Date() },
-//   };
-//   filters.$and.push(validityCheck);
-
-//   const result = await Post.find(filters, {
-//     postBy: 0,
-//     updateBy: 0,
-//   })
-//     .populate("store", {
-//       storeName: 1,
-//       photoURL: 1,
-//     })
-//     .sort({ [sortBy]: sortOrder })
-//     .skip(skip)
-//     .limit(limit);
-
-//   const totalDocuments = await Post.countDocuments(filters);
-//   return {
-//     meta: {
-//       page,
-//       limit,
-//       totalDocuments,
-//     },
-//     // data: filters,
-//     data: result,
-//   };
-// }; */
-// get all active Posts
-const getAllActivePosts = (query) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllPosts = (query, isActivePostOnly) => __awaiter(void 0, void 0, void 0, function* () {
     const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("post", query, ...constants_1.post_query_fields);
     // set expiredate to show only active post
     const validityCheck = {
         expireDate: { $gt: new Date() },
     };
-    filters.$and.push(validityCheck);
+    isActivePostOnly && filters.$and.push(validityCheck);
     const result = yield post_model_1.default.aggregate([
         {
             $lookup: {
@@ -225,28 +184,6 @@ const getAllActivePosts = (query) => __awaiter(void 0, void 0, void 0, function*
             totalDocuments: totalDocuments.length
                 ? totalDocuments[0].totalDocuments
                 : 0,
-        },
-        data: result,
-    };
-});
-exports.getAllActivePosts = getAllActivePosts;
-// get all Posts
-const getAllPosts = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("post", query, ...constants_1.post_query_fields);
-    const result = yield post_model_1.default.find(filters)
-        .populate("store", {
-        storeName: 1,
-        photoURL: 1,
-    })
-        .sort({ [sortBy]: sortOrder })
-        .skip(skip)
-        .limit(limit);
-    const totalDocuments = yield post_model_1.default.countDocuments(filters);
-    return {
-        meta: {
-            page,
-            limit,
-            totalDocuments,
         },
         data: result,
     };

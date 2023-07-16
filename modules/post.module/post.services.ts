@@ -23,14 +23,8 @@ export const searchGloballyOnPostService = async (query: object) => {
     updateBy: 0,
     howToUse: 0,
   });
-  const posts = await Post.find(postFilters, {
-    postBy: 0,
-    updateBy: 0,
-  }).populate("store", {
-    storeName: 1,
-    photoURL: 1,
-  });
-  return { stores, posts };
+  const posts = await getAllPosts(query, false);
+  return { stores, posts: posts };
 };
 //== get Post by name
 export const getPostByPostTitleService = async (postTitle: string) => {
@@ -101,42 +95,7 @@ export const revealedAPostService = async (PostId: Types.ObjectId) => {
   return result;
 };
 
-/* // // get all active Posts
-// export const getAllActivePosts = async (query: any) => {
-//   const { filters, skip, page, limit, sortBy, sortOrder } =
-//     search_filter_and_queries("post", query, ...post_query_fields) as any;
-
-//   // set expiredate to show only active post
-//   const validityCheck = {
-//     expireDate: { $gt: new Date() },
-//   };
-//   filters.$and.push(validityCheck);
-
-//   const result = await Post.find(filters, {
-//     postBy: 0,
-//     updateBy: 0,
-//   })
-//     .populate("store", {
-//       storeName: 1,
-//       photoURL: 1,
-//     })
-//     .sort({ [sortBy]: sortOrder })
-//     .skip(skip)
-//     .limit(limit);
-
-//   const totalDocuments = await Post.countDocuments(filters);
-//   return {
-//     meta: {
-//       page,
-//       limit,
-//       totalDocuments,
-//     },
-//     // data: filters,
-//     data: result,
-//   };
-// }; */
-// get all active Posts
-export const getAllActivePosts = async (query: any) => {
+export const getAllPosts = async (query: any, isActivePostOnly: boolean) => {
   const { filters, skip, page, limit, sortBy, sortOrder } =
     search_filter_and_queries("post", query, ...post_query_fields) as any;
 
@@ -144,7 +103,7 @@ export const getAllActivePosts = async (query: any) => {
   const validityCheck = {
     expireDate: { $gt: new Date() },
   };
-  filters.$and.push(validityCheck);
+  isActivePostOnly && filters.$and.push(validityCheck);
 
   const result = await Post.aggregate([
     {
@@ -232,30 +191,6 @@ export const getAllActivePosts = async (query: any) => {
       totalDocuments: totalDocuments.length
         ? totalDocuments[0].totalDocuments
         : 0,
-    },
-    data: result,
-  };
-};
-
-// get all Posts
-export const getAllPosts = async (query: any) => {
-  const { filters, skip, page, limit, sortBy, sortOrder } =
-    search_filter_and_queries("post", query, ...post_query_fields) as any;
-
-  const result = await Post.find(filters)
-    .populate("store", {
-      storeName: 1,
-      photoURL: 1,
-    })
-    .sort({ [sortBy]: sortOrder })
-    .skip(skip)
-    .limit(limit);
-  const totalDocuments = await Post.countDocuments(filters);
-  return {
-    meta: {
-      page,
-      limit,
-      totalDocuments,
     },
     data: result,
   };
