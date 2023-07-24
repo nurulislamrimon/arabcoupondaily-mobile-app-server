@@ -29,7 +29,19 @@ export const getAllUserService = async (query: any) => {
 export const getUserByEmailService = async (email: string) => {
   const result = await User.findOne(
     { email: email },
-    { password: 0, newPosts: 0 }
+    { password: 0, newPosts: 0, favourite: 0 }
+  );
+  return result;
+};
+//== get user by email address without password
+export const updateMeByEmailService = async (
+  id: Types.ObjectId,
+  payload: object
+) => {
+  const result = await User.updateOne(
+    { _id: id },
+    { $set: payload },
+    { runValidators: true }
   );
   return result;
 };

@@ -32,7 +32,6 @@ const store_model_1 = __importDefault(require("../store.module/store.model"));
 //== get Post by name
 const searchGloballyOnPostService = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { filters: storeFilters } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, "storeName");
-    const { filters: postFilters } = (0, search_filter_and_queries_1.search_filter_and_queries)("post", query, ...constants_1.post_query_fields);
     const stores = yield store_model_1.default.find(storeFilters, {
         postBy: 0,
         updateBy: 0,

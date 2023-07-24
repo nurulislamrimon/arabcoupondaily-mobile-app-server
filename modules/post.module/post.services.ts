@@ -12,11 +12,6 @@ export const searchGloballyOnPostService = async (query: object) => {
     query,
     "storeName"
   ) as any;
-  const { filters: postFilters } = search_filter_and_queries(
-    "post",
-    query,
-    ...post_query_fields
-  ) as any;
 
   const stores = await Store.find(storeFilters, {
     postBy: 0,

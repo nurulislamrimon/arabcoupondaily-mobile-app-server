@@ -17,6 +17,7 @@ const mongoose_2 = require("mongoose");
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const validator_1 = __importDefault(require("validator"));
 const userSchema = new mongoose_2.Schema({
+    photoURL: { type: String, validate: validator_1.default.isURL },
     name: { type: String, required: true },
     email: { type: String, required: true, validate: validator_1.default.isEmail },
     country: { type: String, required: true },

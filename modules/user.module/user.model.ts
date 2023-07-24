@@ -6,6 +6,7 @@ import validator from "validator";
 
 const userSchema = new Schema<IUser>(
   {
+    photoURL: { type: String, validate: validator.isURL },
     name: { type: String, required: true },
     email: { type: String, required: true, validate: validator.isEmail },
     country: { type: String, required: true },

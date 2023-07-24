@@ -130,6 +130,32 @@ export const getAboutMeUserController = async (
     next(error);
   }
 };
+// update me from token
+export const updateAboutMeUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const email = req.body.decoded.email;
+    const isUserExist = await userServices.getUserByEmailService(email);
+
+    if (!isUserExist) {
+      throw new Error("User not found!");
+    }
+    const { newPosts, favourite, ...rest } = req.body;
+    const result = await userServices.updateMeByEmailService(
+      isUserExist._id,
+      rest
+    );
+    res.send({
+      status: "success",
+      data: result,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 // get all user
 export const getAllUserController = async (
   req: Request,

@@ -1,5 +1,6 @@
 import { Types } from "mongoose";
 export default interface IUser {
+  photoURL?: string;
   name: string;
   email: string;
   country: string;

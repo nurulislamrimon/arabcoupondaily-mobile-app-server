@@ -83,6 +83,18 @@ userRouter.put("/verify/:email", userController.verifyAUserController);
  */
 userRouter.get("/me", verify_token_1.verify_token, userController.getAboutMeUserController);
 /**
+ *@api{put}/me update about me
+ *@apiDescription update self
+ *@apiPermission none
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} about me
+ *@apiError 404,400!
+ */
+userRouter.put("/me", verify_token_1.verify_token, userController.updateAboutMeUserController);
+/**
  *@api{get}/ get all user
  *@apiDescription get all users
  *@apiPermission admin and manager

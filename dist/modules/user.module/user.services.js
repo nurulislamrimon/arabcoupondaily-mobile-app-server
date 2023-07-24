@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addAndRemovePostFromFavouriteService = exports.addAndRemoveStoreFromFavouriteService = exports.getFavouritePostService = exports.getFavouriteStoreService = exports.addNewUserService = exports.getUserByIdService = exports.getUserByEmailService = exports.getAllUserService = void 0;
+exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addAndRemovePostFromFavouriteService = exports.addAndRemoveStoreFromFavouriteService = exports.getFavouritePostService = exports.getFavouriteStoreService = exports.addNewUserService = exports.getUserByIdService = exports.updateMeByEmailService = exports.getUserByEmailService = exports.getAllUserService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
@@ -40,10 +40,16 @@ const getAllUserService = (query) => __awaiter(void 0, void 0, void 0, function*
 exports.getAllUserService = getAllUserService;
 //== get user by email address without password
 const getUserByEmailService = (email) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.findOne({ email: email }, { password: 0, newPosts: 0 });
+    const result = yield user_model_1.default.findOne({ email: email }, { password: 0, newPosts: 0, favourite: 0 });
     return result;
 });
 exports.getUserByEmailService = getUserByEmailService;
+//== get user by email address without password
+const updateMeByEmailService = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_model_1.default.updateOne({ _id: id }, { $set: payload }, { runValidators: true });
+    return result;
+});
+exports.updateMeByEmailService = updateMeByEmailService;
 //== get user by id
 const getUserByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.default.findOne({ _id: id }, { password: 0 });

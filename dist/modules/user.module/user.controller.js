@@ -31,8 +31,19 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __rest = (this && this.__rest) || function (s, e) {
+    var t = {};
+    for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p) && e.indexOf(p) < 0)
+        t[p] = s[p];
+    if (s != null && typeof Object.getOwnPropertySymbols === "function")
+        for (var i = 0, p = Object.getOwnPropertySymbols(s); i < p.length; i++) {
+            if (e.indexOf(p[i]) < 0 && Object.prototype.propertyIsEnumerable.call(s, p[i]))
+                t[p[i]] = s[p[i]];
+        }
+    return t;
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.addAndRemovePostFromFavouriteController = exports.addAndRemoveStoreFromFavouriteController = exports.getAllFavouritePostController = exports.getAllFavouriteStoreController = exports.getAllUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
+exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.addAndRemovePostFromFavouriteController = exports.addAndRemoveStoreFromFavouriteController = exports.getAllFavouritePostController = exports.getAllFavouriteStoreController = exports.getAllUserController = exports.updateAboutMeUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
 const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
 const mongoose_1 = require("mongoose");
@@ -155,13 +166,33 @@ const getAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, v
     }
 });
 exports.getAboutMeUserController = getAboutMeUserController;
+// update me from token
+const updateAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const email = req.body.decoded.email;
+        const isUserExist = yield userServices.getUserByEmailService(email);
+        if (!isUserExist) {
+            throw new Error("User not found!");
+        }
+        const _d = req.body, { newPosts, favourite } = _d, rest = __rest(_d, ["newPosts", "favourite"]);
+        const result = yield userServices.updateMeByEmailService(isUserExist._id, rest);
+        res.send({
+            status: "success",
+            data: result,
+        });
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.updateAboutMeUserController = updateAboutMeUserController;
 // get all user
 const getAllUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _d;
+    var _e;
     try {
         const result = yield userServices.getAllUserService(req.query);
         res.send(Object.assign({ status: "success" }, result));
-        console.log(`${(_d = result === null || result === void 0 ? void 0 : result.data) === null || _d === void 0 ? void 0 : _d.length} user responsed!`);
+        console.log(`${(_e = result === null || result === void 0 ? void 0 : result.data) === null || _e === void 0 ? void 0 : _e.length} user responsed!`);
     }
     catch (error) {
         next(error);
@@ -290,11 +321,11 @@ const setNotificationReadedController = (req, res, next) => __awaiter(void 0, vo
 exports.setNotificationReadedController = setNotificationReadedController;
 // get all admin and managers
 const getAllAdminAndManagerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e;
+    var _f;
     try {
         const result = yield userServices.getAllAdminAndManagerService(req.query);
         res.send(Object.assign({ status: "success" }, result));
-        console.log(`notification ${(_e = result === null || result === void 0 ? void 0 : result.data) === null || _e === void 0 ? void 0 : _e.length} is readed!`);
+        console.log(`notification ${(_f = result === null || result === void 0 ? void 0 : result.data) === null || _f === void 0 ? void 0 : _f.length} is readed!`);
     }
     catch (error) {
         next(error);
