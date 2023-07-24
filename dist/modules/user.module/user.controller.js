@@ -169,12 +169,12 @@ exports.getAboutMeUserController = getAboutMeUserController;
 // update me from token
 const updateAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const email = req.body.decoded.email;
-        const isUserExist = yield userServices.getUserByEmailService(email);
+        const userEmail = req.body.decoded.email;
+        const isUserExist = yield userServices.getUserByEmailService(userEmail);
         if (!isUserExist) {
             throw new Error("User not found!");
         }
-        const _d = req.body, { newPosts, favourite } = _d, rest = __rest(_d, ["newPosts", "favourite"]);
+        const _d = req.body, { newPosts, favourite, email } = _d, rest = __rest(_d, ["newPosts", "favourite", "email"]);
         const result = yield userServices.updateMeByEmailService(isUserExist._id, rest);
         res.send({
             status: "success",

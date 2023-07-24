@@ -137,13 +137,13 @@ export const updateAboutMeUserController = async (
   next: NextFunction
 ) => {
   try {
-    const email = req.body.decoded.email;
-    const isUserExist = await userServices.getUserByEmailService(email);
+    const userEmail = req.body.decoded.email;
+    const isUserExist = await userServices.getUserByEmailService(userEmail);
 
     if (!isUserExist) {
       throw new Error("User not found!");
     }
-    const { newPosts, favourite, ...rest } = req.body;
+    const { newPosts, favourite, email, ...rest } = req.body;
     const result = await userServices.updateMeByEmailService(
       isUserExist._id,
       rest
