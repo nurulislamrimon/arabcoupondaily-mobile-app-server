@@ -56,7 +56,7 @@ export const addNewPostController = async (
 };
 
 // get all Posts
-export const getAllPostsController = async (
+export const getAllPostsByAdminController = async (
   req: Request,
   res: Response,
   next: NextFunction

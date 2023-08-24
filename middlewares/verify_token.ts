@@ -12,6 +12,7 @@ export const verify_token = async (
       email: string;
     }
     const authorization = req.headers.authorization;
+
     if (!authorization) {
       throw new Error("Access Forbidden!");
     } else {

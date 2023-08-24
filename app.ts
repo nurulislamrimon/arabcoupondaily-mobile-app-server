@@ -1,4 +1,5 @@
-import express, { Request, Response } from "express";
+import express, { Request, Response, urlencoded } from "express";
+import cors from "cors";
 
 // dot env configuration
 import dotenv from "dotenv";
@@ -7,6 +8,8 @@ dotenv.config();
 const app = express();
 
 app.use(express.json());
+app.use(cors());
+app.use(urlencoded({ extended: true }));
 // home route
 app.get("/", (req: Request, res: Response) => {
   res.send({ status: "success", data: "Welcome to Arabcoupondaily!" });

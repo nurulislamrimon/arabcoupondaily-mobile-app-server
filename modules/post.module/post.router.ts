@@ -75,7 +75,7 @@ postRouter.get(
   "/all",
   verify_token,
   verify_authorization("admin", "manager") as any,
-  PostController.getAllPostsController
+  PostController.getAllPostsByAdminController
 );
 /**
  *@api{put}/:id update a Post

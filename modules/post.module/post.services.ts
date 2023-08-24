@@ -98,6 +98,7 @@ export const getAllPosts = async (query: any, isActivePostOnly: boolean) => {
   const validityCheck = {
     expireDate: { $gt: new Date() },
   };
+  // client side only
   isActivePostOnly && filters.$and.push(validityCheck);
 
   const result = await Post.aggregate([

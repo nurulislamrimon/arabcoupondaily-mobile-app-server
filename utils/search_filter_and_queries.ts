@@ -46,7 +46,15 @@ export const search_filter_and_queries = (
             };
           }
         } else {
-          const valueWithOperator = addFiltersSymbolToOperators(value);
+          let valueWithOperator = addFiltersSymbolToOperators(value);
+          if (field === "expireDate") {
+            valueWithOperator = {
+              [Object.keys(valueWithOperator)[0]]: new Date(
+                Object.values(valueWithOperator)[0] as string
+              ),
+            };
+          }
+
           return {
             [field]: valueWithOperator,
           };
