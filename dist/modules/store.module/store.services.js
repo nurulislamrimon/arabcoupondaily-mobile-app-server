@@ -35,7 +35,7 @@ const getStoreByStoreNameService = (storeName) => __awaiter(void 0, void 0, void
 exports.getStoreByStoreNameService = getStoreByStoreNameService;
 //== get Store by objectId
 const getStoreByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield store_model_1.default.findOne({ _id: id });
+    const result = yield store_model_1.default.findOne({ _id: id }, { postBy: 0, updateBy: 0 });
     return result;
 });
 exports.getStoreByIdService = getStoreByIdService;

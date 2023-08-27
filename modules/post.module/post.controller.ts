@@ -21,6 +21,28 @@ export const searchGloballyOnPostController = async (
     next(error);
   }
 };
+// get a Post controller
+export const getAPostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const postId = new Types.ObjectId(req.params.id);
+    const result = await PostServices.getPostByIdService(postId);
+    if (!result) {
+      throw new Error("Post not found!");
+    } else {
+      res.send({
+        status: "success",
+        data: result,
+      });
+      console.log(`Post ${result._id} is added!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 // add new Post controller
 export const addNewPostController = async (
   req: Request,

@@ -10,7 +10,7 @@ export const getStoreByStoreNameService = async (storeName: string) => {
 };
 //== get Store by objectId
 export const getStoreByIdService = async (id: Types.ObjectId) => {
-  const result = await Store.findOne({ _id: id });
+  const result = await Store.findOne({ _id: id }, { postBy: 0, updateBy: 0 });
   return result;
 };
 

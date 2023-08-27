@@ -34,7 +34,10 @@ export const getPostByPostTitleService = async (postTitle: string) => {
 };
 //== get Post by objectId
 export const getPostByIdService = async (id: Types.ObjectId) => {
-  const result = await Post.findOne({ _id: id }).populate("store", {
+  const result = await Post.findOne(
+    { _id: id },
+    { postBy: 0, updateBy: 0 }
+  ).populate("store", {
     storeName: 1,
     photoURL: 1,
   });
@@ -122,6 +125,7 @@ export const getAllPosts = async (query: any, isActivePostOnly: boolean) => {
         "store.photoURL": 1,
         postTitle: 1,
         postType: 1,
+        externalLink: 1,
         expireDate: 1,
         country: 1,
         isVerified: 1,

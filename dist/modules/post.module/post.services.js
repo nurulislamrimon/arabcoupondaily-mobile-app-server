@@ -52,7 +52,7 @@ const getPostByPostTitleService = (postTitle) => __awaiter(void 0, void 0, void 
 exports.getPostByPostTitleService = getPostByPostTitleService;
 //== get Post by objectId
 const getPostByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield post_model_1.default.findOne({ _id: id }).populate("store", {
+    const result = yield post_model_1.default.findOne({ _id: id }, { postBy: 0, updateBy: 0 }).populate("store", {
         storeName: 1,
         photoURL: 1,
     });
@@ -97,6 +97,7 @@ const getAllPosts = (query, isActivePostOnly) => __awaiter(void 0, void 0, void 
     const validityCheck = {
         expireDate: { $gt: new Date() },
     };
+    // client side only
     isActivePostOnly && filters.$and.push(validityCheck);
     const result = yield post_model_1.default.aggregate([
         {
@@ -119,6 +120,7 @@ const getAllPosts = (query, isActivePostOnly) => __awaiter(void 0, void 0, void 
                 "store.photoURL": 1,
                 postTitle: 1,
                 postType: 1,
+                externalLink: 1,
                 expireDate: 1,
                 country: 1,
                 isVerified: 1,

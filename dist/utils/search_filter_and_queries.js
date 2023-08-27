@@ -56,7 +56,12 @@ const search_filter_and_queries = (modelName, query, ...fields) => {
                     }
                 }
                 else {
-                    const valueWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(value);
+                    let valueWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(value);
+                    if (field === "expireDate") {
+                        valueWithOperator = {
+                            [Object.keys(valueWithOperator)[0]]: new Date(Object.values(valueWithOperator)[0]),
+                        };
+                    }
                     return {
                         [field]: valueWithOperator,
                     };

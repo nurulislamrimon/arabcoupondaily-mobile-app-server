@@ -35,6 +35,18 @@ storeRouter.get(
   verify_authorization("admin", "manager") as any,
   storeController.getAllStoresController
 );
+/**
+ *@api{get}/:id get a store by id
+ *@apiDescription get a store by id
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam ObjectId store
+ *@apiQuery none
+ *@apiSuccess {Object} store.
+ *@apiError store not found
+ */
+storeRouter.get("/:id", storeController.getAStoreController);
 
 /**
  *@api{post}/add add new store

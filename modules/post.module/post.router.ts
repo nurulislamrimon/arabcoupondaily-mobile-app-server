@@ -16,6 +16,19 @@ const postRouter = express.Router();
  *@apiError 401, 403 unauthorized & forbidden
  */
 postRouter.get("/", PostController.getAllActivePostsController);
+
+/**
+ *@api{GET}/:id get a Post by id
+ *@apiDescription get a post by id
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam ObjectId
+ *@apiQuery none
+ *@apiSuccess {Object} get post.
+ *@apiError post not found
+ */
+postRouter.get("/:id", PostController.getAPostController);
 /**
  *@api{get}/search/:key make a global search on post
  *@apiDescription get all Posts and others
@@ -27,6 +40,7 @@ postRouter.get("/", PostController.getAllActivePostsController);
  *@apiSuccess {Array of Object} all Posts and others.
  *@apiError not found
  */
+
 postRouter.get("/search", PostController.searchGloballyOnPostController);
 
 /**

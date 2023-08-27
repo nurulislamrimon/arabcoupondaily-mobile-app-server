@@ -44,6 +44,18 @@ const postRouter = express_1.default.Router();
  */
 postRouter.get("/", PostController.getAllActivePostsController);
 /**
+ *@api{GET}/:id get a Post by id
+ *@apiDescription get a post by id
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam ObjectId
+ *@apiQuery none
+ *@apiSuccess {Object} get post.
+ *@apiError post not found
+ */
+postRouter.get("/:id", PostController.getAPostController);
+/**
  *@api{get}/search/:key make a global search on post
  *@apiDescription get all Posts and others
  *@apiPermission none
@@ -90,7 +102,7 @@ postRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.
  *@apiSuccess {Array of Object} all Posts.
  *@apiError 401, 403 unauthorized & forbidden
  */
-postRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.getAllPostsController);
+postRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.getAllPostsByAdminController);
 /**
  *@api{put}/:id update a Post
  *@apiDescription update a Post by id with validation

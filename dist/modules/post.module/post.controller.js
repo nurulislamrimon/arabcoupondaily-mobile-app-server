@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsController = exports.addNewPostController = exports.searchGloballyOnPostController = void 0;
+exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsByAdminController = exports.addNewPostController = exports.getAPostController = exports.searchGloballyOnPostController = void 0;
 const PostServices = __importStar(require("./post.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
@@ -52,6 +52,27 @@ const searchGloballyOnPostController = (req, res, next) => __awaiter(void 0, voi
     }
 });
 exports.searchGloballyOnPostController = searchGloballyOnPostController;
+// get a Post controller
+const getAPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const postId = new mongoose_1.Types.ObjectId(req.params.id);
+        const result = yield PostServices.getPostByIdService(postId);
+        if (!result) {
+            throw new Error("Post not found!");
+        }
+        else {
+            res.send({
+                status: "success",
+                data: result,
+            });
+            console.log(`Post ${result._id} is added!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAPostController = getAPostController;
 // add new Post controller
 const addNewPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -81,7 +102,7 @@ const addNewPostController = (req, res, next) => __awaiter(void 0, void 0, void 
 });
 exports.addNewPostController = addNewPostController;
 // get all Posts
-const getAllPostsController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const getAllPostsByAdminController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
     try {
         const result = yield PostServices.getAllPosts(req.query, false);
@@ -92,7 +113,7 @@ const getAllPostsController = (req, res, next) => __awaiter(void 0, void 0, void
         next(error);
     }
 });
-exports.getAllPostsController = getAllPostsController;
+exports.getAllPostsByAdminController = getAllPostsByAdminController;
 // get all active Posts
 const getAllActivePostsController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _b;

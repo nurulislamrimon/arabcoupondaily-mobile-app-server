@@ -21,6 +21,29 @@ export const getAllActiveStoresController = async (
   }
 };
 // add new store controller
+export const getAStoreController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const storeId = new Types.ObjectId(req.params.id);
+
+    const result = await storeServices.getStoreByIdService(storeId);
+    if (!result) {
+      throw new Error("Post not found!");
+    } else {
+      res.send({
+        status: "success",
+        data: result,
+      });
+      console.log(`Store ${result._id} is added!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+// add new store controller
 export const addNewStoreController = async (
   req: Request,
   res: Response,
