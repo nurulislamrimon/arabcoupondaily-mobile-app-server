@@ -18,6 +18,24 @@ const postRouter = express.Router();
 postRouter.get("/", PostController.getAllActivePostsController);
 
 /**
+ *@api{get}/all get all Post
+ *@apiDescription get all Posts
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery query{name & others Properties},limit,sort,page
+ *@apiSuccess {Array of Object} all Posts.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+postRouter.get(
+  "/all",
+  verify_token,
+  verify_authorization("admin", "manager") as any,
+  PostController.getAllPostsByAdminController
+);
+
+/**
  *@api{GET}/:id get a Post by id
  *@apiDescription get a post by id
  *@apiPermission none
@@ -74,23 +92,6 @@ postRouter.post(
   PostController.addNewPostController
 );
 
-/**
- *@api{get}/all get all Post
- *@apiDescription get all Posts
- *@apiPermission admin and manager
- *@apiHeader token
- *@apiBody none
- *@apiParam none
- *@apiQuery query{name & others Properties},limit,sort,page
- *@apiSuccess {Array of Object} all Posts.
- *@apiError 401, 403 unauthorized & forbidden
- */
-postRouter.get(
-  "/all",
-  verify_token,
-  verify_authorization("admin", "manager") as any,
-  PostController.getAllPostsByAdminController
-);
 /**
  *@api{put}/:id update a Post
  *@apiDescription update a Post by id with validation
