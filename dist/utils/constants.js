@@ -4,7 +4,7 @@ exports.exclude_fields = exports.user_query_fields = exports.store_query_fields 
 exports.post_query_fields = [
     "_id",
     "postTitle",
-    "store.storeName",
+    "storeName",
     "store._id",
     "postType",
     "country",

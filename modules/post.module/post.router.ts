@@ -34,19 +34,6 @@ postRouter.get(
   verify_authorization("admin", "manager") as any,
   PostController.getAllPostsByAdminController
 );
-
-/**
- *@api{GET}/:id get a Post by id
- *@apiDescription get a post by id
- *@apiPermission none
- *@apiHeader none
- *@apiBody none
- *@apiParam ObjectId
- *@apiQuery none
- *@apiSuccess {Object} get post.
- *@apiError post not found
- */
-postRouter.get("/:id", PostController.getAPostController);
 /**
  *@api{get}/search/:key make a global search on post
  *@apiDescription get all Posts and others
@@ -59,7 +46,20 @@ postRouter.get("/:id", PostController.getAPostController);
  *@apiError not found
  */
 
-postRouter.get("/search", PostController.searchGloballyOnPostController);
+ postRouter.get("/search", PostController.searchGloballyOnPostController);
+/**
+ *@api{GET}/:id get a Post by id
+ *@apiDescription get a post by id
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam ObjectId
+ *@apiQuery none
+ *@apiSuccess {Object} get post.
+ *@apiError post not found
+ */
+postRouter.get("/:id", PostController.getAPostController);
+
 
 /**
  *@api{put}/revealed/:id update a Post
