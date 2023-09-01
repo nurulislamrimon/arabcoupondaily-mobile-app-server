@@ -1,7 +1,7 @@
 export const post_query_fields = [
   "_id",
   "postTitle",
-  "store.storeName",
+  "storeName",
   "store._id",
   "postType",
   "country",
