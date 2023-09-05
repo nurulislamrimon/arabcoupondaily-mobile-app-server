@@ -36,6 +36,7 @@ const user_router_1 = __importDefault(require("./modules/user.module/user.router
 const store_router_1 = __importDefault(require("./modules/store.module/store.router"));
 const post_router_1 = __importDefault(require("./modules/post.module/post.router"));
 const carousel_router_1 = __importDefault(require("./modules/carousel.module/carousel.router"));
+const Contact_router_1 = __importDefault(require("./modules/Contact.module/Contact.router"));
 // database connection======
 (0, dbconnection_1.default)();
 // routes=========
@@ -43,6 +44,7 @@ app_1.default.use("/api/v1/user", user_router_1.default);
 app_1.default.use("/api/v1/store", store_router_1.default);
 app_1.default.use("/api/v1/post", post_router_1.default);
 app_1.default.use("/api/v1/carousel", carousel_router_1.default);
+app_1.default.use("/api/v1/contact", Contact_router_1.default);
 // error handler======
 app_1.default.use(error_handler.routeNotFound);
 app_1.default.use(error_handler.allErrorHandler);
