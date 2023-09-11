@@ -1,9 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
 import { getUserByEmailService } from "../modules/user.module/user.services";
-////////////]=========================
-import admin from "firebase-admin";
-import serviceAccount from "../mena-coupon-firebase-adminsdk.json";
 
 export const verify_token = async (
   req: Request,
@@ -21,25 +18,11 @@ export const verify_token = async (
     } else {
       const token = authorization.split(" ")[1];
 
-      // ==============================verify firebase token
-
-      admin.initializeApp({
-        credential: admin.credential.cert(serviceAccount as unknown as string),
-      });
-      try {
-        const decodedToken = await admin.auth().verifyIdToken(token);
-        console.log(decodedToken);
-      } catch (error) {
-        console.log(error);
-      }
-
-      // ==============================
-
       const secret = process.env.secret_key || "";
       const payload = jwt.verify(token, secret) as IPayload;
 
       const email = payload.email;
-      const user = await getUserByEmailService(email);
+      const user = await getUserByEmailService(email as string);
       if (!user?.isVerified) {
         throw new Error("Unauthorized access!");
       } else {

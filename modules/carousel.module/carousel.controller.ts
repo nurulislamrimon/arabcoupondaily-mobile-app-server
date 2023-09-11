@@ -17,7 +17,7 @@ export const getCarouselController = async (
       status: "success",
       data: result,
     });
-    console.log(`carousel ${result} is added!`);
+    console.log(`carousel ${result?._id} is added!`);
   } catch (error) {
     next(error);
   }
@@ -64,7 +64,7 @@ export const addNewCarouselController = async (
         status: "success",
         data: result,
       });
-      console.log(`carousel ${result} is added!`);
+      console.log(`carousel ${result?._id} is added!`);
     }
   } catch (error) {
     next(error);

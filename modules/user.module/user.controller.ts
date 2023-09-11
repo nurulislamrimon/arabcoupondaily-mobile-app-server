@@ -4,6 +4,8 @@ import { generate_token } from "../../utils/generate_token";
 import { Types } from "mongoose";
 import { getStoreByIdService } from "../store.module/store.services";
 import { getPostByIdService } from "../post.module/post.services";
+import verifyGoogleToken from "../../utils/verifyGoogleToken";
+
 // signup controller
 export const addNewUserController = async (
   req: Request,
@@ -17,21 +19,34 @@ export const addNewUserController = async (
       !userData.name ||
       !userData.email ||
       !userData.country ||
-      (!userData.provider?.name && !userData.password)
+      (!userData.accessToken && !userData.password)
     ) {
       throw new Error("Please enter required information!");
-    } else if (
-      existUser?.isVerified ||
-      (existUser && !existUser?.isVerified && !userData.provider?.name)
-    ) {
+    } else if (existUser?.isVerified) {
       throw new Error("User already exist!");
     } else {
       let token;
-      if (userData.password) {
-        token = generate_token(userData);
+      if (userData?.accessToken) {
+        const payload = await verifyGoogleToken(userData?.accessToken);
+        if (payload?.email && payload.email === userData?.email) {
+          userData.uid = payload.uid;
+          token = generate_token({ email: payload?.email });
+        } else {
+          throw new Error(
+            "Please make sure your email and access token belongs to the same user!"
+          );
+        }
       }
       await userServices.deleteAUserByEmailService(existUser?.email || "");
       const user = await userServices.addNewUserService(userData);
+
+      const refreshToken = generate_token(
+        { email: userData?.email },
+        "365d",
+        process.env.refresh_key
+      );
+
+      res.cookie("refreshToken", refreshToken);
 
       res.send({
         status: "success",
@@ -51,7 +66,7 @@ export const loginUserController = async (
   next: NextFunction
 ) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, accessToken } = req.body;
     const user = await userServices.getUserByEmailService(email);
     if (!user) {
       throw new Error("User not found, Please 'sign up' first!");
@@ -68,10 +83,23 @@ export const loginUserController = async (
         } else {
           throw new Error("Incorrect email or password!");
         }
-      } else if (!user.provider?.name) {
+      } else if (accessToken) {
+        const payload = await verifyGoogleToken(accessToken);
+        if (payload.email && email === payload.email) {
+          token = generate_token({ email: payload?.email });
+        } else {
+          throw new Error("Email and access token must contain the same user!");
+        }
+      } else {
         throw new Error("Please provide a valid credential!");
       }
+      const refreshToken = generate_token(
+        { email },
+        "365d",
+        process.env.refresh_key
+      );
 
+      res.cookie("refreshToken", refreshToken);
       res.send({
         status: "success",
         data: { user, token },

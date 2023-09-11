@@ -31,7 +31,7 @@ const userSchema = new Schema<IUser>(
     phoneNumber: String,
     password: String,
     confirmPassword: String,
-    provider: { name: String },
+    uid: String,
     favourite: {
       stores: [{ type: Types.ObjectId, ref: "Store" }],
       posts: [{ type: Types.ObjectId, ref: "Post" }],
@@ -43,7 +43,7 @@ const userSchema = new Schema<IUser>(
 );
 
 userSchema.pre("validate", async function (next) {
-  if (this.provider?.name) {
+  if (this.uid) {
     this.isVerified = true;
     next();
   } else if (this.password) {

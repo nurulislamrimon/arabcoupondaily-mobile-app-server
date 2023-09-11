@@ -15,7 +15,7 @@ export default interface IUser {
   phoneNumber?: string;
   password?: string;
   confirmPassword?: string;
-  provider?: { name: string; userId: string };
+  uid?: string;
   favourite: {
     stores: Types.ObjectId[];
     posts: Types.ObjectId[];
