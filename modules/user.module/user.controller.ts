@@ -66,7 +66,7 @@ export const loginUserController = async (
     const { country, phoneNumber } = req.body;
     const existUser = await userServices.getUserByEmailService(email);
     let newUser;
-    let token;
+    let accessToken;
     if (!existUser) {
       newUser = await userServices.addNewUserService({
         email,
@@ -99,19 +99,19 @@ export const loginUserController = async (
       // } else {
       //   throw new Error("Please provide a valid credential!");
       // }
-      // token = generate_token({ email: email });
-      // const refreshToken = generate_token(
-      //   { email: email },
-      //   "365d",
-      //   process.env.refresh_key
-      // );
+      accessToken = generate_token({ email: email });
+      const refreshToken = generate_token(
+        { email: email },
+        "365d",
+        process.env.refresh_key
+      );
 
-      // res.cookie("refreshToken", refreshToken);
+      res.cookie("refreshToken", refreshToken);
       res.send({
         status: "success",
-        data: { user: existUser || newUser, token },
+        data: { user: existUser || newUser, accessToken },
       });
-      console.log(`user ${existUser.email} is responsed!`);
+      console.log(`user ${existUser._id} is responsed!`);
     }
   } catch (error) {
     next(error);
