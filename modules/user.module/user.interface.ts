@@ -13,8 +13,8 @@ export default interface IUser {
     }
   ];
   phoneNumber?: string;
-  password?: string;
-  confirmPassword?: string;
+  // password?: string;
+  // confirmPassword?: string;
   uid?: string;
   favourite: {
     stores: Types.ObjectId[];

@@ -53,7 +53,7 @@ export const getUserByIdService = async (id: Types.ObjectId) => {
 //== create new user
 export const addNewUserService = async (user: object) => {
   const result = await User.create(user).then((data) => {
-    data.password = undefined;
+    // data.password = undefined;
     return data;
   });
   return result;

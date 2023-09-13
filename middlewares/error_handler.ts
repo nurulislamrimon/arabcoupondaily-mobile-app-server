@@ -17,7 +17,7 @@ export const routeNotFound = (
     next(error);
   }
 };
-export const allErrorHandler = (
+export const globalErrorHandler = (
   err: Error,
   req: Request,
   res: Response,
@@ -26,7 +26,14 @@ export const allErrorHandler = (
   if (res.headersSent) {
     throw new Error("Something went wrong!");
   } else {
-    if (err) {
+    if (typeof err === "string") {
+      res.status(error_code_from_message(err)).send({
+        status: "failed",
+        message: err,
+        stack: process.env.NODE_ENV !== "development" ? "" : err,
+      });
+      console.log(colors.red(err));
+    } else if (err) {
       res.status(error_code_from_message(err.message)).send({
         status: "failed",
         message: err.message,
@@ -39,7 +46,7 @@ export const allErrorHandler = (
         status: "failed",
         message: "Internal server error!",
       });
-      console.log(colors.red("Internal server error!"));
+      console.log(colors.red(err));
     }
   }
 };

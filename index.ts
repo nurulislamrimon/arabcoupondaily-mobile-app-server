@@ -29,7 +29,7 @@ app.use("/api/v1/contact", contactRouter);
 // error handler======
 app.use(error_handler.routeNotFound);
 
-app.use(error_handler.allErrorHandler);
+app.use(error_handler.globalErrorHandler);
 
 // app listener
 app.listen(process.env.port, () => {

@@ -2,22 +2,23 @@ import express from "express";
 import * as userController from "./user.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
+import verifyGoogleToken from "../../middlewares/verify_google_token";
 
 const userRouter = express.Router();
 
-/**
- *@api{post}/signup signup a new user
- *@apiDescription signup using password or provider
- *@apiPermission none
- *@apiHeader none
- *@apiBody name,email,country, (password,confirmPassword||provider)
- *@apiParam none
- *@apiQuery none
- *@apiSuccess {Object} if password then user info and token else only user info.
- *@apiError user already exist!
- *@apiError password not found!
- */
-userRouter.post("/signup", userController.addNewUserController);
+// /**
+//  *@api{post}/signup signup a new user
+//  *@apiDescription signup using password or provider
+//  *@apiPermission none
+//  *@apiHeader none
+//  *@apiBody name,email,country, (password,confirmPassword||provider)
+//  *@apiParam none
+//  *@apiQuery none
+//  *@apiSuccess {Object} if password then user info and token else only user info.
+//  *@apiError user already exist!
+//  *@apiError password not found!
+//  */
+// userRouter.post("/signup", userController.addNewUserController);
 
 /**
  *@api{post}/login login an existing user
@@ -31,7 +32,11 @@ userRouter.post("/signup", userController.addNewUserController);
  *@apiError user not found, Please signup first!
  *@apiError email or password incorrect!
  */
-userRouter.post("/login", userController.loginUserController);
+userRouter.post(
+  "/login",
+  verifyGoogleToken,
+  userController.loginUserController
+);
 
 /**
  *@api{put}/verify/:email verify a user

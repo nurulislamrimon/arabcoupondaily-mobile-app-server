@@ -14,9 +14,10 @@ const userSchema = new Schema<IUser>(
     role: {
       type: String,
       enum: {
-        values: ["admin", "manager"],
+        values: ["user"],
         message: `{VALUE} is not a valid role!`,
       },
+      default: "user",
     },
     newPosts: [
       {
@@ -29,8 +30,8 @@ const userSchema = new Schema<IUser>(
       },
     ],
     phoneNumber: String,
-    password: String,
-    confirmPassword: String,
+    // password: String,
+    // confirmPassword: String,
     uid: String,
     favourite: {
       stores: [{ type: Types.ObjectId, ref: "Store" }],
@@ -46,21 +47,24 @@ userSchema.pre("validate", async function (next) {
   if (this.uid) {
     this.isVerified = true;
     next();
-  } else if (this.password) {
-    const isStrongPassword = /[a-zA-Z]/g.test(this.password);
-    if (!isStrongPassword) {
-      throw new Error("Please provide a strong password!");
-    } else if (this.password === this.confirmPassword) {
-      this.password = await bcrypt.hash(this.password, 10);
-      this.confirmPassword = undefined;
-      next();
-    } else {
-      throw new Error(
-        "Please make sure password and confirm password are same!"
-      );
-    }
-  } else {
-    throw new Error("Password not found!");
+  }
+  // ===========for email password login=========
+  // else if (this.password) {
+  //   const isStrongPassword = /[a-zA-Z]/g.test(this.password);
+  //   if (!isStrongPassword) {
+  //     throw new Error("Please provide a strong password!");
+  //   } else if (this.password === this.confirmPassword) {
+  //     this.password = await bcrypt.hash(this.password, 10);
+  //     this.confirmPassword = undefined;
+  //     next();
+  //   } else {
+  //     throw new Error(
+  //       "Please make sure password and confirm password are same!"
+  //     );
+  //   }
+  // }
+  else {
+    throw new Error("UID not found!");
   }
 });
 const User = model<IUser>("User", userSchema);
