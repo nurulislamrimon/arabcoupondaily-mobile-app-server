@@ -2,6 +2,7 @@ import express from "express";
 import * as carouselController from "./carousel.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
+import { roles } from "../../utils/constants/authorization_roles";
 
 const carouselRouter = express.Router();
 
@@ -31,7 +32,7 @@ carouselRouter.get("/", carouselController.getCarouselController);
 carouselRouter.post(
   "/add",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   carouselController.addNewCarouselController
 );
 

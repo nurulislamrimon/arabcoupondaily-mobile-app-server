@@ -4,7 +4,7 @@ import { generate_token } from "../../utils/generate_token";
 import { Types } from "mongoose";
 import { getStoreByIdService } from "../store.module/store.services";
 import { getPostByIdService } from "../post.module/post.services";
-import verifyGoogleToken from "../../utils/verifyGoogleToken";
+// import verifyGoogleToken from "../../utils/verifyGoogleToken";
 
 // signup controller
 // export const addNewUserController = async (
@@ -357,96 +357,96 @@ export const setNotificationReadedController = async (
     next(error);
   }
 };
-// get all admin and managers
-export const getAllAdminAndManagerController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const result = await userServices.getAllAdminAndManagerService(req.query);
-    res.send({
-      status: "success",
-      ...result,
-    });
-    console.log(`notification ${result?.data?.length} is readed!`);
-  } catch (error) {
-    next(error);
-  }
-};
-// add an admin
-export const addNewAdminController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const id = new Types.ObjectId(req.params.id);
-    const user = (await userServices.getUserByIdService(id)) as any;
-    if (!user) {
-      throw new Error("User not found!");
-    } else if (user.role === "admin") {
-      throw new Error("User already admin!");
-    } else {
-      const result = await userServices.addNewAdminService(id);
-      res.send({
-        status: "success",
-        data: result,
-      });
-      console.log(`notification ${result} is readed!`);
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-// remove an admin
-export const removeAnAdminController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const id = new Types.ObjectId(req.params.id);
-    const user = (await userServices.getUserByIdService(id)) as any;
+// // get all admin and managers
+// export const getAllAdminAndManagerController = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const result = await userServices.getAllAdminAndManagerService(req.query);
+//     res.send({
+//       status: "success",
+//       ...result,
+//     });
+//     console.log(`notification ${result?.data?.length} is readed!`);
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+// // add an admin
+// export const addNewAdminController = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const id = new Types.ObjectId(req.params.id);
+//     const user = (await userServices.getUserByIdService(id)) as any;
+//     if (!user) {
+//       throw new Error("User not found!");
+//     } else if (user.role === "admin") {
+//       throw new Error("User already admin!");
+//     } else {
+//       const result = await userServices.addNewAdminService(id);
+//       res.send({
+//         status: "success",
+//         data: result,
+//       });
+//       console.log(`notification ${result} is readed!`);
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+// // remove an admin
+// export const removeAnAdminController = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const id = new Types.ObjectId(req.params.id);
+//     const user = (await userServices.getUserByIdService(id)) as any;
 
-    if (!user) {
-      throw new Error("User not found!");
-    } else if (user.role !== "admin" && user.role !== "manager") {
-      throw new Error("User is not a manager or admin!");
-    } else {
-      const result = await userServices.removeAnAdminService(id);
-      res.send({
-        status: "success",
-        data: result,
-      });
-      console.log(`notification ${result} is readed!`);
-    }
-  } catch (error) {
-    next(error);
-  }
-};
-// add a manager
-export const addNewManagerController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const id = new Types.ObjectId(req.params.id);
-    const user = (await userServices.getUserByIdService(id)) as any;
-    if (!user) {
-      throw new Error("User not found!");
-    } else if (user.role === "manager") {
-      throw new Error("User already manager!");
-    } else {
-      const result = await userServices.addNewManagerService(id);
-      res.send({
-        status: "success",
-        data: result,
-      });
-      console.log(`notification ${result} is readed!`);
-    }
-  } catch (error) {
-    next(error);
-  }
-};
+//     if (!user) {
+//       throw new Error("User not found!");
+//     } else if (user.role !== "admin" && user.role !== "manager") {
+//       throw new Error("User is not a manager or admin!");
+//     } else {
+//       const result = await userServices.removeAnAdminService(id);
+//       res.send({
+//         status: "success",
+//         data: result,
+//       });
+//       console.log(`notification ${result} is readed!`);
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// };
+// // add a manager
+// export const addNewManagerController = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const id = new Types.ObjectId(req.params.id);
+//     const user = (await userServices.getUserByIdService(id)) as any;
+//     if (!user) {
+//       throw new Error("User not found!");
+//     } else if (user.role === "manager") {
+//       throw new Error("User already manager!");
+//     } else {
+//       const result = await userServices.addNewManagerService(id);
+//       res.send({
+//         status: "success",
+//         data: result,
+//       });
+//       console.log(`notification ${result} is readed!`);
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// };

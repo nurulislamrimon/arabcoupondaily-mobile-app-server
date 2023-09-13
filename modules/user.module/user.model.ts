@@ -1,7 +1,7 @@
 import { Types } from "mongoose";
 import { Schema, model } from "mongoose";
 import IUser from "./user.interface";
-import bcrypt from "bcrypt";
+// import bcrypt from "bcrypt";
 import validator from "validator";
 
 const userSchema = new Schema<IUser>(
@@ -11,14 +11,7 @@ const userSchema = new Schema<IUser>(
     email: { type: String, required: true, validate: validator.isEmail },
     country: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
-    role: {
-      type: String,
-      enum: {
-        values: ["user"],
-        message: `{VALUE} is not a valid role!`,
-      },
-      default: "user",
-    },
+
     newPosts: [
       {
         moreAboutPost: { type: Types.ObjectId, ref: "Post" },

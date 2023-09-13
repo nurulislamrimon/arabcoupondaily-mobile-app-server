@@ -3,6 +3,7 @@ import * as userController from "./user.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
 import verifyGoogleToken from "../../middlewares/verify_google_token";
+import { roles } from "../../utils/constants/authorization_roles";
 
 const userRouter = express.Router();
 
@@ -89,7 +90,7 @@ userRouter.put("/me", verify_token, userController.updateAboutMeUserController);
 userRouter.get(
   "/",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   userController.getAllUserController
 );
 
@@ -215,73 +216,73 @@ userRouter.put(
 // ===================================================
 // === =================admin==================== ===
 // ===================================================
-/**
- *@api{get}/admin get all admin and managers
- *@apiDescription get all admin and managers
- *@apiPermission admin
- *@apiHeader access token with bearer
- *@apiBody none
- *@apiParam none
- *@apiQuery none
- *@apiSuccess {Array of Object} get all admin and manager object
- *@apiError 401 & 403
- */
-userRouter.get(
-  "/admin",
-  verify_token,
-  verify_authorization("admin", "manager") as any,
-  userController.getAllAdminAndManagerController
-);
-/**
- *@api{put}/admin/add/:id add new admin
- *@apiDescription add a admin by using user ObjectId
- *@apiPermission admin
- *@apiHeader access token with bearer
- *@apiBody none
- *@apiParam ObjectId
- *@apiQuery none
- *@apiSuccess {Object} update info
- *@apiError 401 & 403
- */
-userRouter.put(
-  "/admin/add/:id",
-  verify_token,
-  verify_authorization("admin") as any,
-  userController.addNewAdminController
-);
-/**
- *@api{put}/admin/remove/:id remove an admin
- *@apiDescription remove and admin by using user ObjectId
- *@apiPermission admin
- *@apiHeader access token with bearer
- *@apiBody none
- *@apiParam ObjectId
- *@apiQuery none
- *@apiSuccess {Object} update info
- *@apiError 401 & 403
- */
-userRouter.put(
-  "/admin/remove/:id",
-  verify_token,
-  verify_authorization("admin") as any,
-  userController.removeAnAdminController
-);
-/**
- *@api{put}/manager/add/:id add an manager
- *@apiDescription add a manager by using user ObjectId
- *@apiPermission admin
- *@apiHeader access token with bearer
- *@apiBody none
- *@apiParam ObjectId
- *@apiQuery none
- *@apiSuccess {Object} update info
- *@apiError 401 & 403
- */
-userRouter.put(
-  "/manager/add/:id",
-  verify_token,
-  verify_authorization("admin") as any,
-  userController.addNewManagerController
-);
+// /**
+//  *@api{get}/admin get all admin and managers
+//  *@apiDescription get all admin and managers
+//  *@apiPermission admin
+//  *@apiHeader access token with bearer
+//  *@apiBody none
+//  *@apiParam none
+//  *@apiQuery none
+//  *@apiSuccess {Array of Object} get all admin and manager object
+//  *@apiError 401 & 403
+//  */
+// userRouter.get(
+//   "/admin",
+//   verify_token,
+//   verify_authorization(roles.SUPER_ADMIN,roles.ADMIN,roles.MANAGER) as any,
+//   userController.getAllAdminAndManagerController
+// );
+// /**
+//  *@api{put}/admin/add/:id add new admin
+//  *@apiDescription add a admin by using user ObjectId
+//  *@apiPermission admin
+//  *@apiHeader access token with bearer
+//  *@apiBody none
+//  *@apiParam ObjectId
+//  *@apiQuery none
+//  *@apiSuccess {Object} update info
+//  *@apiError 401 & 403
+//  */
+// userRouter.put(
+//   "/admin/add/:id",
+//   verify_token,
+//   verify_authorization(roles.SUPER_ADMIN,roles.ADMIN) as any,
+//   userController.addNewAdminController
+// );
+// /**
+//  *@api{put}/admin/remove/:id remove an admin
+//  *@apiDescription remove and admin by using user ObjectId
+//  *@apiPermission admin
+//  *@apiHeader access token with bearer
+//  *@apiBody none
+//  *@apiParam ObjectId
+//  *@apiQuery none
+//  *@apiSuccess {Object} update info
+//  *@apiError 401 & 403
+//  */
+// userRouter.put(
+//   "/admin/remove/:id",
+//   verify_token,
+//   verify_authorization(roles.SUPER_ADMIN,roles.ADMIN) as any,
+//   userController.removeAnAdminController
+// );
+// /**
+//  *@api{put}/manager/add/:id add an manager
+//  *@apiDescription add a manager by using user ObjectId
+//  *@apiPermission admin
+//  *@apiHeader access token with bearer
+//  *@apiBody none
+//  *@apiParam ObjectId
+//  *@apiQuery none
+//  *@apiSuccess {Object} update info
+//  *@apiError 401 & 403
+//  */
+// userRouter.put(
+//   "/manager/add/:id",
+//   verify_token,
+//   verify_authorization(roles.SUPER_ADMIN,roles.ADMIN) as any,
+//   userController.addNewManagerController
+// );
 
 export default userRouter;

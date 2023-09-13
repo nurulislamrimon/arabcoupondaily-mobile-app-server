@@ -2,6 +2,7 @@ import express from "express";
 import * as ContactController from "./Contact.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
+import { roles } from "../../utils/constants/authorization_roles";
 
 const contactRouter = express.Router();
 
@@ -31,7 +32,7 @@ contactRouter.get("/", ContactController.getContactController);
 contactRouter.post(
   "/add",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   ContactController.addNewContactController
 );
 

@@ -5,7 +5,6 @@ export default interface IUser {
   email: string;
   country: string;
   isVerified: boolean;
-  role?: string;
   newPosts: [
     {
       moreAboutPost: Types.ObjectId;

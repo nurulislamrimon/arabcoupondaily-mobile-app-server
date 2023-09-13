@@ -2,6 +2,7 @@ import express from "express";
 import * as PostController from "./post.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
+import { roles } from "../../utils/constants/authorization_roles";
 
 const postRouter = express.Router();
 /**
@@ -31,7 +32,7 @@ postRouter.get("/", PostController.getAllActivePostsController);
 postRouter.get(
   "/all",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   PostController.getAllPostsByAdminController
 );
 /**
@@ -46,7 +47,7 @@ postRouter.get(
  *@apiError not found
  */
 
- postRouter.get("/search", PostController.searchGloballyOnPostController);
+postRouter.get("/search", PostController.searchGloballyOnPostController);
 /**
  *@api{GET}/:id get a Post by id
  *@apiDescription get a post by id
@@ -59,7 +60,6 @@ postRouter.get(
  *@apiError post not found
  */
 postRouter.get("/:id", PostController.getAPostController);
-
 
 /**
  *@api{put}/revealed/:id update a Post
@@ -88,7 +88,7 @@ postRouter.put("/revealed/:id", PostController.revealedAPostController);
 postRouter.post(
   "/add",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   PostController.addNewPostController
 );
 
@@ -106,7 +106,7 @@ postRouter.post(
 postRouter.put(
   "/:id",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   PostController.updateAPostController
 );
 /**
@@ -123,7 +123,7 @@ postRouter.put(
 postRouter.delete(
   "/:id",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   PostController.deleteAPostController
 );
 

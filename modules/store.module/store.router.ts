@@ -2,6 +2,7 @@ import express from "express";
 import * as storeController from "./store.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
+import { roles } from "../../utils/constants/authorization_roles";
 
 const storeRouter = express.Router();
 
@@ -32,7 +33,7 @@ storeRouter.get("/", storeController.getAllActiveStoresController);
 storeRouter.get(
   "/all",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   storeController.getAllStoresController
 );
 /**
@@ -62,7 +63,7 @@ storeRouter.get("/:id", storeController.getAStoreController);
 storeRouter.post(
   "/add",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   storeController.addNewStoreController
 );
 
@@ -80,7 +81,7 @@ storeRouter.post(
 storeRouter.put(
   "/:id",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   storeController.updateAStoreController
 );
 /**
@@ -97,7 +98,7 @@ storeRouter.put(
 storeRouter.delete(
   "/:id",
   verify_token,
-  verify_authorization("admin", "manager") as any,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
   storeController.deleteAStoreController
 );
 

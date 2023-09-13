@@ -10,6 +10,7 @@ import storeRouter from "./modules/store.module/store.router";
 import postRouter from "./modules/post.module/post.router";
 import carouselRouter from "./modules/carousel.module/carousel.router";
 import contactRouter from "./modules/Contact.module/Contact.router";
+import administratorRouter from "./modules/administrators.module/administrators.router";
 
 // database connection======
 dbconnection();
@@ -25,6 +26,8 @@ app.use("/api/v1/post", postRouter);
 app.use("/api/v1/carousel", carouselRouter);
 
 app.use("/api/v1/contact", contactRouter);
+
+app.use("/api/v1/administrator", administratorRouter);
 
 // error handler======
 app.use(error_handler.routeNotFound);
