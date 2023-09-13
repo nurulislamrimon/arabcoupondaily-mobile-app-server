@@ -1,5 +1,5 @@
-const SUPER_ADMIN = "super_admin";
-const ADMIN = "super_admin";
+const SUPER_ADMIN = "super-admin";
+const ADMIN = "admin";
 const MANAGER = "manager";
 
 export const roles = {

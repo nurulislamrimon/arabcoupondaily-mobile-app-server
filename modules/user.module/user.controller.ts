@@ -4,7 +4,6 @@ import { generate_token } from "../../utils/generate_token";
 import { Types } from "mongoose";
 import { getStoreByIdService } from "../store.module/store.services";
 import { getPostByIdService } from "../post.module/post.services";
-// import verifyGoogleToken from "../../utils/verifyGoogleToken";
 
 // signup controller
 // export const addNewUserController = async (

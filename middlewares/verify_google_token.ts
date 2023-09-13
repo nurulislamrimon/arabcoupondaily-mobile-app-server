@@ -17,9 +17,12 @@ const verifyGoogleToken = async (
   try {
     const googleAccessToken = req.body.accessToken;
     if (!googleAccessToken) {
-      throw new Error("Provide a valid token!");
+      throw new Error("Provide a valid access token!");
     }
-    const payload = await admin.auth().verifyIdToken(googleAccessToken);
+    const payload = (await admin
+      .auth()
+      .verifyIdToken(googleAccessToken)) as any;
+
     req.user = payload;
     next();
   } catch (error) {

@@ -2,7 +2,7 @@ import express from "express";
 import * as AdministratorController from "./administrators.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
-import { roles } from "../../utils/constants/authorization_roles.js";
+import { roles } from "../../utils/constants/authorization_roles";
 
 const administratorRouter = express.Router();
 
