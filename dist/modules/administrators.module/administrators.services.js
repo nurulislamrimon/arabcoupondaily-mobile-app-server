@@ -35,7 +35,7 @@ const getAllAdminAndManagerService = (query) => __awaiter(void 0, void 0, void 0
             },
         },
         {
-            $unwind: "$userInfo",
+            $unwind: { path: "$userInfo", preserveNullAndEmptyArrays: true },
         },
         {
             $project: {

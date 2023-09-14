@@ -105,3 +105,41 @@ export const updateAdministratorController = async (
     next(error);
   }
 };
+//update an administrator
+export const deleteAdministratorController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const targetedAdministratorId = new Types.ObjectId(req.params.id);
+    const targetedAdministrator =
+      (await administratorsServices.getAdministratorsByIdService(
+        targetedAdministratorId
+      )) as any;
+    const operatedAdministrator =
+      (await administratorsServices.getAdministratorsByEmailService(
+        req.body.decoded.email
+      )) as any;
+    const isMemberLoggedIn =
+      await administratorsServices.getMeAdminAndManagerService(
+        targetedAdministrator.email
+      );
+    if (!targetedAdministrator) {
+      throw new Error("Administrator not found!");
+    } else if (isMemberLoggedIn) {
+      throw new Error("Sorry User already logged once!");
+    } else {
+      const result = await administratorsServices.deleteAdministratorService(
+        targetedAdministratorId
+      );
+      res.send({
+        status: "success",
+        data: result,
+      });
+      console.log(`Administrator is delete!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};

@@ -121,3 +121,12 @@ export const updateAdministratorService = async (
   );
   return result;
 };
+//== delete an administrator
+export const deleteAdministratorService = async (
+  targetedAdministratorId: Types.ObjectId
+) => {
+  const result = await Administrators.findOneAndDelete({
+    _id: targetedAdministratorId,
+  });
+  return result;
+};

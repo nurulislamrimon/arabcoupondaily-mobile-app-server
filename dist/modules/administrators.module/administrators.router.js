@@ -56,7 +56,7 @@ administratorRouter.post("/add", verify_token_1.verify_token, (0, verify_authori
  *@apiSuccess {Array of Object} get all admin and manager object
  *@apiError 401 & 403
  */
-administratorRouter.get("/", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), administratorController.getMeAdminAndManagerController);
+administratorRouter.get("/", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), administratorController.getAllAdminAndManagerController);
 /**
  *@api{get}/me get admin or manager information
  *@apiDescription get an admin or manager info

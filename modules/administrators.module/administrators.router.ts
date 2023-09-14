@@ -76,5 +76,22 @@ administratorRouter.put(
   verify_authorization(roles.SUPER_ADMIN, roles.ADMIN) as any,
   administratorController.updateAdministratorController
 );
+/**
+ *@api{delete}/administrators/:id delete an administrator
+ *@apiDescription delete an administrator by using ObjectId
+ *@apiPermission admin
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam ObjectId
+ *@apiQuery none
+ *@apiSuccess {Object} update info
+ *@apiError 401 & 403
+ */
+administratorRouter.delete(
+  "/:id",
+  verify_token,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN) as any,
+  administratorController.deleteAdministratorController
+);
 
 export default administratorRouter;
