@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAdministratorService = exports.getAdministratorsByIdService = exports.getAdministratorsByEmailService = exports.getMeAdminAndManagerService = exports.getAllAdminAndManagerService = exports.addNewAdministratorsService = void 0;
+exports.deleteAdministratorService = exports.updateAdministratorService = exports.getAdministratorsByIdService = exports.getAdministratorsByEmailService = exports.getMeAdminAndManagerService = exports.getAllAdminAndManagerService = exports.addNewAdministratorsService = void 0;
 const administrators_model_1 = __importDefault(require("./administrators.model"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
 const constants_1 = require("../../utils/constants");
@@ -128,3 +128,11 @@ const updateAdministratorService = (targetedAdministratorId, role) => __awaiter(
     return result;
 });
 exports.updateAdministratorService = updateAdministratorService;
+//== delete an administrator
+const deleteAdministratorService = (targetedAdministratorId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield administrators_model_1.default.findOneAndDelete({
+        _id: targetedAdministratorId,
+    });
+    return result;
+});
+exports.deleteAdministratorService = deleteAdministratorService;

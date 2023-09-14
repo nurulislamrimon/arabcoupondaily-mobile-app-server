@@ -64,6 +64,7 @@ export const loginUserController = async (
     const { email, name, uid, picture } = req.user;
     const { country, phoneNumber } = req.body;
     const existUser = await userServices.getUserByEmailService(email);
+
     let newUser;
     let accessToken;
     if (!existUser) {

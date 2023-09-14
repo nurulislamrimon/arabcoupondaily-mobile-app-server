@@ -47,6 +47,7 @@ export const getAllAdminAndManagerController = async (
     next(error);
   }
 };
+
 // // get all admin and managers
 export const getMeAdminAndManagerController = async (
   req: Request,
@@ -105,6 +106,7 @@ export const updateAdministratorController = async (
     next(error);
   }
 };
+
 //update an administrator
 export const deleteAdministratorController = async (
   req: Request,

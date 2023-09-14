@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAdministratorController = exports.getMeAdminAndManagerController = exports.getAllAdminAndManagerController = exports.addNewAdministratorController = void 0;
+exports.deleteAdministratorController = exports.updateAdministratorController = exports.getMeAdminAndManagerController = exports.getAllAdminAndManagerController = exports.addNewAdministratorController = void 0;
 const administratorsServices = __importStar(require("./administrators.services"));
 const mongoose_1 = require("mongoose");
 const authorization_roles_1 = require("../../utils/constants/authorization_roles");
@@ -110,3 +110,30 @@ const updateAdministratorController = (req, res, next) => __awaiter(void 0, void
     }
 });
 exports.updateAdministratorController = updateAdministratorController;
+//update an administrator
+const deleteAdministratorController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const targetedAdministratorId = new mongoose_1.Types.ObjectId(req.params.id);
+        const targetedAdministrator = (yield administratorsServices.getAdministratorsByIdService(targetedAdministratorId));
+        const operatedAdministrator = (yield administratorsServices.getAdministratorsByEmailService(req.body.decoded.email));
+        const isMemberLoggedIn = yield administratorsServices.getMeAdminAndManagerService(targetedAdministrator.email);
+        if (!targetedAdministrator) {
+            throw new Error("Administrator not found!");
+        }
+        else if (isMemberLoggedIn) {
+            throw new Error("Sorry User already logged once!");
+        }
+        else {
+            const result = yield administratorsServices.deleteAdministratorService(targetedAdministratorId);
+            res.send({
+                status: "success",
+                data: result,
+            });
+            console.log(`Administrator is delete!`);
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.deleteAdministratorController = deleteAdministratorController;
