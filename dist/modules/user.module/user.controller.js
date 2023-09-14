@@ -43,76 +43,105 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerController = exports.removeAnAdminController = exports.addNewAdminController = exports.getAllAdminAndManagerController = exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.addAndRemovePostFromFavouriteController = exports.addAndRemoveStoreFromFavouriteController = exports.getAllFavouritePostController = exports.getAllFavouriteStoreController = exports.getAllUserController = exports.updateAboutMeUserController = exports.getAboutMeUserController = exports.verifyAUserController = exports.loginUserController = exports.addNewUserController = void 0;
+exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.addAndRemovePostFromFavouriteController = exports.addAndRemoveStoreFromFavouriteController = exports.getAllFavouritePostController = exports.getAllFavouriteStoreController = exports.getAllUserController = exports.updateAboutMeUserController = exports.getAboutMeUserController = exports.loginUserController = void 0;
 const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
 const mongoose_1 = require("mongoose");
 const store_services_1 = require("../store.module/store.services");
 const post_services_1 = require("../post.module/post.services");
 // signup controller
-const addNewUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a, _b;
-    try {
-        const userData = req.body;
-        const existUser = yield userServices.getUserByEmailService(userData.email);
-        if (!userData.name ||
-            !userData.email ||
-            !userData.country ||
-            (!((_a = userData.provider) === null || _a === void 0 ? void 0 : _a.name) && !userData.password)) {
-            throw new Error("Please enter required information!");
-        }
-        else if ((existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) ||
-            (existUser && !(existUser === null || existUser === void 0 ? void 0 : existUser.isVerified) && !((_b = userData.provider) === null || _b === void 0 ? void 0 : _b.name))) {
-            throw new Error("User already exist!");
-        }
-        else {
-            let token;
-            if (userData.password) {
-                token = (0, generate_token_1.generate_token)(userData);
-            }
-            yield userServices.deleteAUserByEmailService((existUser === null || existUser === void 0 ? void 0 : existUser.email) || "");
-            const user = yield userServices.addNewUserService(userData);
-            res.send({
-                status: "success",
-                data: { user, token },
-            });
-            console.log(`user ${user.email} sign up!`);
-        }
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.addNewUserController = addNewUserController;
+// export const addNewUserController = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const userData = req.body;
+//     const existUser = await userServices.getUserByEmailService(userData.email);
+//     if (!userData.email || !userData.accessToken) {
+//       throw new Error("Please enter required information!");
+//     } else if (existUser?.isVerified) {
+//       throw new Error("User already exist!");
+//     } else {
+//       let token;
+//       if (userData?.accessToken) {
+//         const payload = await verifyGoogleToken(userData?.accessToken);
+//         if (payload?.email && payload.email === userData?.email) {
+//           userData.uid = payload.uid;
+//           token = generate_token({ email: payload?.email });
+//         } else {
+//           throw new Error(
+//             "Please make sure your email and access token belongs to the same user!"
+//           );
+//         }
+//       }
+//       await userServices.deleteAUserByEmailService(existUser?.email || "");
+//       const user = await userServices.addNewUserService(userData);
+//       const refreshToken = generate_token(
+//         { email: userData?.email },
+//         "365d",
+//         process.env.refresh_key
+//       );
+//       res.cookie("refreshToken", refreshToken);
+//       res.send({
+//         status: "success",
+//         data: { user, token },
+//       });
+//       console.log(`user ${user.email} sign up!`);
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 // login controller
 const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c;
     try {
-        const { email, password } = req.body;
-        const user = yield userServices.getUserByEmailService(email);
-        if (!user) {
-            throw new Error("User not found, Please 'sign up' first!");
+        const { email, name, uid, picture } = req.user;
+        const { country, phoneNumber } = req.body;
+        const existUser = yield userServices.getUserByEmailService(email);
+        let newUser;
+        let accessToken;
+        if (!existUser) {
+            newUser = yield userServices.addNewUserService({
+                email,
+                name,
+                country,
+                phoneNumber,
+                uid,
+                photoURL: picture,
+            });
+            // throw new Error("User not found, Please 'sign up' first!");
         }
         else {
-            let token;
             // check password or provider exist
-            if (password) {
-                const isPasswordMatched = yield userServices.comparePassword(email, password);
-                if (isPasswordMatched) {
-                    token = (0, generate_token_1.generate_token)(user);
-                }
-                else {
-                    throw new Error("Incorrect email or password!");
-                }
-            }
-            else if (!((_c = user.provider) === null || _c === void 0 ? void 0 : _c.name)) {
-                throw new Error("Please provide a valid credential!");
-            }
+            // if (password) {
+            //   const isPasswordMatched = await userServices.comparePassword(
+            //     email,
+            //     password
+            //   );
+            //   if (isPasswordMatched) {
+            //     token = generate_token(user);
+            //   } else {
+            //     throw new Error("Incorrect email or password!");
+            //   }
+            // } else if (accessToken) {
+            //   const payload = await verifyGoogleToken(accessToken);
+            //   if (payload.email && email === payload.email) {
+            //     token = generate_token({ email: payload?.email });
+            //   } else {
+            //     throw new Error("Email and access token must contain the same user!");
+            //   }
+            // } else {
+            //   throw new Error("Please provide a valid credential!");
+            // }
+            accessToken = (0, generate_token_1.generate_token)({ email: email });
+            const refreshToken = (0, generate_token_1.generate_token)({ email: email }, "365d", process.env.refresh_key);
+            res.cookie("refreshToken", refreshToken);
             res.send({
                 status: "success",
-                data: { user, token },
+                data: { user: existUser || newUser, accessToken },
             });
-            console.log(`user ${user.email} is responsed!`);
+            console.log(`user ${existUser._id} is responsed!`);
         }
     }
     catch (error) {
@@ -121,30 +150,30 @@ const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0
 });
 exports.loginUserController = loginUserController;
 // verify a user by user token
-const verifyAUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const email = req.params.email;
-        const user = yield userServices.getUserByEmailService(email);
-        if (!user) {
-            throw new Error("User not found!");
-        }
-        else if (user.isVerified) {
-            throw new Error("User already verified!");
-        }
-        else {
-            const result = yield userServices.verifyAUserService(user._id);
-            res.send({
-                status: "success",
-                data: result,
-            });
-            console.log(result);
-        }
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.verifyAUserController = verifyAUserController;
+// export const verifyAUserController = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     const email = req.params.email;
+//     const user = await userServices.getUserByEmailService(email);
+//     if (!user) {
+//       throw new Error("User not found!");
+//     } else if (user.isVerified) {
+//       throw new Error("User already verified!");
+//     } else {
+//       const result = await userServices.verifyAUserService(user._id);
+//       res.send({
+//         status: "success",
+//         data: result,
+//       });
+//       console.log(result);
+//     }
+//   } catch (error) {
+//     next(error);
+//   }
+// };
 // about me by token
 const getAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -174,7 +203,7 @@ const updateAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0
         if (!isUserExist) {
             throw new Error("User not found!");
         }
-        const _d = req.body, { newPosts, favourite, email } = _d, rest = __rest(_d, ["newPosts", "favourite", "email"]);
+        const _a = req.body, { newPosts, favourite, email } = _a, rest = __rest(_a, ["newPosts", "favourite", "email"]);
         const result = yield userServices.updateMeByEmailService(isUserExist._id, rest);
         res.send({
             status: "success",
@@ -188,11 +217,11 @@ const updateAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0
 exports.updateAboutMeUserController = updateAboutMeUserController;
 // get all user
 const getAllUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _e;
+    var _b;
     try {
         const result = yield userServices.getAllUserService(req.query);
         res.send(Object.assign({ status: "success" }, result));
-        console.log(`${(_e = result === null || result === void 0 ? void 0 : result.data) === null || _e === void 0 ? void 0 : _e.length} user responsed!`);
+        console.log(`${(_b = result === null || result === void 0 ? void 0 : result.data) === null || _b === void 0 ? void 0 : _b.length} user responsed!`);
     }
     catch (error) {
         next(error);
@@ -319,91 +348,3 @@ const setNotificationReadedController = (req, res, next) => __awaiter(void 0, vo
     }
 });
 exports.setNotificationReadedController = setNotificationReadedController;
-// get all admin and managers
-const getAllAdminAndManagerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    var _f;
-    try {
-        const result = yield userServices.getAllAdminAndManagerService(req.query);
-        res.send(Object.assign({ status: "success" }, result));
-        console.log(`notification ${(_f = result === null || result === void 0 ? void 0 : result.data) === null || _f === void 0 ? void 0 : _f.length} is readed!`);
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.getAllAdminAndManagerController = getAllAdminAndManagerController;
-// add an admin
-const addNewAdminController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = new mongoose_1.Types.ObjectId(req.params.id);
-        const user = (yield userServices.getUserByIdService(id));
-        if (!user) {
-            throw new Error("User not found!");
-        }
-        else if (user.role === "admin") {
-            throw new Error("User already admin!");
-        }
-        else {
-            const result = yield userServices.addNewAdminService(id);
-            res.send({
-                status: "success",
-                data: result,
-            });
-            console.log(`notification ${result} is readed!`);
-        }
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.addNewAdminController = addNewAdminController;
-// remove an admin
-const removeAnAdminController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = new mongoose_1.Types.ObjectId(req.params.id);
-        const user = (yield userServices.getUserByIdService(id));
-        if (!user) {
-            throw new Error("User not found!");
-        }
-        else if (user.role !== "admin" && user.role !== "manager") {
-            throw new Error("User is not a manager or admin!");
-        }
-        else {
-            const result = yield userServices.removeAnAdminService(id);
-            res.send({
-                status: "success",
-                data: result,
-            });
-            console.log(`notification ${result} is readed!`);
-        }
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.removeAnAdminController = removeAnAdminController;
-// add a manager
-const addNewManagerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const id = new mongoose_1.Types.ObjectId(req.params.id);
-        const user = (yield userServices.getUserByIdService(id));
-        if (!user) {
-            throw new Error("User not found!");
-        }
-        else if (user.role === "manager") {
-            throw new Error("User already manager!");
-        }
-        else {
-            const result = yield userServices.addNewManagerService(id);
-            res.send({
-                status: "success",
-                data: result,
-            });
-            console.log(`notification ${result} is readed!`);
-        }
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.addNewManagerController = addNewManagerController;

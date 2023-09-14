@@ -44,7 +44,7 @@ const getCarouselController = (req, res, next) => __awaiter(void 0, void 0, void
             status: "success",
             data: result,
         });
-        console.log(`carousel ${result} is added!`);
+        console.log(`carousel ${result === null || result === void 0 ? void 0 : result._id} is added!`);
     }
     catch (error) {
         next(error);
@@ -74,7 +74,7 @@ const addNewCarouselController = (req, res, next) => __awaiter(void 0, void 0, v
                 status: "success",
                 data: result,
             });
-            console.log(`carousel ${result} is added!`);
+            console.log(`carousel ${result === null || result === void 0 ? void 0 : result._id} is added!`);
         }
     }
     catch (error) {

@@ -14,7 +14,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const mongoose_1 = require("mongoose");
 const mongoose_2 = require("mongoose");
-const bcrypt_1 = __importDefault(require("bcrypt"));
+// import bcrypt from "bcrypt";
 const validator_1 = __importDefault(require("validator"));
 const userSchema = new mongoose_2.Schema({
     photoURL: { type: String, validate: validator_1.default.isURL },
@@ -22,13 +22,6 @@ const userSchema = new mongoose_2.Schema({
     email: { type: String, required: true, validate: validator_1.default.isEmail },
     country: { type: String, required: true },
     isVerified: { type: Boolean, default: false },
-    role: {
-        type: String,
-        enum: {
-            values: ["admin", "manager"],
-            message: `{VALUE} is not a valid role!`,
-        },
-    },
     newPosts: [
         {
             moreAboutPost: { type: mongoose_1.Types.ObjectId, ref: "Post" },
@@ -40,9 +33,9 @@ const userSchema = new mongoose_2.Schema({
         },
     ],
     phoneNumber: String,
-    password: String,
-    confirmPassword: String,
-    provider: { name: String },
+    // password: String,
+    // confirmPassword: String,
+    uid: String,
     favourite: {
         stores: [{ type: mongoose_1.Types.ObjectId, ref: "Store" }],
         posts: [{ type: mongoose_1.Types.ObjectId, ref: "Post" }],
@@ -51,28 +44,28 @@ const userSchema = new mongoose_2.Schema({
     timestamps: true,
 });
 userSchema.pre("validate", function (next) {
-    var _a;
     return __awaiter(this, void 0, void 0, function* () {
-        if ((_a = this.provider) === null || _a === void 0 ? void 0 : _a.name) {
+        if (this.uid) {
             this.isVerified = true;
             next();
         }
-        else if (this.password) {
-            const isStrongPassword = /[a-zA-Z]/g.test(this.password);
-            if (!isStrongPassword) {
-                throw new Error("Please provide a strong password!");
-            }
-            else if (this.password === this.confirmPassword) {
-                this.password = yield bcrypt_1.default.hash(this.password, 10);
-                this.confirmPassword = undefined;
-                next();
-            }
-            else {
-                throw new Error("Please make sure password and confirm password are same!");
-            }
-        }
+        // ===========for email password login=========
+        // else if (this.password) {
+        //   const isStrongPassword = /[a-zA-Z]/g.test(this.password);
+        //   if (!isStrongPassword) {
+        //     throw new Error("Please provide a strong password!");
+        //   } else if (this.password === this.confirmPassword) {
+        //     this.password = await bcrypt.hash(this.password, 10);
+        //     this.confirmPassword = undefined;
+        //     next();
+        //   } else {
+        //     throw new Error(
+        //       "Please make sure password and confirm password are same!"
+        //     );
+        //   }
+        // }
         else {
-            throw new Error("Password not found!");
+            throw new Error("UID not found!");
         }
     });
 });

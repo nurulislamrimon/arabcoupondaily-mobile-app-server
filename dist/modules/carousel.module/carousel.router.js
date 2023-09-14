@@ -30,6 +30,7 @@ const express_1 = __importDefault(require("express"));
 const carouselController = __importStar(require("./carousel.controller"));
 const verify_token_1 = require("../../middlewares/verify_token");
 const verify_authorization_1 = require("../../middlewares/verify_authorization");
+const authorization_roles_1 = require("../../utils/constants/authorization_roles");
 const carouselRouter = express_1.default.Router();
 /**
  *@api{get}/carousel get carousel
@@ -54,5 +55,5 @@ carouselRouter.get("/", carouselController.getCarouselController);
  *@apiSuccess {Object} carousel
  *@apiError 401, 403 unauthorized & forbidden
  */
-carouselRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), carouselController.addNewCarouselController);
+carouselRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), carouselController.addNewCarouselController);
 exports.default = carouselRouter;

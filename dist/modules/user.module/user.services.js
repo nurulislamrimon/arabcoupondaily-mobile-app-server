@@ -12,9 +12,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addNewManagerService = exports.removeAnAdminService = exports.addNewAdminService = exports.getAllAdminAndManagerService = exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.verifyAUserService = exports.comparePassword = exports.deleteAUserByEmailService = exports.addAndRemovePostFromFavouriteService = exports.addAndRemoveStoreFromFavouriteService = exports.getFavouritePostService = exports.getFavouriteStoreService = exports.addNewUserService = exports.getUserByIdService = exports.updateMeByEmailService = exports.getUserByEmailService = exports.getAllUserService = void 0;
+exports.setNotificationReadedService = exports.getNotificationService = exports.getUnreadedNotificationCountService = exports.deleteAUserByEmailService = exports.addAndRemovePostFromFavouriteService = exports.addAndRemoveStoreFromFavouriteService = exports.getFavouritePostService = exports.getFavouriteStoreService = exports.addNewUserService = exports.getUserByIdService = exports.updateMeByEmailService = exports.getUserByEmailService = exports.getAllUserService = void 0;
 const user_model_1 = __importDefault(require("./user.model"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
 const constants_1 = require("../../utils/constants");
 //== get all users
@@ -59,7 +58,7 @@ exports.getUserByIdService = getUserByIdService;
 //== create new user
 const addNewUserService = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield user_model_1.default.create(user).then((data) => {
-        data.password = undefined;
+        // data.password = undefined;
         return data;
     });
     return result;
@@ -135,22 +134,26 @@ const deleteAUserByEmailService = (email) => __awaiter(void 0, void 0, void 0, f
 });
 exports.deleteAUserByEmailService = deleteAUserByEmailService;
 //== compare password by email and password
-const comparePassword = (email, password) => __awaiter(void 0, void 0, void 0, function* () {
-    const user = yield user_model_1.default.findOne({ email: email }, { password: 1 });
-    const isPasswordMatched = yield bcrypt_1.default.compare(password, (user === null || user === void 0 ? void 0 : user.password) || "");
-    return isPasswordMatched;
-});
-exports.comparePassword = comparePassword;
+// export const comparePassword = async (email: string, password: string) => {
+//   const user = await User.findOne({ email: email }, { password: 1 });
+//   const isPasswordMatched = await bcrypt.compare(
+//     password,
+//     user?.password || ""
+//   );
+//   return isPasswordMatched;
+// };
 //== verify a user
-const verifyAUserService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.updateOne({ _id: id }, {
-        $set: {
-            isVerified: true,
-        },
-    });
-    return result;
-});
-exports.verifyAUserService = verifyAUserService;
+// export const verifyAUserService = async (id: Types.ObjectId) => {
+//   const result = await User.updateOne(
+//     { _id: id },
+//     {
+//       $set: {
+//         isVerified: true,
+//       },
+//     }
+//   );
+//   return result;
+// };
 // =====notification also====
 // calculate unreaded post
 const getUnreadedNotificationCountService = (email) => __awaiter(void 0, void 0, void 0, function* () {
@@ -195,60 +198,3 @@ const setNotificationReadedService = (email, postId) => __awaiter(void 0, void 0
     return result;
 });
 exports.setNotificationReadedService = setNotificationReadedService;
-// =========admin================
-// get all admin and manager
-const getAllAdminAndManagerService = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("user", query, ...constants_1.user_query_fields);
-    filters.$and.push({ $or: [{ role: "admin" }, { role: "manager" }] });
-    const result = yield user_model_1.default.find(filters, {
-        password: 0,
-        newPosts: 0,
-    })
-        .sort({ [sortBy]: sortOrder })
-        .skip(skip)
-        .limit(limit);
-    const totalDocuments = yield user_model_1.default.countDocuments(filters);
-    return {
-        meta: {
-            page,
-            limit,
-            totalDocuments,
-        },
-        data: result,
-    };
-});
-exports.getAllAdminAndManagerService = getAllAdminAndManagerService;
-//== add new admin
-const addNewAdminService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.updateOne({
-        _id: id,
-    }, {
-        $set: {
-            role: "admin",
-        },
-    });
-    return result;
-});
-exports.addNewAdminService = addNewAdminService;
-//== remove an admin
-const removeAnAdminService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.updateOne({
-        _id: id,
-    }, {
-        $unset: { role: 1 },
-    });
-    return result;
-});
-exports.removeAnAdminService = removeAnAdminService;
-//== add new manager
-const addNewManagerService = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield user_model_1.default.updateOne({
-        _id: id,
-    }, {
-        $set: {
-            role: "manager",
-        },
-    });
-    return result;
-});
-exports.addNewManagerService = addNewManagerService;

@@ -30,6 +30,7 @@ const express_1 = __importDefault(require("express"));
 const ContactController = __importStar(require("./Contact.controller"));
 const verify_token_1 = require("../../middlewares/verify_token");
 const verify_authorization_1 = require("../../middlewares/verify_authorization");
+const authorization_roles_1 = require("../../utils/constants/authorization_roles");
 const contactRouter = express_1.default.Router();
 /**
  *@api{get}/Contact get Contact
@@ -54,5 +55,5 @@ contactRouter.get("/", ContactController.getContactController);
  *@apiSuccess {Object} Contact
  *@apiError 401, 403 unauthorized & forbidden
  */
-contactRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), ContactController.addNewContactController);
+contactRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), ContactController.addNewContactController);
 exports.default = contactRouter;

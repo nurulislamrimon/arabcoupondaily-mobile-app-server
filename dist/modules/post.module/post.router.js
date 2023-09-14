@@ -30,6 +30,7 @@ const express_1 = __importDefault(require("express"));
 const PostController = __importStar(require("./post.controller"));
 const verify_token_1 = require("../../middlewares/verify_token");
 const verify_authorization_1 = require("../../middlewares/verify_authorization");
+const authorization_roles_1 = require("../../utils/constants/authorization_roles");
 const postRouter = express_1.default.Router();
 /**
  *@api{get}/ get all Post
@@ -54,7 +55,7 @@ postRouter.get("/", PostController.getAllActivePostsController);
  *@apiSuccess {Array of Object} all Posts.
  *@apiError 401, 403 unauthorized & forbidden
  */
-postRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.getAllPostsByAdminController);
+postRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), PostController.getAllPostsByAdminController);
 /**
  *@api{get}/search/:key make a global search on post
  *@apiDescription get all Posts and others
@@ -102,7 +103,7 @@ postRouter.put("/revealed/:id", PostController.revealedAPostController);
  *@apiSuccess {Object} added Post.
  *@apiError 401, 403 unauthorized & forbidden
  */
-postRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.addNewPostController);
+postRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), PostController.addNewPostController);
 /**
  *@api{put}/:id update a Post
  *@apiDescription update a Post by id with validation
@@ -114,7 +115,7 @@ postRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.
  *@apiSuccess {Object} update info of the Post.
  *@apiError 401, 403 unauthorized & forbidden
  */
-postRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.updateAPostController);
+postRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), PostController.updateAPostController);
 /**
  *@api{delete}/:id delete a Post
  *@apiDescription delete a Post by id
@@ -126,5 +127,5 @@ postRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.v
  *@apiSuccess {Object} delete confirmation.
  *@apiError 401, 403 unauthorized & forbidden
  */
-postRouter.delete("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), PostController.deleteAPostController);
+postRouter.delete("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), PostController.deleteAPostController);
 exports.default = postRouter;

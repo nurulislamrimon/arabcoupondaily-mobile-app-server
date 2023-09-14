@@ -30,6 +30,7 @@ const express_1 = __importDefault(require("express"));
 const storeController = __importStar(require("./store.controller"));
 const verify_token_1 = require("../../middlewares/verify_token");
 const verify_authorization_1 = require("../../middlewares/verify_authorization");
+const authorization_roles_1 = require("../../utils/constants/authorization_roles");
 const storeRouter = express_1.default.Router();
 /**
  *@api{get}/ get all store
@@ -54,7 +55,7 @@ storeRouter.get("/", storeController.getAllActiveStoresController);
  *@apiSuccess {Array of Object} all stores.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.getAllStoresController);
+storeRouter.get("/all", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), storeController.getAllStoresController);
 /**
  *@api{get}/:id get a store by id
  *@apiDescription get a store by id
@@ -78,7 +79,7 @@ storeRouter.get("/:id", storeController.getAStoreController);
  *@apiSuccess {Object} added store.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.addNewStoreController);
+storeRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), storeController.addNewStoreController);
 /**
  *@api{put}/:id update a store
  *@apiDescription update a store by id with validation
@@ -90,7 +91,7 @@ storeRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1
  *@apiSuccess {Object} update info of the store.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.updateAStoreController);
+storeRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), storeController.updateAStoreController);
 /**
  *@api{delete}/:id delete a store
  *@apiDescription delete a store by id
@@ -102,5 +103,5 @@ storeRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.
  *@apiSuccess {Object} delete confirmation.
  *@apiError 401, 403 unauthorized & forbidden
  */
-storeRouter.delete("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)("admin", "manager"), storeController.deleteAStoreController);
+storeRouter.delete("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), storeController.deleteAStoreController);
 exports.default = storeRouter;

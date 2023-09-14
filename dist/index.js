@@ -37,6 +37,7 @@ const store_router_1 = __importDefault(require("./modules/store.module/store.rou
 const post_router_1 = __importDefault(require("./modules/post.module/post.router"));
 const carousel_router_1 = __importDefault(require("./modules/carousel.module/carousel.router"));
 const Contact_router_1 = __importDefault(require("./modules/Contact.module/Contact.router"));
+const administrators_router_1 = __importDefault(require("./modules/administrators.module/administrators.router"));
 // database connection======
 (0, dbconnection_1.default)();
 // routes=========
@@ -45,9 +46,10 @@ app_1.default.use("/api/v1/store", store_router_1.default);
 app_1.default.use("/api/v1/post", post_router_1.default);
 app_1.default.use("/api/v1/carousel", carousel_router_1.default);
 app_1.default.use("/api/v1/contact", Contact_router_1.default);
+app_1.default.use("/api/v1/administrators", administrators_router_1.default);
 // error handler======
 app_1.default.use(error_handler.routeNotFound);
-app_1.default.use(error_handler.allErrorHandler);
+app_1.default.use(error_handler.globalErrorHandler);
 // app listener
 app_1.default.listen(process.env.port, () => {
     console.log(colors_1.default.magenta(`Example app listening on port ${process.env.port}`.magenta));
