@@ -9,33 +9,6 @@ export const addNewAdministratorsService = async (payload: object) => {
   return result;
 };
 
-//== get Administrators by email address
-export const getAdministratorsByEmailService = async (email: string) => {
-  const result = await Administrators.findOne({ email: email });
-  return result;
-};
-
-//== update an administrator
-export const updateAdministratorService = async (
-  id: Types.ObjectId,
-  role: string
-) => {
-  const result = await Administrators.updateOne(
-    { _id: id },
-    { $set: { role: role } },
-    { runValidators: true }
-  );
-  return result;
-};
-//== get all Administrators
-export const getAdministratorsService = async () => {
-  const result = await Administrators.find({});
-  return result;
-};
-
-// ===================get ==================== === === ===
-
-// =========admin================
 // get all admin and manager
 export const getAllAdminAndManagerService = async (query: any) => {
   const { filters, skip, page, limit, sortBy, sortOrder } =
@@ -89,43 +62,27 @@ export const getAllAdminAndManagerService = async (query: any) => {
     data: result,
   };
 };
-// //== add new admin
-// export const addNewAdminService = async (id: Types.ObjectId) => {
-//   const result = await User.updateOne(
-//     {
-//       _id: id,
-//     },
-//     {
-//       $set: {
-//         role: "admin",
-//       },
-//     }
-//   );
-//   return result;
-// };
-// //== remove an admin
-// export const removeAnAdminService = async (id: Types.ObjectId) => {
-//   const result = await User.updateOne(
-//     {
-//       _id: id,
-//     },
-//     {
-//       $unset: { role: 1 },
-//     }
-//   );
-//   return result;
-// };
-// //== add new manager
-// export const addNewManagerService = async (id: Types.ObjectId) => {
-//   const result = await User.updateOne(
-//     {
-//       _id: id,
-//     },
-//     {
-//       $set: {
-//         role: "manager",
-//       },
-//     }
-//   );
-//   return result;
-// };
+
+//== get Administrators by email address used in authorization
+export const getAdministratorsByEmailService = async (email: string) => {
+  const result = await Administrators.findOne({ email: email });
+  return result;
+};
+//== get Administrators by id
+export const getAdministratorsByIdService = async (id: Types.ObjectId) => {
+  const result = await Administrators.findOne({ _id: id });
+  return result;
+};
+
+//== update an administrator
+export const updateAdministratorService = async (
+  targetedAdministratorId: Types.ObjectId,
+  role: string
+) => {
+  const result = await Administrators.updateOne(
+    { _id: targetedAdministratorId },
+    { $set: { role: role } },
+    { runValidators: true }
+  );
+  return result;
+};

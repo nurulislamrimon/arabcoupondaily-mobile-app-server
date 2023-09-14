@@ -1,5 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import * as administratorsServices from "./administrators.services";
+import { Types } from "mongoose";
+import { roles } from "../../utils/constants/authorization_roles";
 
 export const addNewAdministratorController = async (
   req: Request,
@@ -26,8 +28,6 @@ export const addNewAdministratorController = async (
   }
 };
 
-// ================get =============== === === ===
-
 // // get all admin and managers
 export const getAllAdminAndManagerController = async (
   req: Request,
@@ -47,79 +47,42 @@ export const getAllAdminAndManagerController = async (
     next(error);
   }
 };
-// // add an admin
-// export const addNewAdminController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const id = new Types.ObjectId(req.params.id);
-//     const user = (await userServices.getUserByIdService(id)) as any;
-//     if (!user) {
-//       throw new Error("User not found!");
-//     } else if (user.role === "admin") {
-//       throw new Error("User already admin!");
-//     } else {
-//       const result = await userServices.addNewAdminService(id);
-//       res.send({
-//         status: "success",
-//         data: result,
-//       });
-//       console.log(`notification ${result} is readed!`);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-// // remove an admin
-// export const removeAnAdminController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const id = new Types.ObjectId(req.params.id);
-//     const user = (await userServices.getUserByIdService(id)) as any;
 
-//     if (!user) {
-//       throw new Error("User not found!");
-//     } else if (user.role !== "admin" && user.role !== "manager") {
-//       throw new Error("User is not a manager or admin!");
-//     } else {
-//       const result = await userServices.removeAnAdminService(id);
-//       res.send({
-//         status: "success",
-//         data: result,
-//       });
-//       console.log(`notification ${result} is readed!`);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-// // add a manager
-// export const addNewManagerController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const id = new Types.ObjectId(req.params.id);
-//     const user = (await userServices.getUserByIdService(id)) as any;
-//     if (!user) {
-//       throw new Error("User not found!");
-//     } else if (user.role === "manager") {
-//       throw new Error("User already manager!");
-//     } else {
-//       const result = await userServices.addNewManagerService(id);
-//       res.send({
-//         status: "success",
-//         data: result,
-//       });
-//       console.log(`notification ${result} is readed!`);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+//update an administrator
+export const updateAdministratorController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const targetedAdministratorId = new Types.ObjectId(req.params.id);
+    const targetedAdministrator =
+      (await administratorsServices.getAdministratorsByIdService(
+        targetedAdministratorId
+      )) as any;
+    const operatedAdministrator =
+      (await administratorsServices.getAdministratorsByEmailService(
+        req.body.decoded.email
+      )) as any;
+    if (!targetedAdministrator) {
+      throw new Error("Administrator not found!");
+    } else if (
+      operatedAdministrator.role !== roles.SUPER_ADMIN &&
+      targetedAdministrator.role === roles.SUPER_ADMIN
+    ) {
+      throw new Error("Unauthorized access!");
+    } else {
+      const result = await administratorsServices.updateAdministratorService(
+        targetedAdministratorId,
+        req.body.role
+      );
+      res.send({
+        status: "success",
+        data: result,
+      });
+      console.log(`Administrator is updated!`);
+    }
+  } catch (error) {
+    next(error);
+  }
+};

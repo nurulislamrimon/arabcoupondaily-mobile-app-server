@@ -1,14 +1,10 @@
 import express from "express";
-import * as AdministratorController from "./administrators.controller";
+import * as administratorController from "./administrators.controller";
 import { verify_token } from "../../middlewares/verify_token";
 import { verify_authorization } from "../../middlewares/verify_authorization";
 import { roles } from "../../utils/constants/authorization_roles";
 
 const administratorRouter = express.Router();
-
-// ===================================================
-// === =================admin==================== ===
-// ===================================================
 /**
  *@api{post}/add  add new administrator
  *@apiDescription add an administrator
@@ -25,7 +21,7 @@ administratorRouter.post(
   "/add",
   verify_token,
   verify_authorization(roles.SUPER_ADMIN, roles.ADMIN) as any,
-  AdministratorController.addNewAdministratorController
+  administratorController.addNewAdministratorController
 );
 
 /**
@@ -43,59 +39,25 @@ administratorRouter.get(
   "/",
   verify_token,
   verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
-  AdministratorController.getAllAdminAndManagerController
+  administratorController.getAllAdminAndManagerController
 );
 
-// /**
-//  *@api{put}/admin/add/:id add new admin
-//  *@apiDescription add a admin by using user ObjectId
-//  *@apiPermission admin
-//  *@apiHeader access token with bearer
-//  *@apiBody none
-//  *@apiParam ObjectId
-//  *@apiQuery none
-//  *@apiSuccess {Object} update info
-//  *@apiError 401 & 403
-//  */
-// userRouter.put(
-//   "/admin/add/:id",
-//   verify_token,
-//   verify_authorization(roles.SUPER_ADMIN,roles.ADMIN) as any,
-//   userController.addNewAdminController
-// );
-// /**
-//  *@api{put}/admin/remove/:id remove an admin
-//  *@apiDescription remove and admin by using user ObjectId
-//  *@apiPermission admin
-//  *@apiHeader access token with bearer
-//  *@apiBody none
-//  *@apiParam ObjectId
-//  *@apiQuery none
-//  *@apiSuccess {Object} update info
-//  *@apiError 401 & 403
-//  */
-// userRouter.put(
-//   "/admin/remove/:id",
-//   verify_token,
-//   verify_authorization(roles.SUPER_ADMIN,roles.ADMIN) as any,
-//   userController.removeAnAdminController
-// );
-// /**
-//  *@api{put}/manager/add/:id add an manager
-//  *@apiDescription add a manager by using user ObjectId
-//  *@apiPermission admin
-//  *@apiHeader access token with bearer
-//  *@apiBody none
-//  *@apiParam ObjectId
-//  *@apiQuery none
-//  *@apiSuccess {Object} update info
-//  *@apiError 401 & 403
-//  */
-// userRouter.put(
-//   "/manager/add/:id",
-//   verify_token,
-//   verify_authorization(roles.SUPER_ADMIN,roles.ADMIN) as any,
-//   userController.addNewManagerController
-// );
+/**
+ *@api{put}/administrators/:id change role
+ *@apiDescription change role of an administrator by using ObjectId
+ *@apiPermission admin
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam ObjectId
+ *@apiQuery none
+ *@apiSuccess {Object} update info
+ *@apiError 401 & 403
+ */
+administratorRouter.put(
+  "/:id",
+  verify_token,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN) as any,
+  administratorController.updateAdministratorController
+);
 
 export default administratorRouter;
