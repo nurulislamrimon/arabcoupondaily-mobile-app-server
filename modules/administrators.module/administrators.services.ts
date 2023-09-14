@@ -13,6 +13,7 @@ export const addNewAdministratorsService = async (payload: object) => {
 export const getAllAdminAndManagerService = async (query: any) => {
   const { filters, skip, page, limit, sortBy, sortOrder } =
     search_filter_and_queries("user", query, ...user_query_fields) as any;
+
   const result = await Administrators.aggregate([
     {
       $lookup: {
@@ -23,7 +24,7 @@ export const getAllAdminAndManagerService = async (query: any) => {
       },
     },
     {
-      $unwind: "$userInfo",
+      $unwind: { path: "$userInfo", preserveNullAndEmptyArrays: true },
     },
     {
       $project: {

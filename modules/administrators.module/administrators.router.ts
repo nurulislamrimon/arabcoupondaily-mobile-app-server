@@ -39,7 +39,7 @@ administratorRouter.get(
   "/",
   verify_token,
   verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
-  administratorController.getMeAdminAndManagerController
+  administratorController.getAllAdminAndManagerController
 );
 /**
  *@api{get}/me get admin or manager information
