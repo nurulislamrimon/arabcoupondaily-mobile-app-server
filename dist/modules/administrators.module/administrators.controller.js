@@ -74,7 +74,7 @@ const getMeAdminAndManagerController = (req, res, next) => __awaiter(void 0, voi
         const result = yield administratorsServices.getMeAdminAndManagerService(req.body.decoded.email);
         res.send({
             status: "success",
-            result,
+            data: result,
         });
         console.log(`Administrator is responsed!`);
     }

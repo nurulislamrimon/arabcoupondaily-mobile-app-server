@@ -94,7 +94,7 @@ export const getMeAdminAndManagerService = async (email: string) => {
       },
     },
   ]);
-  return result;
+  return result ? result[0] : result;
 };
 
 //== get Administrators by email address used in authorization

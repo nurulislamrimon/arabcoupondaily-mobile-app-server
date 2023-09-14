@@ -59,7 +59,7 @@ export const getMeAdminAndManagerController = async (
     );
     res.send({
       status: "success",
-      result,
+      data: result,
     });
     console.log(`Administrator is responsed!`);
   } catch (error) {
