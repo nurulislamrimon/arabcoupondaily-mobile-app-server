@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAdministratorService = exports.getAdministratorsByIdService = exports.getAdministratorsByEmailService = exports.getAllAdminAndManagerService = exports.addNewAdministratorsService = void 0;
+exports.updateAdministratorService = exports.getAdministratorsByIdService = exports.getAdministratorsByEmailService = exports.getMeAdminAndManagerService = exports.getAllAdminAndManagerService = exports.addNewAdministratorsService = void 0;
 const administrators_model_1 = __importDefault(require("./administrators.model"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
 const constants_1 = require("../../utils/constants");
@@ -75,6 +75,41 @@ const getAllAdminAndManagerService = (query) => __awaiter(void 0, void 0, void 0
     };
 });
 exports.getAllAdminAndManagerService = getAllAdminAndManagerService;
+// get me admin and manager
+const getMeAdminAndManagerService = (email) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield administrators_model_1.default.aggregate([
+        {
+            $match: {
+                email: email,
+            },
+        },
+        {
+            $lookup: {
+                from: "users",
+                foreignField: "email",
+                localField: "email",
+                as: "userInfo",
+            },
+        },
+        {
+            $unwind: "$userInfo",
+        },
+        {
+            $project: {
+                _id: 1,
+                email: 1,
+                role: 1,
+                name: "$userInfo.name",
+                country: "$userInfo.country",
+                isVerified: "$userInfo.isVerified",
+                photoURL: "$userInfo.photoURL",
+                createdAt: 1,
+            },
+        },
+    ]);
+    return result;
+});
+exports.getMeAdminAndManagerService = getMeAdminAndManagerService;
 //== get Administrators by email address used in authorization
 const getAdministratorsByEmailService = (email) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield administrators_model_1.default.findOne({ email: email });

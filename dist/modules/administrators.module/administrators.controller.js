@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateAdministratorController = exports.getAllAdminAndManagerController = exports.addNewAdministratorController = void 0;
+exports.updateAdministratorController = exports.getMeAdminAndManagerController = exports.getAllAdminAndManagerController = exports.addNewAdministratorController = void 0;
 const administratorsServices = __importStar(require("./administrators.services"));
 const mongoose_1 = require("mongoose");
 const authorization_roles_1 = require("../../utils/constants/authorization_roles");
@@ -68,6 +68,21 @@ const getAllAdminAndManagerController = (req, res, next) => __awaiter(void 0, vo
     }
 });
 exports.getAllAdminAndManagerController = getAllAdminAndManagerController;
+// // get all admin and managers
+const getMeAdminAndManagerController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield administratorsServices.getMeAdminAndManagerService(req.body.decoded.email);
+        res.send({
+            status: "success",
+            result,
+        });
+        console.log(`Administrator is responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getMeAdminAndManagerController = getMeAdminAndManagerController;
 //update an administrator
 const updateAdministratorController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {

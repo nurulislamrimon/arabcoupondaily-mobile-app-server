@@ -39,7 +39,24 @@ administratorRouter.get(
   "/",
   verify_token,
   verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
-  administratorController.getAllAdminAndManagerController
+  administratorController.getMeAdminAndManagerController
+);
+/**
+ *@api{get}/me get admin or manager information
+ *@apiDescription get an admin or manager info
+ *@apiPermission super admin, admin & manager
+ *@apiHeader access token with bearer
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} get admin and manager object
+ *@apiError 401 & 403
+ */
+administratorRouter.get(
+  "/me",
+  verify_token,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
+  administratorController.getMeAdminAndManagerController
 );
 
 /**

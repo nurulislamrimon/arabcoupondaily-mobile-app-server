@@ -47,6 +47,25 @@ export const getAllAdminAndManagerController = async (
     next(error);
   }
 };
+// // get all admin and managers
+export const getMeAdminAndManagerController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await administratorsServices.getMeAdminAndManagerService(
+      req.body.decoded.email
+    );
+    res.send({
+      status: "success",
+      result,
+    });
+    console.log(`Administrator is responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
 
 //update an administrator
 export const updateAdministratorController = async (

@@ -62,6 +62,40 @@ export const getAllAdminAndManagerService = async (query: any) => {
     data: result,
   };
 };
+// get me admin and manager
+export const getMeAdminAndManagerService = async (email: string) => {
+  const result = await Administrators.aggregate([
+    {
+      $match: {
+        email: email,
+      },
+    },
+    {
+      $lookup: {
+        from: "users",
+        foreignField: "email",
+        localField: "email",
+        as: "userInfo",
+      },
+    },
+    {
+      $unwind: "$userInfo",
+    },
+    {
+      $project: {
+        _id: 1,
+        email: 1,
+        role: 1,
+        name: "$userInfo.name",
+        country: "$userInfo.country",
+        isVerified: "$userInfo.isVerified",
+        photoURL: "$userInfo.photoURL",
+        createdAt: 1,
+      },
+    },
+  ]);
+  return result;
+};
 
 //== get Administrators by email address used in authorization
 export const getAdministratorsByEmailService = async (email: string) => {
