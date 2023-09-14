@@ -27,7 +27,7 @@ app.use("/api/v1/carousel", carouselRouter);
 
 app.use("/api/v1/contact", contactRouter);
 
-app.use("/api/v1/administrator", administratorRouter);
+app.use("/api/v1/administrators", administratorRouter);
 
 // error handler======
 app.use(error_handler.routeNotFound);

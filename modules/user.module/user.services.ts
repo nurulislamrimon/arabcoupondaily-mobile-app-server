@@ -154,20 +154,21 @@ export const deleteAUserByEmailService = async (email: string) => {
 //   return isPasswordMatched;
 // };
 //== verify a user
-export const verifyAUserService = async (id: Types.ObjectId) => {
-  const result = await User.updateOne(
-    { _id: id },
-    {
-      $set: {
-        isVerified: true,
-      },
-    }
-  );
-  return result;
-};
+// export const verifyAUserService = async (id: Types.ObjectId) => {
+//   const result = await User.updateOne(
+//     { _id: id },
+//     {
+//       $set: {
+//         isVerified: true,
+//       },
+//     }
+//   );
+//   return result;
+// };
 
 // =====notification also====
 // calculate unreaded post
+
 export const getUnreadedNotificationCountService = async (email: string) => {
   const result = await User.aggregate([
     {
@@ -217,67 +218,3 @@ export const setNotificationReadedService = async (
   ).populate("newPosts.moreAboutPost");
   return result;
 };
-
-// =========admin================
-// get all admin and manager
-// export const getAllAdminAndManagerService = async (query: any) => {
-//   const { filters, skip, page, limit, sortBy, sortOrder } =
-//     search_filter_and_queries("user", query, ...user_query_fields) as any;
-//   filters.$and.push({ $or: [{ role: "admin" }, { role: "manager" }] });
-//   const result = await User.find(filters, {
-//     password: 0,
-//     newPosts: 0,
-//   })
-//     .sort({ [sortBy]: sortOrder })
-//     .skip(skip)
-//     .limit(limit);
-//   const totalDocuments = await User.countDocuments(filters);
-//   return {
-//     meta: {
-//       page,
-//       limit,
-//       totalDocuments,
-//     },
-//     data: result,
-//   };
-// };
-// //== add new admin
-// export const addNewAdminService = async (id: Types.ObjectId) => {
-//   const result = await User.updateOne(
-//     {
-//       _id: id,
-//     },
-//     {
-//       $set: {
-//         role: "admin",
-//       },
-//     }
-//   );
-//   return result;
-// };
-// //== remove an admin
-// export const removeAnAdminService = async (id: Types.ObjectId) => {
-//   const result = await User.updateOne(
-//     {
-//       _id: id,
-//     },
-//     {
-//       $unset: { role: 1 },
-//     }
-//   );
-//   return result;
-// };
-// //== add new manager
-// export const addNewManagerService = async (id: Types.ObjectId) => {
-//   const result = await User.updateOne(
-//     {
-//       _id: id,
-//     },
-//     {
-//       $set: {
-//         role: "manager",
-//       },
-//     }
-//   );
-//   return result;
-// };
