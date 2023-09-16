@@ -56,15 +56,15 @@ export const refreshUserController = async (
   next: NextFunction
 ) => {
   try {
-    const userRefreshToken = req.cookies.refreshToken;
-    console.log(userRefreshToken);
+    const userRefreshTokenFromCookies = req.cookies.refreshToken;
+    const userRefreshTokenFromHeader = req.headers.cookies;
 
-    if (!userRefreshToken) {
+    if (!userRefreshTokenFromCookies && !userRefreshTokenFromHeader) {
       throw new Error("Refresh token not found");
     }
 
     const payload = getPayloadFromToken(
-      userRefreshToken,
+      userRefreshTokenFromCookies || userRefreshTokenFromHeader,
       process.env.refresh_key
     );
 

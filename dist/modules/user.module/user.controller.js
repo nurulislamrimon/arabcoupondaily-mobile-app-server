@@ -90,12 +90,12 @@ const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0
 exports.loginUserController = loginUserController;
 const refreshUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const userRefreshToken = req.cookies.refreshToken;
-        console.log(userRefreshToken);
-        if (!userRefreshToken) {
+        const userRefreshTokenFromCookies = req.cookies.refreshToken;
+        const userRefreshTokenFromHeader = req.headers.cookies;
+        if (!userRefreshTokenFromCookies && !userRefreshTokenFromHeader) {
             throw new Error("Refresh token not found");
         }
-        const payload = (0, get_payload_from_token_1.getPayloadFromToken)(userRefreshToken, process.env.refresh_key);
+        const payload = (0, get_payload_from_token_1.getPayloadFromToken)(userRefreshTokenFromCookies || userRefreshTokenFromHeader, process.env.refresh_key);
         const accessToken = (0, generate_token_1.generate_token)({ email: payload === null || payload === void 0 ? void 0 : payload.email });
         res.send({
             status: "success",
