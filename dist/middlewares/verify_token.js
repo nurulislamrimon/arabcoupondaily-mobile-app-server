@@ -8,13 +8,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.verify_token = void 0;
-const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const user_services_1 = require("../modules/user.module/user.services");
+const get_payload_from_token_1 = require("../utils/get_payload_from_token");
 const verify_token = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const authorization = req.headers.authorization;
@@ -23,8 +20,7 @@ const verify_token = (req, res, next) => __awaiter(void 0, void 0, void 0, funct
         }
         else {
             const token = authorization.split(" ")[1];
-            const secret = process.env.secret_key || "";
-            const payload = jsonwebtoken_1.default.verify(token, secret);
+            const payload = (0, get_payload_from_token_1.getPayloadFromToken)(token);
             const email = payload.email;
             const user = yield (0, user_services_1.getUserByEmailService)(email);
             if (!(user === null || user === void 0 ? void 0 : user.isVerified)) {

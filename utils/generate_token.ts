@@ -6,8 +6,7 @@ export function generate_token(
   secretKey = process.env.secret_key
 ): string {
   const { email } = data;
-  const uid = email.split("@")[0];
-  const token = jwt.sign({ email, uid }, secretKey || "", {
+  const token = jwt.sign({ email }, secretKey || "", {
     expiresIn,
   });
   return token;

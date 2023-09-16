@@ -43,57 +43,13 @@ var __rest = (this && this.__rest) || function (s, e) {
     return t;
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.addAndRemovePostFromFavouriteController = exports.addAndRemoveStoreFromFavouriteController = exports.getAllFavouritePostController = exports.getAllFavouriteStoreController = exports.getAllUserController = exports.updateAboutMeUserController = exports.getAboutMeUserController = exports.loginUserController = void 0;
+exports.setNotificationReadedController = exports.getNotificationController = exports.getUnreadedNotificationCountController = exports.addAndRemovePostFromFavouriteController = exports.addAndRemoveStoreFromFavouriteController = exports.getAllFavouritePostController = exports.getAllFavouriteStoreController = exports.getAllUserController = exports.updateAboutMeUserController = exports.getAboutMeUserController = exports.refreshUserController = exports.loginUserController = void 0;
 const userServices = __importStar(require("./user.services"));
 const generate_token_1 = require("../../utils/generate_token");
 const mongoose_1 = require("mongoose");
 const store_services_1 = require("../store.module/store.services");
 const post_services_1 = require("../post.module/post.services");
-// signup controller
-// export const addNewUserController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const userData = req.body;
-//     const existUser = await userServices.getUserByEmailService(userData.email);
-//     if (!userData.email || !userData.accessToken) {
-//       throw new Error("Please enter required information!");
-//     } else if (existUser?.isVerified) {
-//       throw new Error("User already exist!");
-//     } else {
-//       let token;
-//       if (userData?.accessToken) {
-//         const payload = await verifyGoogleToken(userData?.accessToken);
-//         if (payload?.email && payload.email === userData?.email) {
-//           userData.uid = payload.uid;
-//           token = generate_token({ email: payload?.email });
-//         } else {
-//           throw new Error(
-//             "Please make sure your email and access token belongs to the same user!"
-//           );
-//         }
-//       }
-//       await userServices.deleteAUserByEmailService(existUser?.email || "");
-//       const user = await userServices.addNewUserService(userData);
-//       const refreshToken = generate_token(
-//         { email: userData?.email },
-//         "365d",
-//         process.env.refresh_key
-//       );
-//       res.cookie("refreshToken", refreshToken);
-//       res.send({
-//         status: "success",
-//         data: { user, token },
-//       });
-//       console.log(`user ${user.email} sign up!`);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-// login controller
+const get_payload_from_token_1 = require("../../utils/get_payload_from_token");
 const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { email, name, uid, picture } = req.user;
@@ -110,35 +66,18 @@ const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0
                 uid,
                 photoURL: picture,
             });
-            // throw new Error("User not found, Please 'sign up' first!");
         }
         else {
-            // check password or provider exist
-            // if (password) {
-            //   const isPasswordMatched = await userServices.comparePassword(
-            //     email,
-            //     password
-            //   );
-            //   if (isPasswordMatched) {
-            //     token = generate_token(user);
-            //   } else {
-            //     throw new Error("Incorrect email or password!");
-            //   }
-            // } else if (accessToken) {
-            //   const payload = await verifyGoogleToken(accessToken);
-            //   if (payload.email && email === payload.email) {
-            //     token = generate_token({ email: payload?.email });
-            //   } else {
-            //     throw new Error("Email and access token must contain the same user!");
-            //   }
-            // } else {
-            //   throw new Error("Please provide a valid credential!");
-            // }
             accessToken = (0, generate_token_1.generate_token)({ email: email });
             const refreshToken = (0, generate_token_1.generate_token)({ email: email }, "365d", process.env.refresh_key);
-            res.cookie("refreshToken", refreshToken);
+            const cookieOptions = {
+                secure: true,
+                httpOnly: true,
+            };
+            res.cookie("refreshToken", refreshToken, cookieOptions);
             res.send({
                 status: "success",
+                refreshToken,
                 data: { user: existUser || newUser, accessToken },
             });
             console.log(`user ${existUser._id} is responsed!`);
@@ -149,31 +88,26 @@ const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0
     }
 });
 exports.loginUserController = loginUserController;
-// verify a user by user token
-// export const verifyAUserController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const email = req.params.email;
-//     const user = await userServices.getUserByEmailService(email);
-//     if (!user) {
-//       throw new Error("User not found!");
-//     } else if (user.isVerified) {
-//       throw new Error("User already verified!");
-//     } else {
-//       const result = await userServices.verifyAUserService(user._id);
-//       res.send({
-//         status: "success",
-//         data: result,
-//       });
-//       console.log(result);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+const refreshUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const userRefreshToken = req.cookies.refreshToken;
+        console.log(userRefreshToken);
+        if (!userRefreshToken) {
+            throw new Error("Refresh token not found");
+        }
+        const payload = (0, get_payload_from_token_1.getPayloadFromToken)(userRefreshToken, process.env.refresh_key);
+        const accessToken = (0, generate_token_1.generate_token)({ email: payload === null || payload === void 0 ? void 0 : payload.email });
+        res.send({
+            status: "success",
+            data: { accessToken },
+        });
+        console.log(`New access token created from refresh token`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.refreshUserController = refreshUserController;
 // about me by token
 const getAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {

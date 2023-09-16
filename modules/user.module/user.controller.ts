@@ -4,57 +4,8 @@ import { generate_token } from "../../utils/generate_token";
 import { Types } from "mongoose";
 import { getStoreByIdService } from "../store.module/store.services";
 import { getPostByIdService } from "../post.module/post.services";
+import { getPayloadFromToken } from "../../utils/get_payload_from_token";
 
-// signup controller
-// export const addNewUserController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const userData = req.body;
-//     const existUser = await userServices.getUserByEmailService(userData.email);
-
-//     if (!userData.email || !userData.accessToken) {
-//       throw new Error("Please enter required information!");
-//     } else if (existUser?.isVerified) {
-//       throw new Error("User already exist!");
-//     } else {
-//       let token;
-//       if (userData?.accessToken) {
-//         const payload = await verifyGoogleToken(userData?.accessToken);
-//         if (payload?.email && payload.email === userData?.email) {
-//           userData.uid = payload.uid;
-//           token = generate_token({ email: payload?.email });
-//         } else {
-//           throw new Error(
-//             "Please make sure your email and access token belongs to the same user!"
-//           );
-//         }
-//       }
-//       await userServices.deleteAUserByEmailService(existUser?.email || "");
-//       const user = await userServices.addNewUserService(userData);
-
-//       const refreshToken = generate_token(
-//         { email: userData?.email },
-//         "365d",
-//         process.env.refresh_key
-//       );
-
-//       res.cookie("refreshToken", refreshToken);
-
-//       res.send({
-//         status: "success",
-//         data: { user, token },
-//       });
-//       console.log(`user ${user.email} sign up!`);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
-
-// login controller
 export const loginUserController = async (
   req: Request,
   res: Response,
@@ -76,39 +27,21 @@ export const loginUserController = async (
         uid,
         photoURL: picture,
       });
-      // throw new Error("User not found, Please 'sign up' first!");
     } else {
-      // check password or provider exist
-      // if (password) {
-      //   const isPasswordMatched = await userServices.comparePassword(
-      //     email,
-      //     password
-      //   );
-      //   if (isPasswordMatched) {
-      //     token = generate_token(user);
-      //   } else {
-      //     throw new Error("Incorrect email or password!");
-      //   }
-      // } else if (accessToken) {
-      //   const payload = await verifyGoogleToken(accessToken);
-      //   if (payload.email && email === payload.email) {
-      //     token = generate_token({ email: payload?.email });
-      //   } else {
-      //     throw new Error("Email and access token must contain the same user!");
-      //   }
-      // } else {
-      //   throw new Error("Please provide a valid credential!");
-      // }
       accessToken = generate_token({ email: email });
       const refreshToken = generate_token(
         { email: email },
         "365d",
         process.env.refresh_key
       );
-
-      res.cookie("refreshToken", refreshToken);
+      const cookieOptions = {
+        secure: true,
+        httpOnly: true,
+      };
+      res.cookie("refreshToken", refreshToken, cookieOptions);
       res.send({
         status: "success",
+        refreshToken,
         data: { user: existUser || newUser, accessToken },
       });
       console.log(`user ${existUser._id} is responsed!`);
@@ -117,32 +50,36 @@ export const loginUserController = async (
     next(error);
   }
 };
-// verify a user by user token
-// export const verifyAUserController = async (
-//   req: Request,
-//   res: Response,
-//   next: NextFunction
-// ) => {
-//   try {
-//     const email = req.params.email;
-//     const user = await userServices.getUserByEmailService(email);
-//     if (!user) {
-//       throw new Error("User not found!");
-//     } else if (user.isVerified) {
-//       throw new Error("User already verified!");
-//     } else {
-//       const result = await userServices.verifyAUserService(user._id);
+export const refreshUserController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const userRefreshToken = req.cookies.refreshToken;
+    console.log(userRefreshToken);
 
-//       res.send({
-//         status: "success",
-//         data: result,
-//       });
-//       console.log(result);
-//     }
-//   } catch (error) {
-//     next(error);
-//   }
-// };
+    if (!userRefreshToken) {
+      throw new Error("Refresh token not found");
+    }
+
+    const payload = getPayloadFromToken(
+      userRefreshToken,
+      process.env.refresh_key
+    );
+
+    const accessToken = generate_token({ email: payload?.email });
+
+    res.send({
+      status: "success",
+      data: { accessToken },
+    });
+    console.log(`New access token created from refresh token`);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // about me by token
 export const getAboutMeUserController = async (
   req: Request,

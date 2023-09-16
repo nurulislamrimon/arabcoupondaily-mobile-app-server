@@ -7,8 +7,7 @@ exports.generate_token = void 0;
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 function generate_token(data, expiresIn = "1d", secretKey = process.env.secret_key) {
     const { email } = data;
-    const uid = email.split("@")[0];
-    const token = jsonwebtoken_1.default.sign({ email, uid }, secretKey || "", {
+    const token = jsonwebtoken_1.default.sign({ email }, secretKey || "", {
         expiresIn,
     });
     return token;

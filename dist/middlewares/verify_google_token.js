@@ -24,6 +24,7 @@ const verifyGoogleToken = (req, res, next) => __awaiter(void 0, void 0, void 0, 
     // check the token is valid and set the payload to the req.user
     try {
         const googleAccessToken = req.body.accessToken;
+        // console.log(googleAccessToken);
         if (!googleAccessToken) {
             throw new Error("Provide a valid access token!");
         }

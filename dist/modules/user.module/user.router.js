@@ -59,6 +59,19 @@ const userRouter = express_1.default.Router();
  *@apiError email or password incorrect!
  */
 userRouter.post("/login", verify_google_token_1.default, userController.loginUserController);
+/**
+ *@api{post}/refresh accessToken from refreshToke
+ *@apiDescription create an access Token using refresh token
+ *@apiPermission none
+ *@apiHeader none
+ *@apiCookie refresh token
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} return new accessToken and set new refresh token to the cookie.
+ *@apiError user not found, token not found
+ */
+userRouter.post("/refresh", userController.refreshUserController);
 // /**
 //  *@api{put}/verify/:email verify a user
 //  *@apiDescription verify a user email
@@ -80,7 +93,7 @@ userRouter.post("/login", verify_google_token_1.default, userController.loginUse
  *@apiBody none
  *@apiParam none
  *@apiQuery none
- *@apiSuccess {Object} aobut me
+ *@apiSuccess {Object} about me
  *@apiError user not found!
  */
 userRouter.get("/me", verify_token_1.verify_token, userController.getAboutMeUserController);

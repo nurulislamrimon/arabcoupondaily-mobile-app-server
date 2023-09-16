@@ -7,10 +7,16 @@ import dotenv from "dotenv";
 dotenv.config();
 // create app
 const app = express();
+
 // configuration
 app.use(express.json());
 app.use(cookieParser());
-app.use(cors());
+app.use(
+  cors({
+    origin: ["http://localhost:3000"],
+    credentials: true,
+  })
+);
 app.use(urlencoded({ extended: true }));
 // home route
 app.get("/", (req: Request, res: Response) => {
