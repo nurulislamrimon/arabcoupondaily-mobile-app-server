@@ -36,7 +36,7 @@ export const loginUserController = async (
       );
       const cookieOptions = {
         secure: true,
-        httpOnly: true,
+        expires: new Date(Date.now() + 50000),
       };
       res.cookie("refreshToken", refreshToken, cookieOptions);
       res.send({

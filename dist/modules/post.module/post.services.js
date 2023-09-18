@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostService = exports.getAllPosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
+exports.deleteAPostService = exports.getAllPosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByStoreIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
 const post_model_1 = __importDefault(require("./post.model"));
 const user_model_1 = __importDefault(require("../user.module/user.model"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
@@ -50,6 +50,15 @@ const getPostByPostTitleService = (postTitle) => __awaiter(void 0, void 0, void 
     return result;
 });
 exports.getPostByPostTitleService = getPostByPostTitleService;
+//== get Post by store Id
+const getPostByStoreIdService = (storeId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield post_model_1.default.find({ store: storeId }).populate("store", {
+        storeName: 1,
+        photoURL: 1,
+    });
+    return result;
+});
+exports.getPostByStoreIdService = getPostByStoreIdService;
 //== get Post by objectId
 const getPostByIdService = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield post_model_1.default.findOne({ _id: id }, { postBy: 0, updateBy: 0 }).populate("store", {

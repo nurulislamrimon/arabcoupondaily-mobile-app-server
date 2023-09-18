@@ -72,7 +72,7 @@ const loginUserController = (req, res, next) => __awaiter(void 0, void 0, void 0
             const refreshToken = (0, generate_token_1.generate_token)({ email: email }, "365d", process.env.refresh_key);
             const cookieOptions = {
                 secure: true,
-                httpOnly: true,
+                expires: new Date(Date.now() + 50000),
             };
             res.cookie("refreshToken", refreshToken, cookieOptions);
             res.send({

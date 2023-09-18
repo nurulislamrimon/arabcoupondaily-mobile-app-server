@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from "express";
 import * as storeServices from "./store.services";
 import { getUserByEmailService } from "../user.module/user.services";
 import { Types } from "mongoose";
+import { getPostByStoreIdService } from "../post.module/post.services";
 
 // get all active stores
 export const getAllActiveStoresController = async (
@@ -130,13 +131,19 @@ export const deleteAStoreController = async (
   next: NextFunction
 ) => {
   try {
-    const postId = new Types.ObjectId(req.params.id);
-    const existStore = await storeServices.getStoreByIdService(postId);
+    const storeId = new Types.ObjectId(req.params.id);
+    const existStore = await storeServices.getStoreByIdService(storeId);
+
+    const isRelatedPostExist = await getPostByStoreIdService(storeId);
 
     if (!existStore) {
       throw new Error("Store doesn't exist!");
+    } else if (isRelatedPostExist.length) {
+      throw new Error(
+        "Sorry! This store has some posts, You can't delete the store!"
+      );
     } else {
-      const result = await storeServices.deleteAStoreService(postId);
+      const result = await storeServices.deleteAStoreService(storeId);
 
       res.send({
         status: "success",

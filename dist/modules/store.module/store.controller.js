@@ -36,6 +36,7 @@ exports.deleteAStoreController = exports.updateAStoreController = exports.getAll
 const storeServices = __importStar(require("./store.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
+const post_services_1 = require("../post.module/post.services");
 // get all active stores
 const getAllActiveStoresController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -135,13 +136,17 @@ exports.updateAStoreController = updateAStoreController;
 // update a store controller
 const deleteAStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const postId = new mongoose_1.Types.ObjectId(req.params.id);
-        const existStore = yield storeServices.getStoreByIdService(postId);
+        const storeId = new mongoose_1.Types.ObjectId(req.params.id);
+        const existStore = yield storeServices.getStoreByIdService(storeId);
+        const isRelatedPostExist = yield (0, post_services_1.getPostByStoreIdService)(storeId);
         if (!existStore) {
             throw new Error("Store doesn't exist!");
         }
+        else if (isRelatedPostExist.length) {
+            throw new Error("Sorry! This store has some posts, You can't delete the store!");
+        }
         else {
-            const result = yield storeServices.deleteAStoreService(postId);
+            const result = yield storeServices.deleteAStoreService(storeId);
             res.send({
                 status: "success",
                 data: result,

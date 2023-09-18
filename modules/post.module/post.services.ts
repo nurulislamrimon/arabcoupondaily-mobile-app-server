@@ -32,6 +32,14 @@ export const getPostByPostTitleService = async (postTitle: string) => {
   );
   return result;
 };
+//== get Post by store Id
+export const getPostByStoreIdService = async (storeId: Types.ObjectId) => {
+  const result = await Post.find({ store: storeId }).populate("store", {
+    storeName: 1,
+    photoURL: 1,
+  });
+  return result;
+};
 //== get Post by objectId
 export const getPostByIdService = async (id: Types.ObjectId) => {
   const result = await Post.findOne(
