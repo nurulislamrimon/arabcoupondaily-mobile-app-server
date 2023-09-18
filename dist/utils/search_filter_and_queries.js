@@ -57,7 +57,7 @@ const search_filter_and_queries = (modelName, query, ...fields) => {
                 }
                 else {
                     let valueWithOperator = (0, add_filters_operator_1.addFiltersSymbolToOperators)(value);
-                    if (field === "expireDate") {
+                    if (field === "expireDate" || field === "createdAt") {
                         valueWithOperator = {
                             [Object.keys(valueWithOperator)[0]]: new Date(Object.values(valueWithOperator)[0]),
                         };
