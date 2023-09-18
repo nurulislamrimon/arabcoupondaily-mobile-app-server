@@ -121,7 +121,7 @@ const getAboutMeUserController = (req, res, next) => __awaiter(void 0, void 0, v
                 status: "success",
                 data: result,
             });
-            console.log(result);
+            console.log(`user responsed!`);
         }
     }
     catch (error) {

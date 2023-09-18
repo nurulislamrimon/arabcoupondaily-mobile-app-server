@@ -22,6 +22,7 @@ const getAllUserService = (query) => __awaiter(void 0, void 0, void 0, function*
     const result = yield user_model_1.default.find(filters, {
         password: 0,
         newPosts: 0,
+        favourite: 0,
     })
         .sort({ [sortBy]: sortOrder })
         .skip(skip)

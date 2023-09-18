@@ -33,19 +33,6 @@ const verify_authorization_1 = require("../../middlewares/verify_authorization")
 const verify_google_token_1 = __importDefault(require("../../middlewares/verify_google_token"));
 const authorization_roles_1 = require("../../utils/constants/authorization_roles");
 const userRouter = express_1.default.Router();
-// /**
-//  *@api{post}/signup signup a new user
-//  *@apiDescription signup using password or provider
-//  *@apiPermission none
-//  *@apiHeader none
-//  *@apiBody name,email,country, (password,confirmPassword||provider)
-//  *@apiParam none
-//  *@apiQuery none
-//  *@apiSuccess {Object} if password then user info and token else only user info.
-//  *@apiError user already exist!
-//  *@apiError password not found!
-//  */
-// userRouter.post("/signup", userController.addNewUserController);
 /**
  *@api{post}/login login an existing user
  *@apiDescription login with password or provider
@@ -72,19 +59,6 @@ userRouter.post("/login", verify_google_token_1.default, userController.loginUse
  *@apiError user not found, token not found
  */
 userRouter.post("/refresh", userController.refreshUserController);
-// /**
-//  *@api{put}/verify/:email verify a user
-//  *@apiDescription verify a user email
-//  *@apiPermission none
-//  *@apiHeader access token with bearer
-//  *@apiBody none
-//  *@apiParam none
-//  *@apiQuery none
-//  *@apiSuccess {Object} update status.
-//  *@apiError user not found!
-//  *@apiError user already verified!
-//  */
-// userRouter.put("/verify/:email", userController.verifyAUserController);
 /**
  *@api{get}/me about a user
  *@apiDescription get information about a user by itself

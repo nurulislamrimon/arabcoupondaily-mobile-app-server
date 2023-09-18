@@ -96,7 +96,7 @@ export const getAboutMeUserController = async (
         status: "success",
         data: result,
       });
-      console.log(result);
+      console.log(`user responsed!`);
     }
   } catch (error) {
     next(error);

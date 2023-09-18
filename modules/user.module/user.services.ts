@@ -11,6 +11,7 @@ export const getAllUserService = async (query: any) => {
   const result = await User.find(filters, {
     password: 0,
     newPosts: 0,
+    favourite: 0,
   })
     .sort({ [sortBy]: sortOrder })
     .skip(skip)
