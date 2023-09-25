@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostService = exports.getAllPosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByStoreIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
+exports.deleteManyPostService = exports.deleteAPostService = exports.getAllPosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByStoreIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
 const post_model_1 = __importDefault(require("./post.model"));
 const user_model_1 = __importDefault(require("../user.module/user.model"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
@@ -205,3 +205,9 @@ const deleteAPostService = (PostId) => __awaiter(void 0, void 0, void 0, functio
     return result;
 });
 exports.deleteAPostService = deleteAPostService;
+//== delete a Post
+const deleteManyPostService = (PostId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield post_model_1.default.deleteMany({ _id: PostId });
+    return result;
+});
+exports.deleteManyPostService = deleteManyPostService;

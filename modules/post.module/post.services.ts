@@ -210,3 +210,9 @@ export const deleteAPostService = async (PostId: Types.ObjectId) => {
 
   return result;
 };
+//== delete a Post
+export const deleteManyPostService = async (PostId: Types.ObjectId[]) => {
+  const result = await Post.deleteMany({ _id: PostId });
+
+  return result;
+};

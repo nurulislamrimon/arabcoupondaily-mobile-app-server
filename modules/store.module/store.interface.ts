@@ -18,5 +18,5 @@ export default interface IStore {
     }
   ];
   description?: string;
-  howToUse?: { photoURL: string; title: string; description: string }[];
+  howToUse?: { id: string; photoURL?: string; type: string; content: string }[];
 }

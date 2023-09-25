@@ -31,9 +31,10 @@ const storeSchema = new Schema<IStore>(
     description: String,
     howToUse: [
       {
+        id: { type: String, required: true },
         photoURL: { type: String, validate: validator.isURL },
-        title: String,
-        description: String,
+        type: { type: String, required: true },
+        content: String,
       },
     ],
   },

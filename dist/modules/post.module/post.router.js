@@ -117,6 +117,18 @@ postRouter.post("/add", verify_token_1.verify_token, (0, verify_authorization_1.
  */
 postRouter.put("/:id", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), PostController.updateAPostController);
 /**
+ *@api{delete}/many delete many Post
+ *@apiDescription delete many Post by id
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} delete confirmation.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+postRouter.delete("/many", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), PostController.deleteManyPostController);
+/**
  *@api{delete}/:id delete a Post
  *@apiDescription delete a Post by id
  *@apiPermission admin and manager

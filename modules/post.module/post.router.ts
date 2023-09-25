@@ -110,6 +110,23 @@ postRouter.put(
   PostController.updateAPostController
 );
 /**
+ *@api{delete}/many delete many Post
+ *@apiDescription delete many Post by id
+ *@apiPermission admin and manager
+ *@apiHeader token
+ *@apiBody none
+ *@apiParam none
+ *@apiQuery none
+ *@apiSuccess {Object} delete confirmation.
+ *@apiError 401, 403 unauthorized & forbidden
+ */
+postRouter.delete(
+  "/many",
+  verify_token,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
+  PostController.deleteManyPostController
+);
+/**
  *@api{delete}/:id delete a Post
  *@apiDescription delete a Post by id
  *@apiPermission admin and manager

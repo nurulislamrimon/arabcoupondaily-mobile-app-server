@@ -195,3 +195,25 @@ export const deleteAPostController = async (
     next(error);
   }
 };
+// update a Post controller
+export const deleteManyPostController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const postIds = req.body.posts;
+    if (!postIds) {
+      throw new Error("posts are required!");
+    }
+    const result = await PostServices.deleteManyPostService(postIds);
+
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`Post ${result} is added!`);
+  } catch (error) {
+    next(error);
+  }
+};

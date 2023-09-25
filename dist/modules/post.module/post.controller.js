@@ -32,7 +32,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsByAdminController = exports.addNewPostController = exports.getAPostController = exports.searchGloballyOnPostController = void 0;
+exports.deleteManyPostController = exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsByAdminController = exports.addNewPostController = exports.getAPostController = exports.searchGloballyOnPostController = void 0;
 const PostServices = __importStar(require("./post.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
@@ -194,3 +194,22 @@ const deleteAPostController = (req, res, next) => __awaiter(void 0, void 0, void
     }
 });
 exports.deleteAPostController = deleteAPostController;
+// update a Post controller
+const deleteManyPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const postIds = req.body.posts;
+        if (!postIds) {
+            throw new Error("posts are required!");
+        }
+        const result = yield PostServices.deleteManyPostService(postIds);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`Post ${result} is added!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.deleteManyPostController = deleteManyPostController;

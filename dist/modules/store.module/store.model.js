@@ -33,9 +33,10 @@ const storeSchema = new mongoose_1.Schema({
     description: String,
     howToUse: [
         {
+            id: { type: String, required: true },
             photoURL: { type: String, validate: validator_1.default.isURL },
-            title: String,
-            description: String,
+            type: { type: String, required: true },
+            content: String,
         },
     ],
 }, { timestamps: true });
