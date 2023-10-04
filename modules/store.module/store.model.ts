@@ -30,12 +30,14 @@ const storeSchema = new Schema<IStore>(
     ],
     description: String,
     howToUse: [
-      {
-        id: { type: String, required: true },
-        photoURL: { type: String, validate: validator.isURL },
-        type: { type: String, required: true },
-        content: String,
-      },
+      [
+        {
+          id: { type: String, required: true },
+          type: { type: String, required: true },
+          photoURL: { type: String, validate: validator.isURL },
+          content: String,
+        },
+      ],
     ],
   },
   { timestamps: true }

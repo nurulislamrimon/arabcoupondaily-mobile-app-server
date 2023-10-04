@@ -1,0 +1,437 @@
+{
+	"info": {
+		"_postman_id": "22e6347c-72e0-48e7-baaf-71d604b3349c",
+		"name": "Arabcoupon daily-Mena coupon",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "22663141"
+	},
+	"item": [
+		{
+			"name": "User",
+			"item": [
+				{
+					"name": "home",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/"
+					},
+					"response": []
+				},
+				{
+					"name": "login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/login"
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/refresh"
+					},
+					"response": []
+				},
+				{
+					"name": "verify user",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/verify/sharif@gmail.com"
+					},
+					"response": []
+				},
+				{
+					"name": "about me",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/me"
+					},
+					"response": []
+				},
+				{
+					"name": "update me",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/me"
+					},
+					"response": []
+				},
+				{
+					"name": "get all users",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/user"
+					},
+					"response": []
+				},
+				{
+					"name": "Get favourite stores",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/favourite/store"
+					},
+					"response": []
+				},
+				{
+					"name": "Get favourite posts",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/favourite/post"
+					},
+					"response": []
+				},
+				{
+					"name": "favourite store add & remove",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/favourite/store/64aac9d99505ef872dea273a"
+					},
+					"response": []
+				},
+				{
+					"name": "favourite post add & remove",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/favourite/post/6496a1a3c87971d6fba72fd8"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Store",
+			"item": [
+				{
+					"name": "add new store",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/store/add"
+					},
+					"response": []
+				},
+				{
+					"name": "get all stores admin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/store/all"
+					},
+					"response": []
+				},
+				{
+					"name": "get all stores client",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{acd}}/api/v1/store/?sortOrder=-1",
+							"host": [
+								"{{acd}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"store",
+								""
+							],
+							"query": [
+								{
+									"key": "sortOrder",
+									"value": "-1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "update a store",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/store/6472fcd8ca9efa5571c3a5fb"
+					},
+					"response": []
+				},
+				{
+					"name": "delete a store",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{acd}}/api/v1/store/64ae9e11fbb41a9c5a2bbc65"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Post",
+			"item": [
+				{
+					"name": "search globally",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{acd}}/api/v1/post/search?searchTerm=u",
+							"host": [
+								"{{acd}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post",
+								"search"
+							],
+							"query": [
+								{
+									"key": "searchTerm",
+									"value": "u"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "add new post",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/post/add"
+					},
+					"response": []
+				},
+				{
+					"name": "get all posts client",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{acd}}/api/v1/post/?createdAt[gte]=2023-07-12",
+							"host": [
+								"{{acd}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post",
+								""
+							],
+							"query": [
+								{
+									"key": "createdAt[gte]",
+									"value": "2023-07-12"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get all posts admin",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{acd}}/api/v1/post/all?storeName=Adidas",
+							"host": [
+								"{{acd}}"
+							],
+							"path": [
+								"api",
+								"v1",
+								"post",
+								"all"
+							],
+							"query": [
+								{
+									"key": "storeName",
+									"value": "Adidas"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "get a post",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/post/64aea20be235d356c7c7e574"
+					},
+					"response": []
+				},
+				{
+					"name": "update a post",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/post/6474d29ad48d9031937af9dc"
+					},
+					"response": []
+				},
+				{
+					"name": "revealed post",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/post/revealed/64aea20be235d356c7c7e574"
+					},
+					"response": []
+				},
+				{
+					"name": "delete a post",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/post/6474d8392f4a47a40d4932af"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Notification",
+			"item": [
+				{
+					"name": "get notification amount",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/notification"
+					},
+					"response": []
+				},
+				{
+					"name": "get notification amount Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/notification/all"
+					},
+					"response": []
+				},
+				{
+					"name": "update a post",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/user/notification/readed/64787233c6db631a4268b74b"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Carousel",
+			"item": [
+				{
+					"name": "add carousel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/carousel/add"
+					},
+					"response": []
+				},
+				{
+					"name": "get carousel",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/carousel"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Contact",
+			"item": [
+				{
+					"name": "add Contact",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/contact/add"
+					},
+					"response": []
+				},
+				{
+					"name": "get Contact",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/contact"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Administrator",
+			"item": [
+				{
+					"name": "add administrator",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": "{{acd}}/api/v1/administrators/add"
+					},
+					"response": []
+				},
+				{
+					"name": "get all admin and managers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/administrators"
+					},
+					"response": []
+				},
+				{
+					"name": "get me admin and managers",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": "{{acd}}/api/v1/administrators/me"
+					},
+					"response": []
+				},
+				{
+					"name": "update a role",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": "{{acd}}/api/v1/administrators/65030401dc3d20c655e3ce35"
+					},
+					"response": []
+				},
+				{
+					"name": "delete a role",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": "{{acd}}/api/v1/administrators/6503042ddc3d20c655e3ce3a"
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
