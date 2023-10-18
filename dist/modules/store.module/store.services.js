@@ -80,21 +80,25 @@ const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function
         {
             $lookup: {
                 from: "posts",
-                foreignField: "store._id",
-                localField: "store",
+                foreignField: "store",
+                localField: "_id",
                 as: "existPosts",
             },
         },
         {
             $match: {
-                existPosts: { $exists: true, $ne: [] },
+                existPosts: { $ne: [] },
             },
+        },
+        {
+            $addFields: { totalPosts: { $size: "$existPosts" } },
         },
         {
             $project: {
                 existPosts: 0,
                 postBy: 0,
                 updateBy: 0,
+                howToUse: 0,
             },
         },
         {
@@ -106,21 +110,33 @@ const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function
         {
             $skip: skip,
         },
-        { $limit: limit },
+        {
+            $limit: limit,
+        },
     ]);
     const totalDocuments = yield store_model_1.default.aggregate([
         {
             $lookup: {
                 from: "posts",
-                foreignField: "store._id",
-                localField: "store",
+                foreignField: "store",
+                localField: "_id",
                 as: "existPosts",
             },
         },
         {
             $match: {
-                existPosts: { $exists: true, $ne: [] },
+                existPosts: { $ne: [] },
             },
+        },
+        {
+            $project: {
+                existPosts: 0,
+                postBy: 0,
+                updateBy: 0,
+            },
+        },
+        {
+            $match: filters,
         },
         { $count: "totalDocs" },
     ]);

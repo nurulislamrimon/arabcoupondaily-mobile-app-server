@@ -67,21 +67,25 @@ export const getAllActiveStores = async (query: any) => {
     {
       $lookup: {
         from: "posts",
-        foreignField: "store._id",
-        localField: "store",
+        foreignField: "store",
+        localField: "_id",
         as: "existPosts",
       },
     },
     {
       $match: {
-        existPosts: { $exists: true, $ne: [] },
+        existPosts: { $ne: [] },
       },
+    },
+    {
+      $addFields: { totalPosts: { $size: "$existPosts" } },
     },
     {
       $project: {
         existPosts: 0,
         postBy: 0,
         updateBy: 0,
+        howToUse: 0,
       },
     },
     {
@@ -93,22 +97,34 @@ export const getAllActiveStores = async (query: any) => {
     {
       $skip: skip,
     },
-    { $limit: limit },
+    {
+      $limit: limit,
+    },
   ]);
 
   const totalDocuments = await Store.aggregate([
     {
       $lookup: {
         from: "posts",
-        foreignField: "store._id",
-        localField: "store",
+        foreignField: "store",
+        localField: "_id",
         as: "existPosts",
       },
     },
     {
       $match: {
-        existPosts: { $exists: true, $ne: [] },
+        existPosts: { $ne: [] },
       },
+    },
+    {
+      $project: {
+        existPosts: 0,
+        postBy: 0,
+        updateBy: 0,
+      },
+    },
+    {
+      $match: filters,
     },
     { $count: "totalDocs" },
   ]);
