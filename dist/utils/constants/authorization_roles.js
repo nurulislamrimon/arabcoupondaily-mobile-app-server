@@ -4,8 +4,10 @@ exports.roles = void 0;
 const SUPER_ADMIN = "super-admin";
 const ADMIN = "admin";
 const MANAGER = "manager";
+const INACTIVE = "inactive";
 exports.roles = {
     SUPER_ADMIN,
     ADMIN,
     MANAGER,
+    INACTIVE,
 };

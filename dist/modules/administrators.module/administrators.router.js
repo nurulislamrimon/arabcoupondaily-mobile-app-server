@@ -68,7 +68,7 @@ administratorRouter.get("/", verify_token_1.verify_token, (0, verify_authorizati
  *@apiSuccess {Object} get admin and manager object
  *@apiError 401 & 403
  */
-administratorRouter.get("/me", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER), administratorController.getMeAdminAndManagerController);
+administratorRouter.get("/me", verify_token_1.verify_token, (0, verify_authorization_1.verify_authorization)(authorization_roles_1.roles.SUPER_ADMIN, authorization_roles_1.roles.ADMIN, authorization_roles_1.roles.MANAGER, authorization_roles_1.roles.INACTIVE), administratorController.getMeAdminAndManagerController);
 /**
  *@api{put}/administrators/:id change role
  *@apiDescription change role of an administrator by using ObjectId

@@ -55,7 +55,12 @@ administratorRouter.get(
 administratorRouter.get(
   "/me",
   verify_token,
-  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
+  verify_authorization(
+    roles.SUPER_ADMIN,
+    roles.ADMIN,
+    roles.MANAGER,
+    roles.INACTIVE
+  ) as any,
   administratorController.getMeAdminAndManagerController
 );
 
