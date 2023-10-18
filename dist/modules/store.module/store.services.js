@@ -56,17 +56,62 @@ const updateAStoreService = (storeId, newData) => __awaiter(void 0, void 0, void
 exports.updateAStoreService = updateAStoreService;
 // get all stores
 const getAllStores = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, ...constants_1.store_query_fields);
-    const result = yield store_model_1.default.find(filters)
-        .sort({ [sortBy]: sortOrder })
-        .skip(skip)
-        .limit(limit);
-    const totalDocuments = yield store_model_1.default.countDocuments(filters);
+    const result = yield store_model_1.default.aggregate([
+        {
+            $lookup: {
+                from: "posts",
+                foreignField: "store",
+                localField: "_id",
+                as: "existPosts",
+            },
+        },
+        {
+            $addFields: { totalPosts: { $size: "$existPosts" } },
+        },
+        {
+            $project: {
+                existPosts: 0,
+                postBy: 0,
+                updateBy: 0,
+                howToUse: 0,
+            },
+        },
+        {
+            $match: filters,
+        },
+        {
+            $sort: { [sortBy]: sortOrder },
+        },
+        {
+            $skip: skip,
+        },
+        {
+            $limit: limit,
+        },
+    ]);
+    const totalDocuments = yield store_model_1.default.aggregate([
+        {
+            $lookup: {
+                from: "posts",
+                foreignField: "store",
+                localField: "_id",
+                as: "existPosts",
+            },
+        },
+        {
+            $match: filters,
+        },
+        { $count: "totalDocs" },
+    ]);
     return {
         meta: {
             page,
             limit,
-            totalDocuments,
+            totalDocuments: Object.keys(totalDocuments).length
+                ? (_a = totalDocuments[0]) === null || _a === void 0 ? void 0 : _a.totalDocs
+                : 0,
         },
         data: result,
     };
@@ -74,7 +119,7 @@ const getAllStores = (query) => __awaiter(void 0, void 0, void 0, function* () {
 exports.getAllStores = getAllStores;
 // get all active stores
 const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _b;
     const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, ...constants_1.store_query_fields);
     const result = yield store_model_1.default.aggregate([
         {
@@ -129,13 +174,6 @@ const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function
             },
         },
         {
-            $project: {
-                existPosts: 0,
-                postBy: 0,
-                updateBy: 0,
-            },
-        },
-        {
             $match: filters,
         },
         { $count: "totalDocs" },
@@ -145,7 +183,7 @@ const getAllActiveStores = (query) => __awaiter(void 0, void 0, void 0, function
             page,
             limit,
             totalDocuments: Object.keys(totalDocuments).length
-                ? (_a = totalDocuments[0]) === null || _a === void 0 ? void 0 : _a.totalDocs
+                ? (_b = totalDocuments[0]) === null || _b === void 0 ? void 0 : _b.totalDocs
                 : 0,
         },
         data: result,
