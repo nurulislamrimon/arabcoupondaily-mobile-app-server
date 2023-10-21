@@ -138,6 +138,7 @@ export const getAllPosts = async (query: any, isActivePostOnly: boolean) => {
         country: 1,
         isVerified: 1,
         revealed: 1,
+        postDescription: 1,
         couponCode: 1,
         createdAt: 1,
       },

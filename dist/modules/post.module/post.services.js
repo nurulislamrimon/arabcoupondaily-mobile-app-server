@@ -134,6 +134,7 @@ const getAllPosts = (query, isActivePostOnly) => __awaiter(void 0, void 0, void 
                 country: 1,
                 isVerified: 1,
                 revealed: 1,
+                postDescription: 1,
                 couponCode: 1,
                 createdAt: 1,
             },
