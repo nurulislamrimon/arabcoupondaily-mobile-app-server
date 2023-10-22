@@ -2,8 +2,7 @@ import { Types } from "mongoose";
 import Post from "./post.model";
 import User from "../user.module/user.model";
 import { search_filter_and_queries } from "../../utils/search_filter_and_queries";
-import { post_query_fields, store_query_fields } from "../../utils/constants";
-import Store from "../store.module/store.model";
+import { post_query_fields } from "../../utils/constants";
 import {
   getAllActiveStores,
   getAllStores,
@@ -11,27 +10,15 @@ import {
 
 //== get search client
 export const searchGloballyClientService = async (query: object) => {
-  const { filters: storeFilters } = search_filter_and_queries(
-    "store",
-    query,
-    "storeName"
-  ) as any;
-
-  const stores = await getAllActiveStores(storeFilters);
+  const stores = await getAllActiveStores(query);
   const posts = await getAllPosts(query, true);
   return { stores, posts };
 };
 //== get search admin
 export const searchGloballyAdminService = async (query: object) => {
-  const { filters: storeFilters } = search_filter_and_queries(
-    "store",
-    query,
-    "storeName"
-  ) as any;
-
-  const stores = await getAllStores(storeFilters);
+  const stores = await getAllStores(query);
   const posts = await getAllPosts(query, false);
-  return { stores, posts: posts };
+  return { stores, posts };
 };
 //== get Post by name
 export const getPostByPostTitleService = async (postTitle: string) => {

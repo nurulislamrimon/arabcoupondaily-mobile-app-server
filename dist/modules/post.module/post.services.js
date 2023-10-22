@@ -31,18 +31,16 @@ const constants_1 = require("../../utils/constants");
 const store_services_1 = require("../store.module/store.services");
 //== get search client
 const searchGloballyClientService = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { filters: storeFilters } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, "storeName");
-    const stores = yield (0, store_services_1.getAllActiveStores)(storeFilters);
+    const stores = yield (0, store_services_1.getAllActiveStores)(query);
     const posts = yield (0, exports.getAllPosts)(query, true);
     return { stores, posts };
 });
 exports.searchGloballyClientService = searchGloballyClientService;
 //== get search admin
 const searchGloballyAdminService = (query) => __awaiter(void 0, void 0, void 0, function* () {
-    const { filters: storeFilters } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, "storeName");
-    const stores = yield (0, store_services_1.getAllStores)(storeFilters);
+    const stores = yield (0, store_services_1.getAllStores)(query);
     const posts = yield (0, exports.getAllPosts)(query, false);
-    return { stores, posts: posts };
+    return { stores, posts };
 });
 exports.searchGloballyAdminService = searchGloballyAdminService;
 //== get Post by name
