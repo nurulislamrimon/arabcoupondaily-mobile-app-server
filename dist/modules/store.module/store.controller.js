@@ -32,11 +32,51 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteAStoreController = exports.updateAStoreController = exports.getAllStoresController = exports.addNewStoreController = exports.getAStoreController = exports.getAllActiveStoresController = void 0;
+exports.deleteAStoreController = exports.updateAStoreController = exports.getAllStoresController = exports.addNewStoreController = exports.getAllActiveStoresController = exports.getAStoreByStoreNameController = exports.getAStoreController = void 0;
 const storeServices = __importStar(require("./store.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
 const post_services_1 = require("../post.module/post.services");
+// get store by Id controller
+const getAStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const storeId = new mongoose_1.Types.ObjectId(req.params.id);
+        const result = yield storeServices.getStoreByIdService(storeId);
+        if (!result) {
+            throw new Error("Store not found!");
+        }
+        else {
+            res.send({
+                status: "success",
+                data: result,
+            });
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAStoreController = getAStoreController;
+// get store by Id controller
+const getAStoreByStoreNameController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const storeName = req.params.storeName;
+        const result = yield storeServices.getStoreByStoreNameService(storeName);
+        if (!result) {
+            throw new Error("Store not found!");
+        }
+        else {
+            res.send({
+                status: "success",
+                data: result,
+            });
+        }
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.getAStoreByStoreNameController = getAStoreByStoreNameController;
 // get all active stores
 const getAllActiveStoresController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
@@ -50,27 +90,6 @@ const getAllActiveStoresController = (req, res, next) => __awaiter(void 0, void 
     }
 });
 exports.getAllActiveStoresController = getAllActiveStoresController;
-// add new store controller
-const getAStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const storeId = new mongoose_1.Types.ObjectId(req.params.id);
-        const result = yield storeServices.getStoreByIdService(storeId);
-        if (!result) {
-            throw new Error("Post not found!");
-        }
-        else {
-            res.send({
-                status: "success",
-                data: result,
-            });
-            console.log(`Store ${result._id} is added!`);
-        }
-    }
-    catch (error) {
-        next(error);
-    }
-});
-exports.getAStoreController = getAStoreController;
 // add new store controller
 const addNewStoreController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {

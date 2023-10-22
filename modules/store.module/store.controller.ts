@@ -4,6 +4,50 @@ import { getUserByEmailService } from "../user.module/user.services";
 import { Types } from "mongoose";
 import { getPostByStoreIdService } from "../post.module/post.services";
 
+// get store by Id controller
+export const getAStoreController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const storeId = new Types.ObjectId(req.params.id);
+
+    const result = await storeServices.getStoreByIdService(storeId);
+    if (!result) {
+      throw new Error("Store not found!");
+    } else {
+      res.send({
+        status: "success",
+        data: result,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+// get store by Id controller
+export const getAStoreByStoreNameController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const storeName = req.params.storeName;
+
+    const result = await storeServices.getStoreByStoreNameService(storeName);
+    if (!result) {
+      throw new Error("Store not found!");
+    } else {
+      res.send({
+        status: "success",
+        data: result,
+      });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 // get all active stores
 export const getAllActiveStoresController = async (
   req: Request,
@@ -17,29 +61,6 @@ export const getAllActiveStoresController = async (
       ...result,
     });
     console.log(`${result?.data?.length} stores are responsed!`);
-  } catch (error) {
-    next(error);
-  }
-};
-// add new store controller
-export const getAStoreController = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    const storeId = new Types.ObjectId(req.params.id);
-
-    const result = await storeServices.getStoreByIdService(storeId);
-    if (!result) {
-      throw new Error("Post not found!");
-    } else {
-      res.send({
-        status: "success",
-        data: result,
-      });
-      console.log(`Store ${result._id} is added!`);
-    }
   } catch (error) {
     next(error);
   }
