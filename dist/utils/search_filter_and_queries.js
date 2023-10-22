@@ -47,7 +47,8 @@ const search_filter_and_queries = (modelName, query, ...fields) => {
             $and: Object.entries(filterFields).map(([field, value]) => {
                 if (!constants_1.exclude_fields.includes(field)) {
                     if (modelName === "post" && field === "storeName") {
-                        return { "store.storeName": { $regex: value, $options: "i" } };
+                        return { "store.storeName": value };
+                        // return { "store.storeName": { $regex: value, $options: "i" } };
                     }
                     else {
                         return {
