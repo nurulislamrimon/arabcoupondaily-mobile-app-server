@@ -4,20 +4,32 @@ import User from "../user.module/user.model";
 import { search_filter_and_queries } from "../../utils/search_filter_and_queries";
 import { post_query_fields, store_query_fields } from "../../utils/constants";
 import Store from "../store.module/store.model";
+import {
+  getAllActiveStores,
+  getAllStores,
+} from "../store.module/store.services";
 
-//== get Post by name
-export const searchGloballyOnPostService = async (query: object) => {
+//== get search client
+export const searchGloballyClientService = async (query: object) => {
   const { filters: storeFilters } = search_filter_and_queries(
     "store",
     query,
     "storeName"
   ) as any;
 
-  const stores = await Store.find(storeFilters, {
-    postBy: 0,
-    updateBy: 0,
-    howToUse: 0,
-  });
+  const stores = await getAllActiveStores(storeFilters);
+  const posts = await getAllPosts(query, true);
+  return { stores, posts };
+};
+//== get search admin
+export const searchGloballyAdminService = async (query: object) => {
+  const { filters: storeFilters } = search_filter_and_queries(
+    "store",
+    query,
+    "storeName"
+  ) as any;
+
+  const stores = await getAllStores(storeFilters);
   const posts = await getAllPosts(query, false);
   return { stores, posts: posts };
 };

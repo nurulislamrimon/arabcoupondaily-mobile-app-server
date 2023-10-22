@@ -32,15 +32,15 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteManyPostController = exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsByAdminController = exports.addNewPostController = exports.getAPostController = exports.searchGloballyOnPostController = void 0;
+exports.deleteManyPostController = exports.deleteAPostController = exports.revealedAPostController = exports.updateAPostController = exports.getAllActivePostsController = exports.getAllPostsByAdminController = exports.addNewPostController = exports.getAPostController = exports.searchGloballyAdminController = exports.searchGloballyClientController = void 0;
 const PostServices = __importStar(require("./post.services"));
 const user_services_1 = require("../user.module/user.services");
 const mongoose_1 = require("mongoose");
 const store_services_1 = require("../store.module/store.services");
 // add new Post controller
-const searchGloballyOnPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const searchGloballyClientController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const result = yield PostServices.searchGloballyOnPostService(req.query);
+        const result = yield PostServices.searchGloballyClientService(req.query);
         res.send({
             status: "success",
             data: result,
@@ -51,7 +51,21 @@ const searchGloballyOnPostController = (req, res, next) => __awaiter(void 0, voi
         next(error);
     }
 });
-exports.searchGloballyOnPostController = searchGloballyOnPostController;
+exports.searchGloballyClientController = searchGloballyClientController;
+const searchGloballyAdminController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const result = yield PostServices.searchGloballyAdminService(req.query);
+        res.send({
+            status: "success",
+            data: result,
+        });
+        console.log(`global search is responsed!`);
+    }
+    catch (error) {
+        next(error);
+    }
+});
+exports.searchGloballyAdminController = searchGloballyAdminController;
 // get a Post controller
 const getAPostController = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     try {

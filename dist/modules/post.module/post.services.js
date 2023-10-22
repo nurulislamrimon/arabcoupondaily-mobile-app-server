@@ -23,24 +23,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteManyPostService = exports.deleteAPostService = exports.getAllPosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByStoreIdService = exports.getPostByPostTitleService = exports.searchGloballyOnPostService = void 0;
+exports.deleteManyPostService = exports.deleteAPostService = exports.getAllPosts = exports.revealedAPostService = exports.updateAPostService = exports.setPostAsUnreadToUserService = exports.addNewPostService = exports.getPostByIdService = exports.getPostByStoreIdService = exports.getPostByPostTitleService = exports.searchGloballyAdminService = exports.searchGloballyClientService = void 0;
 const post_model_1 = __importDefault(require("./post.model"));
 const user_model_1 = __importDefault(require("../user.module/user.model"));
 const search_filter_and_queries_1 = require("../../utils/search_filter_and_queries");
 const constants_1 = require("../../utils/constants");
-const store_model_1 = __importDefault(require("../store.module/store.model"));
-//== get Post by name
-const searchGloballyOnPostService = (query) => __awaiter(void 0, void 0, void 0, function* () {
+const store_services_1 = require("../store.module/store.services");
+//== get search client
+const searchGloballyClientService = (query) => __awaiter(void 0, void 0, void 0, function* () {
     const { filters: storeFilters } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, "storeName");
-    const stores = yield store_model_1.default.find(storeFilters, {
-        postBy: 0,
-        updateBy: 0,
-        howToUse: 0,
-    });
+    const stores = yield (0, store_services_1.getAllActiveStores)(storeFilters);
+    const posts = yield (0, exports.getAllPosts)(query, true);
+    return { stores, posts };
+});
+exports.searchGloballyClientService = searchGloballyClientService;
+//== get search admin
+const searchGloballyAdminService = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    const { filters: storeFilters } = (0, search_filter_and_queries_1.search_filter_and_queries)("store", query, "storeName");
+    const stores = yield (0, store_services_1.getAllStores)(storeFilters);
     const posts = yield (0, exports.getAllPosts)(query, false);
     return { stores, posts: posts };
 });
-exports.searchGloballyOnPostService = searchGloballyOnPostService;
+exports.searchGloballyAdminService = searchGloballyAdminService;
 //== get Post by name
 const getPostByPostTitleService = (postTitle) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield post_model_1.default.findOne({ postTitle: postTitle }).populate("store", {

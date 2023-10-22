@@ -47,7 +47,25 @@ postRouter.get(
  *@apiError not found
  */
 
-postRouter.get("/search", PostController.searchGloballyOnPostController);
+postRouter.get("/search", PostController.searchGloballyClientController);
+/**
+ *@api{get}/search/all/:key make a global search on post
+ *@apiDescription get all Posts and others
+ *@apiPermission none
+ *@apiHeader none
+ *@apiBody none
+ *@apiParam string
+ *@apiQuery none
+ *@apiSuccess {Array of Object} all Posts and others.
+ *@apiError not found
+ */
+
+postRouter.get(
+  "/search/all",
+  verify_token,
+  verify_authorization(roles.SUPER_ADMIN, roles.ADMIN, roles.MANAGER) as any,
+  PostController.searchGloballyAdminController
+);
 /**
  *@api{GET}/:id get a Post by id
  *@apiDescription get a post by id

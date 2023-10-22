@@ -5,13 +5,29 @@ import { Types } from "mongoose";
 import { getStoreByStoreNameService } from "../store.module/store.services";
 
 // add new Post controller
-export const searchGloballyOnPostController = async (
+export const searchGloballyClientController = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   try {
-    const result = await PostServices.searchGloballyOnPostService(req.query);
+    const result = await PostServices.searchGloballyClientService(req.query);
+    res.send({
+      status: "success",
+      data: result,
+    });
+    console.log(`global search is responsed!`);
+  } catch (error) {
+    next(error);
+  }
+};
+export const searchGloballyAdminController = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const result = await PostServices.searchGloballyAdminService(req.query);
     res.send({
       status: "success",
       data: result,
