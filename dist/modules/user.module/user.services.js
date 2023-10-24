@@ -18,21 +18,83 @@ const search_filter_and_queries_1 = require("../../utils/search_filter_and_queri
 const constants_1 = require("../../utils/constants");
 //== get all users
 const getAllUserService = (query) => __awaiter(void 0, void 0, void 0, function* () {
+    var _a;
     const { filters, skip, page, limit, sortBy, sortOrder } = (0, search_filter_and_queries_1.search_filter_and_queries)("user", query, ...constants_1.user_query_fields);
-    const result = yield user_model_1.default.find(filters, {
-        password: 0,
-        newPosts: 0,
-        favourite: 0,
-    })
-        .sort({ [sortBy]: sortOrder })
-        .skip(skip)
-        .limit(limit);
-    const totalDocuments = yield user_model_1.default.countDocuments(filters);
+    // const result = await User.find(filters, {
+    //   password: 0,
+    //   newPosts: 0,
+    //   favourite: 0,
+    // })
+    //   .sort({ [sortBy]: sortOrder })
+    //   .skip(skip)
+    //   .limit(limit);
+    const result = yield user_model_1.default.aggregate([
+        {
+            $lookup: {
+                from: "administrators",
+                foreignField: "email",
+                localField: "email",
+                as: "isAdministrator",
+            },
+        },
+        {
+            $match: {
+                isAdministrator: { $size: 0 },
+            },
+        },
+        {
+            $project: {
+                password: 0,
+                newPosts: 0,
+                favourite: 0,
+                isAdministrator: 0,
+            },
+        },
+        { $match: filters },
+        {
+            $sort: { [sortBy]: sortOrder },
+        },
+        {
+            $skip: skip,
+        },
+        {
+            $limit: limit,
+        },
+    ]);
+    const totalDocuments = yield user_model_1.default.aggregate([
+        {
+            $lookup: {
+                from: "administrators",
+                foreignField: "email",
+                localField: "email",
+                as: "isAdministrator",
+            },
+        },
+        {
+            $match: {
+                isAdministrator: { $size: 0 },
+            },
+        },
+        {
+            $project: {
+                password: 0,
+                newPosts: 0,
+                favourite: 0,
+                isAdministrator: 0,
+            },
+        },
+        { $match: filters },
+        {
+            $count: "totalDocs",
+        },
+    ]);
     return {
         meta: {
             page,
             limit,
-            totalDocuments,
+            totalDocuments: Object.keys(totalDocuments).length
+                ? (_a = totalDocuments[0]) === null || _a === void 0 ? void 0 : _a.totalDocs
+                : 0,
         },
         data: result,
     };

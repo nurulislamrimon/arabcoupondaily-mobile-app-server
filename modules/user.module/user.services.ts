@@ -8,20 +8,82 @@ export const getAllUserService = async (query: any) => {
   const { filters, skip, page, limit, sortBy, sortOrder } =
     search_filter_and_queries("user", query, ...user_query_fields) as any;
 
-  const result = await User.find(filters, {
-    password: 0,
-    newPosts: 0,
-    favourite: 0,
-  })
-    .sort({ [sortBy]: sortOrder })
-    .skip(skip)
-    .limit(limit);
-  const totalDocuments = await User.countDocuments(filters);
+  // const result = await User.find(filters, {
+  //   password: 0,
+  //   newPosts: 0,
+  //   favourite: 0,
+  // })
+  //   .sort({ [sortBy]: sortOrder })
+  //   .skip(skip)
+  //   .limit(limit);
+
+  const result = await User.aggregate([
+    {
+      $lookup: {
+        from: "administrators",
+        foreignField: "email",
+        localField: "email",
+        as: "isAdministrator",
+      },
+    },
+    {
+      $match: {
+        isAdministrator: { $size: 0 },
+      },
+    },
+    {
+      $project: {
+        password: 0,
+        newPosts: 0,
+        favourite: 0,
+        isAdministrator: 0,
+      },
+    },
+    { $match: filters },
+    {
+      $sort: { [sortBy]: sortOrder },
+    },
+    {
+      $skip: skip,
+    },
+    {
+      $limit: limit,
+    },
+  ]);
+  const totalDocuments = await User.aggregate([
+    {
+      $lookup: {
+        from: "administrators",
+        foreignField: "email",
+        localField: "email",
+        as: "isAdministrator",
+      },
+    },
+    {
+      $match: {
+        isAdministrator: { $size: 0 },
+      },
+    },
+    {
+      $project: {
+        password: 0,
+        newPosts: 0,
+        favourite: 0,
+        isAdministrator: 0,
+      },
+    },
+    { $match: filters },
+    {
+      $count: "totalDocs",
+    },
+  ]);
   return {
     meta: {
       page,
       limit,
-      totalDocuments,
+      totalDocuments: Object.keys(totalDocuments).length
+        ? totalDocuments[0]?.totalDocs
+        : 0,
     },
     data: result,
   };
