@@ -129,6 +129,7 @@ const getAllPosts = (query, isActivePostOnly) => __awaiter(void 0, void 0, void 
                 "store._id": 1,
                 "store.storeName": 1,
                 "store.photoURL": 1,
+                "store.storeExternalLink": 1,
                 postTitle: 1,
                 postType: 1,
                 externalLink: 1,

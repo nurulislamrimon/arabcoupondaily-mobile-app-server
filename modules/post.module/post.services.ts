@@ -130,6 +130,7 @@ export const getAllPosts = async (query: any, isActivePostOnly: boolean) => {
         "store._id": 1,
         "store.storeName": 1,
         "store.photoURL": 1,
+        "store.storeExternalLink": 1,
         postTitle: 1,
         postType: 1,
         externalLink: 1,
